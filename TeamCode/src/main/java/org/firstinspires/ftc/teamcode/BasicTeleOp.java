@@ -79,7 +79,7 @@ public class BasicTeleOp extends LinearOpMode
             }
             else
             {
-                powerMultiplier = 1;
+                powerMultiplier = 0.75;
             }
 
             // this is the roadrunner driving code
@@ -107,7 +107,7 @@ public class BasicTeleOp extends LinearOpMode
                 IMUReset = 0;
                 telemetry.addLine("IMU Resetting...");
                 telemetry.update();
-                drive.IMUInit(hardwareMap);
+                //drive.IMUInit(hardwareMap);
             }
 
             // gets the color and distance values from the color sensor
