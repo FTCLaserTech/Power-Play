@@ -12,6 +12,8 @@ public class TrajectoryBook
     SampleMecanumDrive drive;
     ExtraOpModeFunctions extras;
 
+    public TrajectorySequence rightHighJunction;
+
     public TrajectorySequence redCarouselSpinDuck;
     public TrajectorySequence blueCarouselSpinDuck;
 
@@ -40,9 +42,6 @@ public class TrajectoryBook
     public TrajectorySequence blueParkInWarehouseFromWarehouse;
 
     public TrajectorySequence redRightDuckBlock;
-    public TrajectorySequence redMiddleDuckBlock;
-    public TrajectorySequence redLeftDuckBlock;
-    public TrajectorySequence redDuckGrabToEnd;
 
     public Trajectory blueWarehouseShift;
     public Trajectory redWarehouseShift;
@@ -53,22 +52,10 @@ public class TrajectoryBook
     public TrajectorySequence redDuckStorageUnitLeft;
 
     public TrajectorySequence redDuckPark;
-    public TrajectorySequence redWarehouseParkNear;
-    public TrajectorySequence redWarehouseParkFar;
     public TrajectorySequence blueDuckStorageUnitRight;
     public TrajectorySequence blueDuckStorageUnitMiddle;
     public TrajectorySequence blueDuckStorageUnitLeft;
     public TrajectorySequence blueDuckPark;
-    public TrajectorySequence blueStoragePark;
-    public TrajectorySequence blueWarehouseParkNear;
-    public TrajectorySequence blueWarehouseParkFar;
-    public TrajectorySequence redWarehouseRight;
-    public TrajectorySequence redWarehouseMiddle;
-    public TrajectorySequence redWarehouseLeft;
-    public TrajectorySequence blueWarehouseRight;
-    public TrajectorySequence blueWarehouseMiddle;
-    public TrajectorySequence blueWarehouseLeft;
-
     public TrajectorySequence redCapstoneWarehouse;
     public TrajectorySequence redCapstoneWarehouseShift;
     public TrajectorySequence blueCapstoneWarehouse;
@@ -78,6 +65,17 @@ public class TrajectoryBook
     {
         drive = drivePass;
         extras = extrasPass;
+    }
+
+    public void RightHighJunction(Pose2d pose)
+    {
+        rightHighJunction = drive.trajectorySequenceBuilder(pose)
+                // move towards high goal
+                .lineToLinearHeading(new Pose2d(40, 7, Math.toRadians(0)))
+                // turn and backup to place onto high goal
+                .lineToLinearHeading(new Pose2d(40, 17, Math.toRadians(90)))
+                // raise elevator while moving
+                .build();
     }
 
     //
