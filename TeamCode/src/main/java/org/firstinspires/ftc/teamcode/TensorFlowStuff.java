@@ -69,7 +69,7 @@ public class TensorFlowStuff extends LinearOpMode
     public void runOpMode()
     {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.IMUInit(hardwareMap);
+        //drive.IMUInit(hardwareMap);
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         TrajectorySequence moveToObj;
