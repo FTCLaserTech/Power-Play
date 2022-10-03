@@ -20,8 +20,12 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 1;
-    public static final double MAX_RPM = 1;
+	//Old Robot:
+    //public static final double TICKS_PER_REV = 384.5
+    //public static final double MAX_RPM = 435
+    public static final double TICKS_PER_REV = 537.7;
+    public static final double MAX_RPM = 312;
+
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -32,8 +36,10 @@ public class DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
-            getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+    //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(7, 0, 0,
+    //        getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(27, 0, 12, 13.11);
+    //  this is f -       getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -43,9 +49,13 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 2; // in
-    public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 1; // in
+    //Old Robot:
+    //public static double WHEEL_RADIUS = 1.9685
+    //public static double GEAR_RATIO = 0.5
+    //public static double TRACK_WIDTH = 16.05;
+    public static double WHEEL_RADIUS = 1.88976; // in
+    public static double GEAR_RATIO = 1.02; // output (wheel) speed / input (motor) speed
+    public static double TRACK_WIDTH = 9.5; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -64,10 +74,17 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 30;
-    public static double MAX_ACCEL = 30;
-    public static double MAX_ANG_VEL = Math.toRadians(60);
-    public static double MAX_ANG_ACCEL = Math.toRadians(60);
+    //public static double MAX_VEL = 38.110287416570166;
+    public static double MAX_VEL = 50; // was 56
+    //public static double MAX_ACCEL = 38.110287416570166;
+    public static double MAX_ACCEL = 75;
+    //public static double MAX_ANG_VEL = Math.toRadians(138.19991297468354);
+    //public static double MAX_ANG_VEL = Math.toRadians(22.22);
+    public static double MAX_ANG_VEL = 11.5;
+
+
+    public static double MAX_ANG_ACCEL = Math.toRadians(138.199);
+	
 
 
     public static double encoderTicksToInches(double ticks) {

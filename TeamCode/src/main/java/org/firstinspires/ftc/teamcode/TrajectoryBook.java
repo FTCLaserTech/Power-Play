@@ -71,9 +71,13 @@ public class TrajectoryBook
     {
         rightHighJunction = drive.trajectorySequenceBuilder(pose)
                 // move towards high goal
-                .lineToLinearHeading(new Pose2d(40, 7, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(48, 0, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(48, 0, Math.toRadians(-90)))
+                //.lineToLinearHeading(new Pose2d(10, 0, Math.toRadians(90)),
+                //        SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                //        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 // turn and backup to place onto high goal
-                .lineToLinearHeading(new Pose2d(40, 17, Math.toRadians(90)))
+                //.lineToLinearHeading(new Pose2d(48, 0, Math.toRadians(-90)))
                 // raise elevator while moving
                 .build();
     }
