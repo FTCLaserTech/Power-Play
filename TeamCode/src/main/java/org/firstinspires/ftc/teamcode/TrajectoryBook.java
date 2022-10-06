@@ -12,7 +12,7 @@ public class TrajectoryBook
     SampleMecanumDrive drive;
     ExtraOpModeFunctions extras;
 
-    public TrajectorySequence rightHighJunction;
+    public TrajectorySequence rightHighJunctionTwo;
 
     public TrajectorySequence redCarouselSpinDuck;
     public TrajectorySequence blueCarouselSpinDuck;
@@ -67,21 +67,27 @@ public class TrajectoryBook
         extras = extrasPass;
     }
 
-    public void RightHighJunction(Pose2d pose)
+    public void RightHighJunctionTwo(Pose2d pose)
     {
-        rightHighJunction = drive.trajectorySequenceBuilder(pose)
-                // move towards high goal
-                .lineToLinearHeading(new Pose2d(48, 0, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(48, 0, Math.toRadians(-90)))
-                //.lineToLinearHeading(new Pose2d(10, 0, Math.toRadians(90)),
-                //        SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                //        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                // turn and backup to place onto high goal
-                //.lineToLinearHeading(new Pose2d(48, 0, Math.toRadians(-90)))
-                // raise elevator while moving
+        rightHighJunctionTwo = drive.trajectorySequenceBuilder(pose)
+                // Move towards carousel
+                .lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
+                .waitSeconds(0.4)
+                .lineToLinearHeading(new Pose2d(52, 19, Math.toRadians(0)))
+                .waitSeconds(0.4)
+                .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+                .waitSeconds(0.4)
+                .lineToLinearHeading(new Pose2d(52, -25, Math.toRadians(-87)))
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .build();
     }
-
     //
     // Used in red carousel programs at the beginning to spin the duck
     public void RedCarouselSpinDuck(Pose2d pose)

@@ -182,17 +182,14 @@ public class ExtraOpModeFunctions
 
     public void clawOpen()
     {
-        claw.setPosition(0.52);
+        claw.setPosition(0.53);
     }
 
-    public void clawOpenDuck()
-    {
-        claw.setPosition(0.42);
-    }
+    public void clawOpenDuck() {claw.setPosition(0.42);}
 
     public void clawClose()
     {
-        claw.setPosition(0.62);
+        claw.setPosition(0.69);
     }
 
     // starts our intake motor to INTAKE game elements

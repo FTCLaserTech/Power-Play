@@ -41,6 +41,8 @@ public class RightHighJunction extends LinearOpMode
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
+        extras.clawClose();
+
         //Trajectory hub = null;
         //Trajectory hubBackup = null;
         Pose2d poseEstimate = drive.getPoseEstimate();
@@ -53,8 +55,8 @@ public class RightHighJunction extends LinearOpMode
 
         waitForStart();
 
-        book.RightHighJunction(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rightHighJunction);
+        book.RightHighJunctionTwo(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.rightHighJunctionTwo);
 
         sleep(10000);
     }
