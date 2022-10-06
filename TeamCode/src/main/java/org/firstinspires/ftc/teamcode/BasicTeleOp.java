@@ -107,7 +107,7 @@ public class BasicTeleOp extends LinearOpMode
                 IMUReset = 0;
                 telemetry.addLine("IMU Resetting...");
                 telemetry.update();
-                //drive.IMUInit(hardwareMap);
+                drive.IMUInit(hardwareMap);
             }
 
             // gets the color and distance values from the color sensor
