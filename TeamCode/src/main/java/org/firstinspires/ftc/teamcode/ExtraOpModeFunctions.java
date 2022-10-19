@@ -79,10 +79,9 @@ import static java.lang.Math.PI;
  * Simple mechanum drive hardware implementation for REV hardware.
  */
 @Config
-// test
 public class ExtraOpModeFunctions
 {
-    public enum RobotStartPosition{STRAIGHT, LEFT, RIGHT};
+    public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
     public enum MarkerPosition{LEFT, MIDDLE, RIGHT};
 
     public enum CollectMode {CLAW, INTAKE};
@@ -98,11 +97,10 @@ public class ExtraOpModeFunctions
     public LinearOpMode localLop = null;
 
     // parts of our capstone arm
-    public DcMotorEx shoulder; // dc motor (not used)
-    public Servo shoulder2; // servo
+    public DcMotorEx shoulder;
+    public Servo shoulder2;
     public Servo elbow;
     public Servo wrist;
-    //
 
     public TouchSensor armLimit;
     public NormalizedColorSensor colorSensor;
