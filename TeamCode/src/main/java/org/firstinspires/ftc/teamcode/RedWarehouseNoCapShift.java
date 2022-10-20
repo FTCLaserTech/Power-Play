@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 /*
@@ -15,7 +18,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * using the RC phone or https://192.168.43.1:8080/dash if you are using the Control Hub. Once
  * you've successfully connected, start the program, and your robot will begin moving forward and
  * backward. You should observe the target position (green) and your pose estimate (blue) and adjust
- * your follower PID coefficients such that you follow the target position as accurately as possible.
+ * your follower PID coefficients such that you follow the target position as accurately as
+ possible.
  * If you are using SampleMecanumDrive, you should be tuning TRANSLATIONAL_PID and HEADING_PID.
  * If you are using SampleTankDrive, you should be tuning AXIAL_PID, CROSS_TRACK_PID, and HEADING_PID.
  * These coefficients can be tuned live in dashboard.
@@ -23,13 +27,14 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * This opmode is designed as a convenient, coarse tuning for the follower PID coefficients. It
  * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
  */
-//@Disabled
 @Config
-@Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+@Autonomous(group = "c")
+public class RedWarehouseNoCapShift extends LinearOpMode
+{
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() throws InterruptedException
+    {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.IMUInit(hardwareMap);
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
@@ -39,9 +44,6 @@ public class DuckRedStorageUnit extends LinearOpMode {
         sleep(1000);
         extras.initArm();
         extras.wristClose();
-
-        Trajectory hub = null;
-        Trajectory hubBackup = null;
         telemetry.addLine("Initialized");
         telemetry.update();
 
@@ -50,31 +52,27 @@ public class DuckRedStorageUnit extends LinearOpMode {
         // scan for capstone
         ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
 
-        //grab capstone
-
-        // immediately move to hub and place block
         switch (markerPosition)
         {
             case RIGHT:
-                book.RedDuckStorageUnitRight(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedWarehouseRightBlockDrop(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redWarehouseRightBlockDrop);
                 break;
             case MIDDLE:
-                book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedWarehouseMiddleBlockDrop(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redWarehouseMiddleBlockDrop);
                 break;
             case LEFT:
-                book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedWarehouseLeftBlockDrop(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redWarehouseLeftBlockDrop);
                 break;
         }
 
+        book.RedParkInWarehouseFromWarehouse(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.redParkInWarehouseFromWarehouse);
+
+        book.RedWarehouseShift(drive.getPoseEstimate());
+        drive.followTrajectory(book.redWarehouseShift);
 
     }
 }

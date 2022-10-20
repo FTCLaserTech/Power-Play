@@ -13,6 +13,7 @@ public class TrajectoryBook
     ExtraOpModeFunctions extras;
 
     public TrajectorySequence rightHighJunctionTwo;
+    public TrajectorySequence colorSensorTest;
 
     public TrajectorySequence redCarouselSpinDuck;
     public TrajectorySequence blueCarouselSpinDuck;
@@ -65,6 +66,14 @@ public class TrajectoryBook
     {
         drive = drivePass;
         extras = extrasPass;
+    }
+
+    public void ColorSensorTest(Pose2d pose)
+    {
+        colorSensorTest = drive.trajectorySequenceBuilder(pose)
+                // Move forward until robot sees red
+                .lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
+                .build();
     }
 
     public void RightHighJunctionTwo(Pose2d pose)
