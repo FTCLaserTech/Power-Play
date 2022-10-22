@@ -12,7 +12,8 @@ public class TrajectoryBook
     SampleMecanumDrive drive;
     ExtraOpModeFunctions extras;
 
-    public TrajectorySequence rightHighJunctionTwo;
+    public TrajectorySequence rightHighJunction;
+    public TrajectorySequence rHJStacking;
     public TrajectorySequence colorSensorTest;
 
     public TrajectorySequence redCarouselSpinDuck;
@@ -76,25 +77,29 @@ public class TrajectoryBook
                 .build();
     }
 
-    public void RightHighJunctionTwo(Pose2d pose)
+    public void RightHighJunction(Pose2d pose)
     {
-        rightHighJunctionTwo = drive.trajectorySequenceBuilder(pose)
-                // Move towards carousel
+        rightHighJunction = drive.trajectorySequenceBuilder(pose)
+                // Move left
                 .lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
-                .waitSeconds(0.4)
+                // Move Forward
                 .lineToLinearHeading(new Pose2d(52, 19, Math.toRadians(0)))
-                .waitSeconds(0.4)
+                // Move Right and turn
                 .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
-                .waitSeconds(0.4)
+                .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-                .waitSeconds(0.4)
+                .build();
+    }
+    public void RHJStacking(Pose2d pose)
+    {
+        rHJStacking = drive.trajectorySequenceBuilder(pose)
+                // Move back to stack
                 .lineToLinearHeading(new Pose2d(52, -25, Math.toRadians(-87)))
-                .waitSeconds(0.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
-                .waitSeconds(1)
+                // Move back to the high junction
                 .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
-                .waitSeconds(0.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+                .waitSeconds(0.5)
                 .build();
     }
     //
