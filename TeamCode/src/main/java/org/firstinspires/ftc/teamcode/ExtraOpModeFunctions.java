@@ -80,13 +80,22 @@ import static java.lang.Math.PI;
  */
 @Config
 // test
-public class ExtraOpModeFunctions
-{
-    public enum RobotStartPosition{STRAIGHT, LEFT, RIGHT};
-    public enum MarkerPosition{LEFT, MIDDLE, RIGHT};
+public class ExtraOpModeFunctions {
+    public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT}
 
-    public enum CollectMode {CLAW, INTAKE};
-    public enum FieldSide {RED, BLUE};
+    ;
+
+    public enum MarkerPosition {LEFT, MIDDLE, RIGHT}
+
+    ;
+
+    public enum CollectMode {CLAW, INTAKE}
+
+    ;
+
+    public enum FieldSide {RED, BLUE}
+
+    ;
     public CollectMode collectMode = CollectMode.CLAW;
 
     private VuforiaLocalizer vuforia = null;
@@ -113,8 +122,7 @@ public class ExtraOpModeFunctions
     public RevBlinkinLedDriver blinkinLedDriver;
     public RevBlinkinLedDriver.BlinkinPattern pattern;
 
-    public ExtraOpModeFunctions(HardwareMap hardwareMap, LinearOpMode lop)
-    {
+    public ExtraOpModeFunctions(HardwareMap hardwareMap, LinearOpMode lop) {
         claw = hardwareMap.get(Servo.class, "claw");
         intake = hardwareMap.get(DcMotor.class, "intake");
         arm = hardwareMap.get(DcMotor.class, "arm");
@@ -165,7 +173,7 @@ public class ExtraOpModeFunctions
         VuforiaLocalizer.Parameters parameters;
 
         // HardwareMap hMap = new HardwareMap();
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
@@ -176,43 +184,39 @@ public class ExtraOpModeFunctions
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         vuforia.setFrameQueueCapacity(3);
-        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
 
     }
 
-    public void clawOpen()
-    {
+    public void clawOpen() {
         claw.setPosition(0.53);
     }
 
-    public void clawOpenDuck() {claw.setPosition(0.42);}
+    public void clawOpenDuck() {
+        claw.setPosition(0.42);
+    }
 
-    public void clawClose()
-    {
+    public void clawClose() {
         claw.setPosition(0.69);
     }
 
     // starts our intake motor to INTAKE game elements
-    public void intakeIn()
-    {
+    public void intakeIn() {
         intake.setPower(1.0);
     }
 
     // starts our intake motor to DEPOSIT game elements
-    public void intakeOut()
-    {
+    public void intakeOut() {
         intake.setPower(-1.0);
     }
 
     // turns off our intake motor
-    public void intakeOff()
-    {
+    public void intakeOff() {
         intake.setPower(0);
     }
 
     // initializes our arm's limit switch and capstone arm
-    public void initArm()
-    {
+    public void initArm() {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Move up to make sure that arm is not at the bottom.
@@ -228,7 +232,7 @@ public class ExtraOpModeFunctions
         // Move down until the limit switch is triggered.
         arm.setPower(-0.1);
 
-        while(armLimit.getValue() == 0) // CHECK IF THIS BOOLEAN STATEMENT IS CORRECT
+        while (armLimit.getValue() == 0) // CHECK IF THIS BOOLEAN STATEMENT IS CORRECT
         {
             ;
         }
@@ -249,8 +253,7 @@ public class ExtraOpModeFunctions
     }
 
     // ARM POSITIONS
-    public void armCollect()
-    {
+    public void armCollect() {
         int target = 0;
 
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -273,8 +276,7 @@ public class ExtraOpModeFunctions
 
      */
 
-    public void armBottomAuto()
-    {
+    public void armBottomAuto() {
         int target = 475;
 
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -282,8 +284,7 @@ public class ExtraOpModeFunctions
         arm.setPower(0.8);
     }
 
-    public void armMid()
-    {
+    public void armMid() {
         int target = 3275;
 
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -291,8 +292,7 @@ public class ExtraOpModeFunctions
         arm.setPower(0.8);
     }
 
-    public void armTopAuto()
-    {
+    public void armTopAuto() {
         int target = 2915;
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
@@ -301,8 +301,7 @@ public class ExtraOpModeFunctions
 
     }
 
-    public void armTopTele()
-    {
+    public void armTopTele() {
         int target = 2915;
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
@@ -311,8 +310,7 @@ public class ExtraOpModeFunctions
 
     }
 
-    public void armSharedHubHigh()
-    {
+    public void armSharedHubHigh() {
         int target = 2400;
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
@@ -321,8 +319,7 @@ public class ExtraOpModeFunctions
 
     }
 
-    public void armSharedHubLow()
-    {
+    public void armSharedHubLow() {
         int target = 3555;
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
@@ -332,90 +329,91 @@ public class ExtraOpModeFunctions
     }
 
     // CONTROLS FLYWHEELS
-    public void leftWheelCCW() { leftWheel.setPower(-1.0); }
+    public void leftWheelCCW() {
+        leftWheel.setPower(-1.0);
+    }
 
-    public void leftWheelCW() { leftWheel.setPower(1.0); }
+    public void leftWheelCW() {
+        leftWheel.setPower(1.0);
+    }
 
-    public void leftWheelOff() { leftWheel.setPower(0.0); }
+    public void leftWheelOff() {
+        leftWheel.setPower(0.0);
+    }
 
-    public void rightWheelCCW() { rightWheel.setPower(1.0); }
+    public void rightWheelCCW() {
+        rightWheel.setPower(1.0);
+    }
 
-    public void rightWheelCW() { rightWheel.setPower(-1.0); }
+    public void rightWheelCW() {
+        rightWheel.setPower(-1.0);
+    }
 
-    public void rightWheelOff() { rightWheel.setPower(0.0); }
+    public void rightWheelOff() {
+        rightWheel.setPower(0.0);
+    }
     //
 
     // CONTROLS THE CAPSTONE ARM
 
-    public void capstoneShoulderCarry()
-    {
+    public void capstoneShoulderCarry() {
         shoulder2.setPosition(0.6755);
     }
 
-    public void capstoneElbowCarry()
-    {
+    public void capstoneElbowCarry() {
         elbow.setPosition(0.98);
     }
 
-    public void capstoneArmCarry()
-    {
+    public void capstoneArmCarry() {
         capstoneShoulderCarry();
         localLop.sleep(750);
         capstoneElbowCarry();
     }
 
-    public void capstoneArmCollect()
-    {
+    public void capstoneArmCollect() {
         shoulder2.setPosition(0.52);
         elbow.setPosition(0.178);
     }
 
-    public void capstoneArmDeposit()
-    {
+    public void capstoneArmDeposit() {
         shoulder2.setPosition(0.609);
         elbow.setPosition(0.61);
     }
 
-    public void capstoneArmPlace()
-    {
+    public void capstoneArmPlace() {
         shoulder2.setPosition(0.617);
         elbow.setPosition(0.61);
     }
 
-    public void wristClose()
-    {
+    public void wristClose() {
         wrist.setPosition(0.2); // double check this position using servo programmer
     }
 
-    public void wristOpen()
-    {
+    public void wristOpen() {
         wrist.setPosition(0.5); // double check this position using servo programmer
     }
     //
 
 
-    public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition)
-    {
-        switch (robotStartPosition)
-        {
+    public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition) {
+        switch (robotStartPosition) {
             case STRAIGHT:
                 break;
             case LEFT:
-                angle = angle - PI/2;
-                if(angle < (-PI))
-                    angle = angle + (PI*2);
+                angle = angle - PI / 2;
+                if (angle < (-PI))
+                    angle = angle + (PI * 2);
                 break;
             case RIGHT:
-                angle = angle + PI/2;
-                if(angle > (PI))
-                    angle = angle - (PI*2);
+                angle = angle + PI / 2;
+                if (angle > (PI))
+                    angle = angle - (PI * 2);
                 break;
         }
         return angle;
     }
 
-    protected void displayPattern()
-    {
+    protected void displayPattern() {
         blinkinLedDriver.setPattern(pattern);
     }
 
@@ -435,33 +433,29 @@ public class ExtraOpModeFunctions
 
     //
     //  CODE
-    public MarkerPosition grabAndProcessImage(FieldSide fieldSide)
-    {
+    public MarkerPosition grabAndProcessImage(FieldSide fieldSide) {
         MarkerPosition markerPosition = MarkerPosition.RIGHT;
         Image imageRGB565 = null;
 
-        int numGreenMid = 0;
-        int numGreenLeft = 0;
-        int numGreenRight = 0;
+        int numGreen = 0;
+        int numRed = 0;
+        int numBlue = 0;
 
         //CameraDevice.getInstance().setFlashTorchMode(true);
         CameraDevice.getInstance().start();
 
-        try
-        {
+        try {
             Frame frame = vuforia.getFrameQueue().take();
 
-           // localLop.telemetry.addData("Image found ", frame.getNumImages());
+            // localLop.telemetry.addData("Image found ", frame.getNumImages());
             //localLop.telemetry.update();
             //linearOpMode.sleep(2000);
-            for (int i = 0; i < frame.getNumImages(); ++i)
-            {
+            for (int i = 0; i < frame.getNumImages(); ++i) {
                 Image image = frame.getImage(i);
                 //localLop.telemetry.addData("Image Num ", frame.getNumImages());
                 //localLop.telemetry.update();
                 //linearOpMode.sleep(2000);
-                if (image.getFormat() == PIXEL_FORMAT.RGB565)
-                {
+                if (image.getFormat() == PIXEL_FORMAT.RGB565) {
                     imageRGB565 = image;
                     //localLop.telemetry.addData("Image format ", image.getFormat());
                     //localLop.telemetry.update();
@@ -471,22 +465,16 @@ public class ExtraOpModeFunctions
                 }
             }
 
-            if (imageRGB565 != null)
-            {
+            if (imageRGB565 != null) {
                 // grab the image
                 Bitmap bm = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
                 bm.copyPixelsFromBuffer(imageRGB565.getPixels());
-                if (fieldSide == FieldSide.RED)
-                {
+                if (fieldSide == FieldSide.RED) {
                     // create some variables to index the pixels
                     int xMidMin = 0;
                     int xMidMax = 0;
-                    int x2LeftMin = 0;
-                    int x2LeftMax = 0;
-                    int y2LeftMin = 0;
-                    int y2LeftMax = 0;
-                    int y1MidMin = 0;
-                    int y1MidMax = 0;
+                    int yMidMin = 0;
+                    int yMidMax = 0;
 
 
                     //int xpix = 0;
@@ -497,64 +485,77 @@ public class ExtraOpModeFunctions
 
                     xMidMin = (int) (((2.85) * 480) / 4);
                     xMidMax = (int) (((3.4) * 480) / 4);
-                    y1MidMin = (int) (((2) * 640) / 5.5);
-                    y1MidMax = (int) (((2.7) * 640) / 5.5);
+                    yMidMin = (int) (((2) * 640) / 5.5);
+                    yMidMax = (int) (((2.7) * 640) / 5.5);
                     //ypix = ((y1MidMin+y1MidMax)/2);
                     //xpix = ((xMidMin+xMidMax)/2);
-
-                    x2LeftMin = (int) (((1) * 480) / 4);
-                    x2LeftMax = (int) (((1.5) * 480) / 4);
-                    y2LeftMin = (int) (((2.1) * 640) / 5.5);
-                    y2LeftMax = (int) (((2.8) * 640) / 5.5);
 
 
                     int pixel = 0;
 
-                    for (int y = y1MidMin; y <= y1MidMax; y++) {
+                    for (int y = yMidMin; y <= yMidMax; y++) {
                         for (int x = xMidMin; x <= xMidMax; x++) {
                             // yellow in RGB is 0xFFFF00
                             pixel = bm.getPixel(y, x);
 
 
-                            if ((pixel & 0x000000ff) < 0x0000005A) {
-                                if ((pixel & 0x00ff0000) < 0x005A0000) {
-                                    if ((pixel & 0x0000ff00) > 0x00005A00) {
-                                        numGreenMid++;
+                            if ((pixel & 0x000000ff) < 0x00000054) {
+                                if ((pixel & 0x00ff0000) < 0x00370000) {
+                                    if ((pixel & 0x0000ff00) > 0x0000a300) {
+                                        numGreen++;
                                     }
                                 }
                             }
                         }
                     }
-
-                    for (int y = y2LeftMin; y <= y2LeftMax; y++) {
-                        for (int x = x2LeftMin; x <= x2LeftMax; x++) {
+                    for (int y = yMidMin; y <= yMidMax; y++) {
+                        for (int x = xMidMin; x <= xMidMax; x++) {
                             // yellow in RGB is 0xFFFF00
                             pixel = bm.getPixel(y, x);
 
 
-                            if ((pixel & 0x000000ff) < 0x0000005A) {
-                                if ((pixel & 0x00ff0000) < 0x005A0000) {
-                                    if ((pixel & 0x0000ff00) > 0x00005A00) {
-                                        numGreenLeft++;
+                            if ((pixel & 0x000000ff) < 0x00000012) {
+                                if ((pixel & 0x00ff0000) < 0x00f20000) {
+                                    if ((pixel & 0x0000ff00) > 0x00000200) {
+                                        numRed++;
                                     }
                                 }
                             }
                         }
                     }
+                    for (int y = yMidMin; y <= yMidMax; y++) {
+                        for (int x = xMidMin; x <= xMidMax; x++) {
+                            // yellow in RGB is 0xFFFF00
+                            pixel = bm.getPixel(y, x);
 
 
-                    if (numGreenMid >= 50) {
-                        localLop.telemetry.addData("Mid", numGreenMid);
-                        markerPosition = MarkerPosition.MIDDLE;
-                    } else if (numGreenLeft >= 50) {
-                        localLop.telemetry.addData("Left", numGreenLeft);
-                        markerPosition = MarkerPosition.LEFT;
-                    } else {
-                        localLop.telemetry.addData("Right", 0);
-                        markerPosition = MarkerPosition.RIGHT;
+                            if ((pixel & 0x000000ff) < 0x0000004d) {
+                                if ((pixel & 0x00ff0000) < 0x00080000) {
+                                    if ((pixel & 0x0000ff00) > 0x00001700) {
+                                        numBlue++;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                else
+
+
+                if (numGreen >= 50) {
+                    localLop.telemetry.addData("Green", numGreen);
+                    markerPosition = MarkerPosition.MIDDLE;
+
+                    if (numRed >= 50) {
+                        localLop.telemetry.addData("Red", numRed);
+                        markerPosition = MarkerPosition.MIDDLE;
+
+                        if (numBlue >= 50) {
+                            localLop.telemetry.addData("Blue", numBlue);
+                            markerPosition = MarkerPosition.MIDDLE;
+
+                        }
+                    }
+                /*
                 {
                     // create some variables to index the pixels
                     int xMidMinBlue = 0;
@@ -636,43 +637,41 @@ public class ExtraOpModeFunctions
                 }
 
 
+                */
+
+                    // yellow in RGB is 0xFFFF00
+                    int color2 = bm.getPixel(0, 0);
+                    //int color1 = bm.getPixel(1279, 719);
 
 
-                // yellow in RGB is 0xFFFF00
-                int color2 = bm.getPixel(0, 0);
-                //int color1 = bm.getPixel(1279, 719);
+                    localLop.telemetry.addData("Blue ", numBlue);
+                    localLop.telemetry.addData("Green ", numGreen);
+                    localLop.telemetry.addData("Red ", numRed);
 
+                    localLop.telemetry.addData("C2: ", "%x", color2);
+                    localLop.telemetry.addData("Red: ", "%d", ((color2 & 0x00ff0000) >> 16));
+                    localLop.telemetry.addData("Green: ", "%d", ((color2 & 0x0000ff00) >> 8));
+                    localLop.telemetry.addData("Blue: ", "%d", ((color2 & 0x0000000ff) >> 0));
+                    //localLop.telemetry.addData("C1: ", "%x", color1);
+                    //localLop.telemetry.addData("Height ", bm.getHeight());
+                    //localLop.telemetry.addData("Width ", bm.getWidth());
+                    localLop.telemetry.update();
 
+                    //linearOpMode.sleep(200);
 
-                localLop.telemetry.addData("Green Mid ", numGreenMid);
-                localLop.telemetry.addData("Green Left ", numGreenLeft);
-                localLop.telemetry.addData("Green Right ", numGreenRight);
-
-                localLop.telemetry.addData("C2: ", "%x", color2);
-                localLop.telemetry.addData("Red: ","%d",((color2 & 0x00ff0000)>>16));
-                localLop.telemetry.addData("Green: ","%d",((color2 & 0x0000ff00)>>8));
-                localLop.telemetry.addData("Blue: ","%d",((color2 & 0x0000000ff)>>0));
-                //localLop.telemetry.addData("C1: ", "%x", color1);
-                //localLop.telemetry.addData("Height ", bm.getHeight());
-                //localLop.telemetry.addData("Width ", bm.getWidth());
-                localLop.telemetry.update();
-
-                //linearOpMode.sleep(200);
-
+                } else {
+                    // nearOpMode.telemetry.addData("No image: ", brickPosition);
+                    //linearOpMode.telemetry.update();
+                }
             }
-            else
-            {
-                // nearOpMode.telemetry.addData("No image: ", brickPosition);
-                //linearOpMode.telemetry.update();
-            }
-        }
 
-        catch(InterruptedException exc)
-        {
-            ;
+            //catch(InterruptedException exc)
+            //{
+            //    ;
+            //}
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
         return markerPosition;
     }
 }
-
