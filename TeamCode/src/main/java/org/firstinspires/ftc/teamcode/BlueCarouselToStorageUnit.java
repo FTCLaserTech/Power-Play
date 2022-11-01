@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -23,10 +27,10 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * This opmode is designed as a convenient, coarse tuning for the follower PID coefficients. It
  * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
  */
-//@Disabled
+@Disabled
 @Config
 @Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+public class BlueCarouselToStorageUnit extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,9 +40,8 @@ public class DuckRedStorageUnit extends LinearOpMode {
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
         extras.clawClose();
-        sleep(1000);
+        sleep(500);
         extras.initArm();
-        extras.wristClose();
 
         Trajectory hub = null;
         Trajectory hubBackup = null;
@@ -48,33 +51,30 @@ public class DuckRedStorageUnit extends LinearOpMode {
         waitForStart();
 
         // scan for capstone
-        ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.BLUE);
 
-        //grab capstone
+        book.BlueCarouselSpinDuck(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.blueCarouselSpinDuck);
 
-        // immediately move to hub and place block
+        // Move to shipping hub - change depending on capstone location
         switch (markerPosition)
         {
             case RIGHT:
-                book.RedDuckStorageUnitRight(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueRightBlockCarousel(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueRightBlockCarousel);
                 break;
             case MIDDLE:
-                book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueMiddleBlockCarousel(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueMiddleBlockCarousel);
                 break;
             case LEFT:
-                book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueLeftBlockCarousel(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueLeftBlockCarousel);
                 break;
         }
 
+        book.BlueParkInWarehouseCarousel(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.blueParkInWarehouseCarousel);
 
+        }
     }
-}

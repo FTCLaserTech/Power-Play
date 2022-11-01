@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //@Disabled
 @Config
 @Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+public class DuckBlueStorageUnit extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,7 +48,7 @@ public class DuckRedStorageUnit extends LinearOpMode {
         waitForStart();
 
         // scan for capstone
-        ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.BLUE);
 
         //grab capstone
 
@@ -56,22 +56,22 @@ public class DuckRedStorageUnit extends LinearOpMode {
         switch (markerPosition)
         {
             case RIGHT:
-                book.RedDuckStorageUnitRight(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueDuckStorageUnitRight(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueDuckStorageUnitRight);
+                book.BlueRightStoragePark(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueDuckPark);
                 break;
             case MIDDLE:
-                book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueDuckStorageUnitMiddle(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueDuckStorageUnitMiddle);
+                book.BlueMiddleStoragePark(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueDuckPark);
                 break;
             case LEFT:
-                book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueDuckStorageUnitLeft(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueDuckStorageUnitLeft);
+                book.BlueLeftStoragePark(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueDuckPark);
                 break;
         }
 

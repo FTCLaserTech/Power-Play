@@ -25,8 +25,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 //@Disabled
 @Config
-@Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+@Autonomous(group = "b")
+public class RedWarehouseFar extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,9 +39,6 @@ public class DuckRedStorageUnit extends LinearOpMode {
         sleep(1000);
         extras.initArm();
         extras.wristClose();
-
-        Trajectory hub = null;
-        Trajectory hubBackup = null;
         telemetry.addLine("Initialized");
         telemetry.update();
 
@@ -50,28 +47,25 @@ public class DuckRedStorageUnit extends LinearOpMode {
         // scan for capstone
         ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
 
-        //grab capstone
-
-        // immediately move to hub and place block
         switch (markerPosition)
         {
             case RIGHT:
-                book.RedDuckStorageUnitRight(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedWarehouseRight(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redCapstoneWarehouse);
+                book.RedWarehouseRightShift(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redCapstoneWarehouseShift);
                 break;
             case MIDDLE:
-                book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedWarehouseMiddle(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redCapstoneWarehouse);
+                book.RedWarehouseMiddleShift(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redCapstoneWarehouseShift);
                 break;
             case LEFT:
-                book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedWarehouseLeft(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redCapstoneWarehouse);
+                book.RedWarehouseLeftShift(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redCapstoneWarehouseShift);
                 break;
         }
 

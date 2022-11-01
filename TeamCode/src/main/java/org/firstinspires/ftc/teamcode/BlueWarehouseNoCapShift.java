@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 /*
@@ -23,10 +26,9 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * This opmode is designed as a convenient, coarse tuning for the follower PID coefficients. It
  * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
  */
-//@Disabled
 @Config
-@Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+@Autonomous(group = "c")
+public class BlueWarehouseNoCapShift extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,42 +41,35 @@ public class DuckRedStorageUnit extends LinearOpMode {
         sleep(1000);
         extras.initArm();
         extras.wristClose();
-
-        Trajectory hub = null;
-        Trajectory hubBackup = null;
         telemetry.addLine("Initialized");
         telemetry.update();
 
         waitForStart();
 
         // scan for capstone
-        ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.BLUE);
 
-        //grab capstone
-
-        // immediately move to hub and place block
         switch (markerPosition)
         {
             case RIGHT:
-                book.RedDuckStorageUnitRight(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueWarehouseRightBlockDrop(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueWarehouseRightBlockDrop);
                 break;
             case MIDDLE:
-                book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueWarehouseMiddleBlockDrop(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueWarehouseMiddleBlockDrop);
                 break;
             case LEFT:
-                book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.BlueWarehouseLeftBlockDrop(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.blueWarehouseLeftBlockDrop);
                 break;
         }
 
+        book.BlueParkInWarehouseFromWarehouse(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.blueParkInWarehouseFromWarehouse);
+
+        book.BlueWarehouseShift(drive.getPoseEstimate());
+        drive.followTrajectory(book.blueWarehouseShift);
 
     }
 }

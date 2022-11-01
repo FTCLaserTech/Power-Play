@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //@Disabled
 @Config
 @Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+public class DuckRedWarehouseFar extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -58,19 +58,19 @@ public class DuckRedStorageUnit extends LinearOpMode {
             case RIGHT:
                 book.RedDuckStorageUnitRight(drive.getPoseEstimate());
                 drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
+                book.RedRightWarehouseParkFar(drive.getPoseEstimate());
                 drive.followTrajectorySequence(book.redDuckPark);
                 break;
             case MIDDLE:
                 book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
                 drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
+                book.RedMiddleWarehouseParkFar(drive.getPoseEstimate());
                 drive.followTrajectorySequence(book.redDuckPark);
                 break;
             case LEFT:
                 book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
                 drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
+                book.RedLeftWarehouseParkFar(drive.getPoseEstimate());
                 drive.followTrajectorySequence(book.redDuckPark);
                 break;
         }

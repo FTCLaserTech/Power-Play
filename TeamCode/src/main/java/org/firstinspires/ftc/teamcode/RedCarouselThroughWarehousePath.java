@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -23,10 +25,10 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * This opmode is designed as a convenient, coarse tuning for the follower PID coefficients. It
  * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
  */
-//@Disabled
+@Disabled
 @Config
 @Autonomous(group = "a")
-public class DuckRedStorageUnit extends LinearOpMode {
+public class RedCarouselThroughWarehousePath extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -38,43 +40,42 @@ public class DuckRedStorageUnit extends LinearOpMode {
         extras.clawClose();
         sleep(1000);
         extras.initArm();
-        extras.wristClose();
 
         Trajectory hub = null;
         Trajectory hubBackup = null;
         telemetry.addLine("Initialized");
         telemetry.update();
 
+        Pose2d startPose = new Pose2d(0, 0, 0);
+        drive.setPoseEstimate(startPose);
+
         waitForStart();
 
         // scan for capstone
         ExtraOpModeFunctions.MarkerPosition markerPosition = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
 
-        //grab capstone
+        book.RedCarouselSpinDuck(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.redCarouselSpinDuck);
 
-        // immediately move to hub and place block
+        // Move to shipping hub - change depending on capstone location
         switch (markerPosition)
         {
             case RIGHT:
-                book.RedDuckStorageUnitRight(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitRight);
-                book.RedRightStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedRightBlockCarousel(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redRightBlockCarousel);
                 break;
             case MIDDLE:
-                book.RedDuckStorageUnitMiddle(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitMiddle);
-                book.RedMiddleStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedMiddleBlockCarousel(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redMiddleBlockCarousel);
                 break;
             case LEFT:
-                book.RedDuckStorageUnitLeft(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckStorageUnitLeft);
-                book.RedLeftStoragePark(drive.getPoseEstimate());
-                drive.followTrajectorySequence(book.redDuckPark);
+                book.RedLeftBlockCarousel(drive.getPoseEstimate());
+                drive.followTrajectorySequence(book.redLeftBlockCarousel);
                 break;
         }
 
+        book.RedParkInWarehouseFromCarousel(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.redParkInWarehouseFromCarousel);
 
+        }
     }
-}

@@ -104,6 +104,7 @@ public class ExtraOpModeFunctions
 
     public TouchSensor armLimit;
     public NormalizedColorSensor colorSensor;
+    public ColorSensor testColorSensor;
 
     public CRServo leftWheel;
     public CRServo rightWheel;
@@ -153,6 +154,7 @@ public class ExtraOpModeFunctions
 
         armLimit = hardwareMap.get(TouchSensor.class, "armLimit");
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+        testColorSensor = hardwareMap.get(ColorSensor.class, "testColorSensor");
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.CP1_2_BEATS_PER_MINUTE;
@@ -178,16 +180,18 @@ public class ExtraOpModeFunctions
 
     }
 
+    //public void clawOpen(){claw.setPosition(0.53);}
     public void clawOpen()
     {
-        claw.setPosition(0.53);
+        claw.setPosition(0.52);
     }
 
     public void clawOpenDuck() {claw.setPosition(0.42);}
 
+    //public void clawClose(){claw.setPosition(0.69);}
     public void clawClose()
     {
-        claw.setPosition(0.69);
+        claw.setPosition(0.62);
     }
 
     // starts our intake motor to INTAKE game elements
