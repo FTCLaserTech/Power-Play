@@ -59,19 +59,19 @@ public class RightHighJunction extends LinearOpMode
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RightHighJunction(drive.getPoseEstimate());
+        book.RHJStacking(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RightHighJunction(drive.getPoseEstimate());
+        book.RHJStacking(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RightHighJunction(drive.getPoseEstimate());
+        book.RHJStacking(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RightHighJunction(drive.getPoseEstimate());
+        book.RHJStacking(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         sleep(10000);

@@ -55,14 +55,19 @@ public class ColorSensorTest extends LinearOpMode
         book.ColorSensorTest(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.colorSensorTest);
 
+        drive.setWeightedDrivePower
+                (new Pose2d(0.5, 0.0, 0));
         while (extras.testColorSensor.red()<extras.testColorSensor.blue())
         {
-            ;
+            drive.update();
         }
 
+        drive.setWeightedDrivePower
+                (new Pose2d(0.0, 0.0, 0));
+
         // stop motion
-        book.ColorSensorTest(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.colorSensorTest);
+        //book.ColorSensorTest(drive.getPoseEstimate());
+        //drive.followTrajectorySequence(book.colorSensorTest);
 
         sleep(10000);
     }
