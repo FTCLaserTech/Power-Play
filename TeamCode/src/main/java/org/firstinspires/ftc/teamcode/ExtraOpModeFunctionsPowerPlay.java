@@ -1,85 +1,37 @@
 package org.firstinspires.ftc.teamcode;
 
-import androidx.annotation.NonNull;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static java.lang.Math.PI;
+
+import android.graphics.Bitmap;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.drive.DriveSignal;
-import com.acmerobotics.roadrunner.drive.MecanumDrive;
-import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
-import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
-import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
-
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
-
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
-
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import com.vuforia.Vuforia;
-import com.vuforia.PIXEL_FORMAT;
-import com.vuforia.CameraDevice;
-import com.vuforia.Image;
-import com.vuforia.Frame;
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.vuforia.CameraDevice;
+import com.vuforia.Frame;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
 
-import static java.lang.Math.PI;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 /*
  * Simple mechanum drive hardware implementation for REV hardware.
  */
 @Config
-public class ExtraOpModeFunctions
+public class ExtraOpModeFunctionsPowerPlay
 {
     public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
     public enum MarkerPosition{LEFT, MIDDLE, RIGHT};
@@ -112,7 +64,7 @@ public class ExtraOpModeFunctions
     public RevBlinkinLedDriver blinkinLedDriver;
     public RevBlinkinLedDriver.BlinkinPattern pattern;
 
-    public ExtraOpModeFunctions(HardwareMap hardwareMap, LinearOpMode lop)
+    public ExtraOpModeFunctionsPowerPlay(HardwareMap hardwareMap, LinearOpMode lop)
     {
         claw = hardwareMap.get(Servo.class, "claw");
         intake = hardwareMap.get(DcMotor.class, "intake");
@@ -179,7 +131,44 @@ public class ExtraOpModeFunctions
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
 
     }
-
+    //elevatorHeight
+    //5 set heights, 1 for ground, 1 for the ground junction, 1 for the low pole, 1 for the medium pole, and 1 for the high pole
+    public void elevatorGround()
+    {
+        //elevator.setPosition(0);
+    }
+    public void elevatorJunction()
+    {
+        //elevator.setPosition(0.25);
+    }
+    public void elevatorLow()
+    {
+        //elevator.setPosition(0.50);
+    }
+    public void elevatorMedium()
+    {
+        //elevator.setPosition(0.75);
+    }
+    public void elevatorHigh()
+    {
+        //elevator.setPosition(1);
+    }
+    //elevatorRotation
+    //rotate the elevator around based on input
+    public void elevatorRight()
+    {
+        // first check arm height, if its at ground dont rotate
+        //elevator.setPosition(0.50);
+    }
+    public void elevatorMiddle()
+    {
+        //elevator.setPosition(0);
+    }
+    public void elevatorLeft()
+    {
+        // first check arm height, if its at ground dont rotate
+        //elevator.setRotation(-0.50);
+    }
 
 
 
@@ -216,7 +205,7 @@ public class ExtraOpModeFunctions
     }
 
     // initializes our arm's limit switch and capstone arm
-    public void initArm()
+    public void initElevator()
     {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -252,151 +241,6 @@ public class ExtraOpModeFunctions
         //capstoneArmCarry();
         //wristClose();
     }
-
-    // ARM POSITIONS
-    public void armCollect()
-    {
-        int target = 0;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for arm when touching limit switch
-
-        arm.setPower(0.8);
-
-        //arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    /*
-    public void armBottomTeleOp()
-    {
-        int target = 3400;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for bottom of shipping hub
-        arm.setPower(0.8);
-    }
-
-     */
-
-    public void armBottomAuto()
-    {
-        int target = 475;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for bottom of shipping hub
-        arm.setPower(0.8);
-    }
-
-    public void armMid()
-    {
-        int target = 3275;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for middle of shipping hub
-        arm.setPower(0.8);
-    }
-
-    public void armTopAuto()
-    {
-        int target = 2915;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    public void armTopTele()
-    {
-        int target = 2915;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    public void armSharedHubHigh()
-    {
-        int target = 2400;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    public void armSharedHubLow()
-    {
-        int target = 3555;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    // CONTROLS FLYWHEELS
-    public void leftWheelCCW() { leftWheel.setPower(-1.0); }
-
-    public void leftWheelCW() { leftWheel.setPower(1.0); }
-
-    public void leftWheelOff() { leftWheel.setPower(0.0); }
-
-    public void rightWheelCCW() { rightWheel.setPower(1.0); }
-
-    public void rightWheelCW() { rightWheel.setPower(-1.0); }
-
-    public void rightWheelOff() { rightWheel.setPower(0.0); }
-    //
-
-    // CONTROLS THE CAPSTONE ARM
-
-    public void capstoneShoulderCarry()
-    {
-        shoulder2.setPosition(0.6755);
-    }
-
-    public void capstoneElbowCarry()
-    {
-        elbow.setPosition(0.98);
-    }
-
-    public void capstoneArmCarry()
-    {
-        capstoneShoulderCarry();
-        localLop.sleep(750);
-        capstoneElbowCarry();
-    }
-
-    public void capstoneArmCollect()
-    {
-        shoulder2.setPosition(0.52);
-        elbow.setPosition(0.178);
-    }
-
-    public void capstoneArmDeposit()
-    {
-        shoulder2.setPosition(0.609);
-        elbow.setPosition(0.61);
-    }
-
-    public void capstoneArmPlace()
-    {
-        shoulder2.setPosition(0.617);
-        elbow.setPosition(0.61);
-    }
-
-    public void wristClose()
-    {
-        wrist.setPosition(0.2); // double check this position using servo programmer
-    }
-
-    public void wristOpen()
-    {
-        wrist.setPosition(0.5); // double check this position using servo programmer
-    }
-    //
 
 
     public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition)
