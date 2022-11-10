@@ -1,85 +1,37 @@
 package org.firstinspires.ftc.teamcode;
 
-import androidx.annotation.NonNull;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static java.lang.Math.PI;
+
+import android.graphics.Bitmap;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.drive.DriveSignal;
-import com.acmerobotics.roadrunner.drive.MecanumDrive;
-import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
-import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
-import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
-
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
-
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
-
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import com.vuforia.Vuforia;
-import com.vuforia.PIXEL_FORMAT;
-import com.vuforia.CameraDevice;
-import com.vuforia.Image;
-import com.vuforia.Frame;
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.vuforia.CameraDevice;
+import com.vuforia.Frame;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
 
-import static java.lang.Math.PI;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 /*
  * Simple mechanum drive hardware implementation for REV hardware.
  */
 @Config
-public class ExtraOpModeFunctions
+public class ExtraOpModeFunctionsPowerPlay
 {
     public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
     public enum MarkerPosition{LEFT, MIDDLE, RIGHT};
@@ -112,7 +64,7 @@ public class ExtraOpModeFunctions
     public RevBlinkinLedDriver blinkinLedDriver;
     public RevBlinkinLedDriver.BlinkinPattern pattern;
 
-    public ExtraOpModeFunctions(HardwareMap hardwareMap, LinearOpMode lop)
+    public ExtraOpModeFunctionsPowerPlay(HardwareMap hardwareMap, LinearOpMode lop)
     {
         claw = hardwareMap.get(Servo.class, "claw");
         intake = hardwareMap.get(DcMotor.class, "intake");
@@ -179,6 +131,46 @@ public class ExtraOpModeFunctions
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
 
     }
+    //elevatorHeight
+    //5 set heights, 1 for ground, 1 for the ground junction, 1 for the low pole, 1 for the medium pole, and 1 for the high pole
+    public void elevatorGround()
+    {
+        //elevator.setPosition(0);
+    }
+    public void elevatorJunction()
+    {
+        //elevator.setPosition(0.25);
+    }
+    public void elevatorLow()
+    {
+        //elevator.setPosition(0.50);
+    }
+    public void elevatorMedium()
+    {
+        //elevator.setPosition(0.75);
+    }
+    public void elevatorHigh()
+    {
+        //elevator.setPosition(1);
+    }
+    //elevatorRotation
+    //rotate the elevator around based on input
+    public void elevatorRight()
+    {
+        // first check arm height, if its at ground dont rotate
+        //elevator.setPosition(0.50);
+    }
+    public void elevatorMiddle()
+    {
+        //elevator.setPosition(0);
+    }
+    public void elevatorLeft()
+    {
+        // first check arm height, if its at ground dont rotate
+        //elevator.setRotation(-0.50);
+    }
+
+
 
     //public void clawOpen(){claw.setPosition(0.53);}
     public void clawOpen()
@@ -213,7 +205,7 @@ public class ExtraOpModeFunctions
     }
 
     // initializes our arm's limit switch and capstone arm
-    public void initArm()
+    public void initElevator()
     {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -249,151 +241,6 @@ public class ExtraOpModeFunctions
         //capstoneArmCarry();
         //wristClose();
     }
-
-    // ARM POSITIONS
-    public void armCollect()
-    {
-        int target = 0;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for arm when touching limit switch
-
-        arm.setPower(0.8);
-
-        //arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    /*
-    public void armBottomTeleOp()
-    {
-        int target = 3400;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for bottom of shipping hub
-        arm.setPower(0.8);
-    }
-
-     */
-
-    public void armBottomAuto()
-    {
-        int target = 475;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for bottom of shipping hub
-        arm.setPower(0.8);
-    }
-
-    public void armMid()
-    {
-        int target = 3275;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for middle of shipping hub
-        arm.setPower(0.8);
-    }
-
-    public void armTopAuto()
-    {
-        int target = 2915;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    public void armTopTele()
-    {
-        int target = 2915;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    public void armSharedHubHigh()
-    {
-        int target = 2400;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    public void armSharedHubLow()
-    {
-        int target = 3555;
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition(target); // FIND POSITION for top of shipping hub
-
-        arm.setPower(0.8);
-
-    }
-
-    // CONTROLS FLYWHEELS
-    public void leftWheelCCW() { leftWheel.setPower(-1.0); }
-
-    public void leftWheelCW() { leftWheel.setPower(1.0); }
-
-    public void leftWheelOff() { leftWheel.setPower(0.0); }
-
-    public void rightWheelCCW() { rightWheel.setPower(1.0); }
-
-    public void rightWheelCW() { rightWheel.setPower(-1.0); }
-
-    public void rightWheelOff() { rightWheel.setPower(0.0); }
-    //
-
-    // CONTROLS THE CAPSTONE ARM
-
-    public void capstoneShoulderCarry()
-    {
-        shoulder2.setPosition(0.6755);
-    }
-
-    public void capstoneElbowCarry()
-    {
-        elbow.setPosition(0.98);
-    }
-
-    public void capstoneArmCarry()
-    {
-        capstoneShoulderCarry();
-        localLop.sleep(750);
-        capstoneElbowCarry();
-    }
-
-    public void capstoneArmCollect()
-    {
-        shoulder2.setPosition(0.52);
-        elbow.setPosition(0.178);
-    }
-
-    public void capstoneArmDeposit()
-    {
-        shoulder2.setPosition(0.609);
-        elbow.setPosition(0.61);
-    }
-
-    public void capstoneArmPlace()
-    {
-        shoulder2.setPosition(0.617);
-        elbow.setPosition(0.61);
-    }
-
-    public void wristClose()
-    {
-        wrist.setPosition(0.2); // double check this position using servo programmer
-    }
-
-    public void wristOpen()
-    {
-        wrist.setPosition(0.5); // double check this position using servo programmer
-    }
-    //
 
 
     public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition)
@@ -437,8 +284,7 @@ public class ExtraOpModeFunctions
 
     //
     //  CODE
-    public MarkerPosition grabAndProcessImage(FieldSide fieldSide)
-    {
+    public MarkerPosition grabAndProcessImage(FieldSide fieldSide) {
         MarkerPosition markerPosition = MarkerPosition.RIGHT;
         Image imageRGB565 = null;
 
@@ -453,17 +299,15 @@ public class ExtraOpModeFunctions
         {
             Frame frame = vuforia.getFrameQueue().take();
 
-           // localLop.telemetry.addData("Image found ", frame.getNumImages());
+            // localLop.telemetry.addData("Image found ", frame.getNumImages());
             //localLop.telemetry.update();
             //linearOpMode.sleep(2000);
-            for (int i = 0; i < frame.getNumImages(); ++i)
-            {
+            for (int i = 0; i < frame.getNumImages(); ++i) {
                 Image image = frame.getImage(i);
                 //localLop.telemetry.addData("Image Num ", frame.getNumImages());
                 //localLop.telemetry.update();
                 //linearOpMode.sleep(2000);
-                if (image.getFormat() == PIXEL_FORMAT.RGB565)
-                {
+                if (image.getFormat() == PIXEL_FORMAT.RGB565) {
                     imageRGB565 = image;
                     //localLop.telemetry.addData("Image format ", image.getFormat());
                     //localLop.telemetry.update();
@@ -510,34 +354,52 @@ public class ExtraOpModeFunctions
                             // yellow in RGB is 0xFFFF00
                             pixel = bm.getPixel(y, x);
 
-                            //Green
-                            if ((pixel & 0x000000ff) < 0x00000000)
+
+                            if ((pixel & 0x000000ff) < 0x00000054)
                             {
-                                if ((pixel & 0x00ff0000) < 0x00000000)
+                                if ((pixel & 0x00ff0000) < 0x00370000)
                                 {
-                                    if ((pixel & 0x0000ff00) > 0x0000ff00)
+                                    if ((pixel & 0x0000ff00) > 0x0000a300)
                                     {
                                         numGreen++;
                                     }
                                 }
                             }
-                            //RED
-                            if ((pixel & 0x000000ff) > 0x00000000)
+                        }
+                    }
+                    for (int y = yMidMin; y <= yMidMax; y++)
+                    {
+                        for (int x = xMidMin; x <= xMidMax; x++)
+                        {
+                            // yellow in RGB is 0xFFFF00
+                            pixel = bm.getPixel(y, x);
+
+
+                            if ((pixel & 0x000000ff) < 0x00000012)
                             {
-                                if ((pixel & 0x00ff0000) > 0x00ff0000)
+                                if ((pixel & 0x00ff0000) < 0x00f20000)
                                 {
-                                    if ((pixel & 0x0000ff00) > 0x00000000)
+                                    if ((pixel & 0x0000ff00) > 0x00000200)
                                     {
                                         numRed++;
                                     }
                                 }
                             }
-                            //BLUE
-                            if ((pixel & 0x000000ff) < 0x000000ff)
+                        }
+                    }
+                    for (int y = yMidMin; y <= yMidMax; y++)
+                    {
+                        for (int x = xMidMin; x <= xMidMax; x++)
+                        {
+                            // yellow in RGB is 0xFFFF00
+                            pixel = bm.getPixel(y, x);
+
+
+                            if ((pixel & 0x000000ff) < 0x0000004d)
                             {
-                                if ((pixel & 0x00ff0000) < 0x00000000)
+                                if ((pixel & 0x00ff0000) < 0x00080000)
                                 {
-                                    if ((pixel & 0x0000ff00) > 0x00000000)
+                                    if ((pixel & 0x0000ff00) > 0x00001700)
                                     {
                                         numBlue++;
                                     }
@@ -547,25 +409,23 @@ public class ExtraOpModeFunctions
                     }
 
 
-
-
                     if (numGreen >= 50)
                     {
                         localLop.telemetry.addData("Green", numGreen);
                         markerPosition = MarkerPosition.MIDDLE;
 
-                    if (numRed >= 50)
-                    {
-                        localLop.telemetry.addData("Red", numRed);
-                        markerPosition = MarkerPosition.MIDDLE;
-                    }
+                        if (numRed >= 50)
+                        {
+                            localLop.telemetry.addData("Red", numRed);
+                            markerPosition = MarkerPosition.MIDDLE;
 
-                    if (numBlue >= 50)
-                    {
-                        localLop.telemetry.addData("Blue", numBlue);
-                        markerPosition = MarkerPosition.MIDDLE;
-                    }
+                            if (numBlue >= 50)
+                            {
+                                localLop.telemetry.addData("Blue", numBlue);
+                                markerPosition = MarkerPosition.MIDDLE;
 
+                            }
+                        }
                     }
                 /*
                 {
@@ -603,15 +463,20 @@ public class ExtraOpModeFunctions
 
                     int pixel = 0;
 
-                    for (int y = y1MidMinBlue; y <= y1MidMaxBlue; y++) {
-                        for (int x = xMidMinBlue; x <= xMidMaxBlue; x++) {
+                    for (int y = y1MidMinBlue; y <= y1MidMaxBlue; y++)
+                    {
+                        for (int x = xMidMinBlue; x <= xMidMaxBlue; x++)
+                        {
                             // yellow in RGB is 0xFFFF00
                             pixel = bm.getPixel(y, x);
 
 
-                            if ((pixel & 0x000000ff) < 0x0000005A) {
-                                if ((pixel & 0x00ff0000) < 0x005A0000) {
-                                    if ((pixel & 0x0000ff00) > 0x00005A00) {
+                            if ((pixel & 0x000000ff) < 0x0000005A)
+                            {
+                                if ((pixel & 0x00ff0000) < 0x005A0000)
+                                {
+                                    if ((pixel & 0x0000ff00) > 0x00005A00)
+                                    {
                                         numGreenMid++;
                                     }
                                 }
@@ -619,15 +484,20 @@ public class ExtraOpModeFunctions
                         }
                     }
 
-                    for (int y = y2LeftMinBlue; y <= y2LeftMaxBlue; y++) {
-                        for (int x = x2LeftMinBlue; x <= x2LeftMaxBlue; x++) {
+                    for (int y = y2LeftMinBlue; y <= y2LeftMaxBlue; y++)
+                    {
+                        for (int x = x2LeftMinBlue; x <= x2LeftMaxBlue; x++)
+                        {
                             // yellow in RGB is 0xFFFF00
                             pixel = bm.getPixel(y, x);
 
 
-                            if ((pixel & 0x000000ff) < 0x0000005A) {
-                                if ((pixel & 0x00ff0000) < 0x005A0000) {
-                                    if ((pixel & 0x0000ff00) > 0x00005A00) {
+                            if ((pixel & 0x000000ff) < 0x0000005A)
+                            {
+                                if ((pixel & 0x00ff0000) < 0x005A0000)
+                                {
+                                    if ((pixel & 0x0000ff00) > 0x00005A00)
+                                    {
                                         numGreenLeft++;
                                     }
                                 }
@@ -636,13 +506,16 @@ public class ExtraOpModeFunctions
                     }
 
 
-                    if (numGreenMid >= 50) {
+                    if (numGreenMid >= 50)
+                    {
                         localLop.telemetry.addData("Right", numGreenRight);
                         markerPosition = MarkerPosition.RIGHT;
-                    } else if (numGreenLeft >= 50) {
+                    } else if (numGreenLeft >= 50)
+                    {
                         localLop.telemetry.addData("Mid", numGreenLeft);
                         markerPosition = MarkerPosition.MIDDLE;
-                    } else {
+                    } else
+                    {
                         localLop.telemetry.addData("Left", 0);
                         markerPosition = MarkerPosition.LEFT;
                     }
@@ -651,41 +524,20 @@ public class ExtraOpModeFunctions
 
                 */
 
-                        // yellow in RGB is 0xFFFF00
-                        int color2 = bm.getPixel(0, 0);
-                        //int color1 = bm.getPixel(1279, 719);
+                    // yellow in RGB is 0xFFFF00
+                    int color2 = bm.getPixel(0, 0);
 
+                    localLop.telemetry.addData("Blue ", numBlue);
+                    localLop.telemetry.addData("Green ", numGreen);
+                    localLop.telemetry.addData("Red ", numRed);
 
-
-                     //localLop.telemetry.addData("C2: ", "%x", color2);
-                        //localLop.telemetry.addData("Red: ", "%d", ((color2 & 0x00ff0000) >> 16));
-                        //localLop.telemetry.addData("Green: ", "%d", ((color2 & 0x0000ff00) >> 8));
-                        //localLop.telemetry.addData("Blue: ", "%d", ((color2 & 0x0000000ff) >> 0));
-                        //localLop.telemetry.addData("C1: ", "%x", color1);
-                        //localLop.telemetry.addData("Height ", bm.getHeight());
-                        //localLop.telemetry.addData("Width ", bm.getWidth());
-
+                    localLop.telemetry.addData("C2: ", "%x", color2);
+                    localLop.telemetry.addData("Red: ", "%d", ((color2 & 0x00ff0000) >> 16));
+                    localLop.telemetry.addData("Green: ", "%d", ((color2 & 0x0000ff00) >> 8));
+                    localLop.telemetry.addData("Blue: ", "%d", ((color2 & 0x0000000ff) >> 0));
                     localLop.telemetry.update();
-
-                        //linearOpMode.sleep(200);
-
-                    //else
-                    {
-                        // nearOpMode.telemetry.addData("No image: ", brickPosition);
-                        localLop.telemetry.update();
-                    }
                 }
-
-                //catch(InterruptedException exc)
-                //{
-                //    ;
-                //}
             }
-
-            localLop.telemetry.addData("Blue_", numBlue);
-            localLop.telemetry.addData("Green_", numGreen);
-            localLop.telemetry.addData("Red_", numRed);
-            localLop.telemetry.update();
 
 
         }
@@ -697,4 +549,3 @@ public class ExtraOpModeFunctions
         return markerPosition;
     }
 }
-

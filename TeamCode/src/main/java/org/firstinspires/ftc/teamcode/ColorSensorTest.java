@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //@Disabled
 @Config
 @Autonomous(group = "a")
-public class RightHighJunction extends LinearOpMode
+public class ColorSensorTest extends LinearOpMode
 {
 
     @Override
@@ -51,28 +51,23 @@ public class RightHighJunction extends LinearOpMode
 
         waitForStart();
 
-        book.RightHighJunction(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rightHighJunction);
+        // start motion
+        book.ColorSensorTest(drive.getPoseEstimate());
+        drive.followTrajectorySequence(book.colorSensorTest);
 
-        //
-        book.RHJStacking(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rHJStacking);
+        drive.setWeightedDrivePower
+                (new Pose2d(0.5, 0.0, 0));
+        while (extras.testColorSensor.red()<extras.testColorSensor.blue())
+        {
+            drive.update();
+        }
 
-        //
-        book.RHJStacking(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rHJStacking);
+        drive.setWeightedDrivePower
+                (new Pose2d(0.0, 0.0, 0));
 
-        //
-        book.RHJStacking(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rHJStacking);
-
-        //
-        book.RHJStacking(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rHJStacking);
-
-        //
-        book.RHJStacking(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.rHJStacking);
+        // stop motion
+        //book.ColorSensorTest(drive.getPoseEstimate());
+        //drive.followTrajectorySequence(book.colorSensorTest);
 
         sleep(10000);
     }
