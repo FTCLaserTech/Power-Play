@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 /*
@@ -37,6 +38,8 @@ public class ColorSensorTest extends LinearOpMode
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
+        double distance;
+
         extras.clawClose();
 
         //Trajectory hub = null;
@@ -52,9 +55,10 @@ public class ColorSensorTest extends LinearOpMode
         waitForStart();
 
         // start motion
-        book.ColorSensorTest(drive.getPoseEstimate());
-        drive.followTrajectorySequence(book.colorSensorTest);
+        //book.ColorSensorTest(drive.getPoseEstimate());
+        //drive.followTrajectorySequence(book.colorSensorTest);
 
+        /*
         drive.setWeightedDrivePower
                 (new Pose2d(0.5, 0.0, 0));
         while (extras.testColorSensor.red()<extras.testColorSensor.blue())
@@ -65,10 +69,17 @@ public class ColorSensorTest extends LinearOpMode
         drive.setWeightedDrivePower
                 (new Pose2d(0.0, 0.0, 0));
 
+
+         */
         // stop motion
         //book.ColorSensorTest(drive.getPoseEstimate());
         //drive.followTrajectorySequence(book.colorSensorTest);
 
-        sleep(10000);
+        //sleep(10000);
+
+        distance = extras.testColorSensor.getDistance(DistanceUnit.CM);
+        telemetry.addData("distance ", distance);
+        telemetry.update();
+
     }
 }

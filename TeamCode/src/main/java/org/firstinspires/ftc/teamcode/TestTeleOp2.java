@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 /**
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * exercise is to ascertain whether the localizer has been configured properly (note: the pure
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
-@Disabled
+//@Disabled
 @TeleOp(group = "a")
 public class TestTeleOp2 extends LinearOpMode
 {
@@ -33,9 +34,16 @@ public class TestTeleOp2 extends LinearOpMode
 
         motor = hardwareMap.get(DcMotorEx.class, "shoulder");
 
+        ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
+        double distance;
+
         waitForStart();
 
-        while (opModeIsActive()) {
+        while (opModeIsActive())
+        {
+
+            /*
+
             motor.setPower(1.0);
 
             currentVelocity = motor.getVelocity();
@@ -48,6 +56,11 @@ public class TestTeleOp2 extends LinearOpMode
             telemetry.addData("maximum velocity", maxVelocity);
             telemetry.update();
 
+         */
+
+            distance = extras.testColorSensor.getDistance(DistanceUnit.CM);
+            telemetry.addData("distance ", distance);
+            telemetry.update();
         }
 
     }

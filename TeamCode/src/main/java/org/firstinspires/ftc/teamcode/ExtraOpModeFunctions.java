@@ -36,9 +36,11 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -103,8 +105,8 @@ public class ExtraOpModeFunctions
     public Servo wrist;
 
     public TouchSensor armLimit;
-    public NormalizedColorSensor colorSensor;
-    public ColorSensor testColorSensor;
+    public RevColorSensorV3 colorSensor;
+    public ColorRangeSensor testColorSensor;
 
     public CRServo leftWheel;
     public CRServo rightWheel;
@@ -153,8 +155,8 @@ public class ExtraOpModeFunctions
         arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         armLimit = hardwareMap.get(TouchSensor.class, "armLimit");
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
-        testColorSensor = hardwareMap.get(ColorSensor.class, "testColorSensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+        testColorSensor = hardwareMap.get(ColorRangeSensor.class, "testColorSensor");
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.CP1_2_BEATS_PER_MINUTE;
