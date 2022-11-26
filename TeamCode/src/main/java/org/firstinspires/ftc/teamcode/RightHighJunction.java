@@ -51,7 +51,7 @@ public class RightHighJunction extends LinearOpMode
 
         waitForStart();
 
-        /*
+
         book.RightHighJunction(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rightHighJunction);
 
@@ -60,22 +60,20 @@ public class RightHighJunction extends LinearOpMode
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RHJStacking(drive.getPoseEstimate());
+        book.RightHighJunction(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RHJStacking(drive.getPoseEstimate());
+        book.RightHighJunction(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RHJStacking(drive.getPoseEstimate());
+        book.RightHighJunction(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
 
         //
-        book.RHJStacking(drive.getPoseEstimate());
+        book.RightHighJunction(drive.getPoseEstimate());
         drive.followTrajectorySequence(book.rHJStacking);
-
-        */
 
         sleep(10000);
     }
