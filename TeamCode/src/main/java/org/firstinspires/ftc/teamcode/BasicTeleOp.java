@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -353,7 +352,7 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("Elapsed Time: ", getRuntime());
 
             // adds telemetry that shows data about the arm
-            telemetry.addData("Limit Switch State: ", extras.armLimit.getValue());
+            telemetry.addData("Limit Switch State: ", extras.elevatorLimit.getValue());
             telemetry.addData("Arm Encoder Position: ", extras.arm.getCurrentPosition());
             telemetry.addData("Arm Position: ", armPosition);
 
