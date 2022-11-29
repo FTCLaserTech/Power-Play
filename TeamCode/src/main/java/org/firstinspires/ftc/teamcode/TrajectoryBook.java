@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -72,11 +73,14 @@ public class TrajectoryBook
     {
         rightHighJunction = drive.trajectorySequenceBuilder(pose)
                 // Move left
-                .lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(5, 19), Math.toRadians(0))
+                //.lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
                 // Move Forward
-                .lineToLinearHeading(new Pose2d(52, 19, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(45, 19, Math.toRadians(0)))
+                //.lineToLinearHeading(new Pose2d(52, 19, Math.toRadians(0)))
                 // Move Right and turn
-                .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
+                .splineTo(new Vector2d(52, 11), Math.toRadians(-87))
+                //.lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .build();
