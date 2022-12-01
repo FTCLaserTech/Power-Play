@@ -25,6 +25,7 @@ public class ExtraOpModeFunctions
     public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
     public enum MarkerPosition {LEFT, MIDDLE, RIGHT};
     public enum FieldSide {RED, BLUE};
+    public static final double PI = 3.14159265;
     public int target = 0;
 
     private VuforiaLocalizer vuforia = null;
@@ -106,7 +107,6 @@ public class ExtraOpModeFunctions
 
         localLop.sleep(100);
 
-        // Move down until the limit switch is triggered.
         elevator1.setPower(-0.1);
         elevator2.setPower(-0.1);
 
@@ -141,7 +141,6 @@ public class ExtraOpModeFunctions
         localLop.telemetry.addLine("Elevator Initialized!");
         localLop.telemetry.update();
     }
-
 
 
     public void clawOpen()
@@ -237,7 +236,7 @@ public class ExtraOpModeFunctions
     private static final String VUFORIA_KEY =
             "AYkCgy7/////AAABmcVEWPZVAkr+qqRZ5GKKMtplRC79gsSR0agZEVe/znTU27Ffh0FtXPIGLOSGcu+OdpREriws8ksSpiZCvHpGc8cMP5JhNkjYOk71bfFphPQeGzxAqQr+0w4bsMkf4XHP1cXHVbaVP89ifVwqpnOLSm6Z7poTfguO8PMlHnoJIL6KEdnddmgKmQclRMFlerlVjcT55VFL4YAOetN7tbBZHcC4o/zGFgXdTfQWGNug7wHPvStMAArpFZUbSMEmHMdckbXgCCGCGVZw3qYQV9D3ALkAlwvPGQo+RXckMJ3kgk6trHnzxojWVfxsuflrcyDzorAmx+qn4Ei6R+HqxkrM7mSAgV45vyVlwN5GlyF7yv8g";
 
-    /*
+
     public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition)
     {
         switch (robotStartPosition)
@@ -258,6 +257,7 @@ public class ExtraOpModeFunctions
         return angle;
     }
 
+    /*
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
