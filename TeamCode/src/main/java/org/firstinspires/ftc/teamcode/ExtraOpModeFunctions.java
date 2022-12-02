@@ -23,8 +23,14 @@ import com.vuforia.PIXEL_FORMAT;
 public class ExtraOpModeFunctions
 {
     public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
-    public enum MarkerPosition {LEFT, MIDDLE, RIGHT};
-    public enum FieldSide {RED, BLUE};
+    public enum MarkerPosition {LEFT, MIDDLE, RIGHT}
+    public enum FieldSide {RED, BLUE}
+
+    public enum wristPosition {LEFT, MIDDLE, RIGHT}
+    public wristPosition wristPosition;
+    public enum elevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH}
+    public elevatorPosition elevatorPosition;
+
     public static final double PI = 3.14159265;
     public int target = 0;
 
@@ -95,7 +101,6 @@ public class ExtraOpModeFunctions
         elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Move up to make sure that arm is not at the bottom.
         elevator1.setPower(0.3);
         elevator2.setPower(0.3);
         localLop.sleep(900);
@@ -156,21 +161,26 @@ public class ExtraOpModeFunctions
     public void wristLeft()
     {
         wrist.setPosition(0.2);
+        wristPosition = wristPosition.LEFT;
     }
 
     public void wristMiddle()
     {
         wrist.setPosition(0.4);
+        wristPosition = wristPosition.MIDDLE;
     }
 
     public void wristRight()
     {
         wrist.setPosition(0.6);
+        wristPosition = wristPosition.RIGHT;
     }
 
     public void elevatorGround()
     {
         target = 10;
+        elevatorPosition = elevatorPosition.COLLECT;
+
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
@@ -183,6 +193,8 @@ public class ExtraOpModeFunctions
     public void elevatorJunction()
     {
         target = 500;
+        elevatorPosition = elevatorPosition.GROUND;
+
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
@@ -195,6 +207,8 @@ public class ExtraOpModeFunctions
     public void elevatorLow()
     {
         target = 1000;
+        elevatorPosition = elevatorPosition.LOW;
+
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
@@ -204,9 +218,11 @@ public class ExtraOpModeFunctions
         elevator2.setPower(0.5);
     }
 
-    public void elevatorMid()
+    public void elevatorMiddle()
     {
         target = 1500;
+        elevatorPosition = elevatorPosition.MIDDLE;
+
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
@@ -219,6 +235,8 @@ public class ExtraOpModeFunctions
     public void elevatorHigh()
     {
         target = 2000;
+        elevatorPosition = elevatorPosition.HIGH;
+
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
