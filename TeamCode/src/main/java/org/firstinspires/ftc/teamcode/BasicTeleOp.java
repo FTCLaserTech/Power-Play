@@ -39,6 +39,7 @@ public class BasicTeleOp extends LinearOpMode
         double slope;
         double elevatorEncoderCounts;
 
+        NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
@@ -94,8 +95,6 @@ public class BasicTeleOp extends LinearOpMode
                 telemetry.update();
                 drive.IMUInit(hardwareMap);
             }
-
-            NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
 
             if (getRuntime() >= 90 && getRuntime() <= 91)
             {
@@ -157,7 +156,6 @@ public class BasicTeleOp extends LinearOpMode
                         break;
                 }
             }
-
 
             // wrist right movements
             if(gamepad2.dpad_right)
@@ -245,7 +243,7 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
-
+            colors = extras.colorSensor.getNormalizedColors();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());

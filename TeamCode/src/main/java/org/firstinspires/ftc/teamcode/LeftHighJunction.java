@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-public class RightHighJunction extends LinearOpMode
+public class LeftHighJunction extends LinearOpMode
 {
 
     @Override
@@ -34,7 +34,7 @@ public class RightHighJunction extends LinearOpMode
 
         waitForStart();
 
-        drive.followTrajectorySequence(book.rightHighJunction);
+        drive.followTrajectorySequence(book.leftHighJunction);
 
         for (int i = 1; i < 5; i++)
         {
