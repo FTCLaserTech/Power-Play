@@ -43,67 +43,30 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-/**
- * This is an example LinearOpMode that shows how to use a color sensor in a generic
- * way, regardless of which particular make or model of color sensor is used. The Op Mode
- * assumes that the color sensor is configured with a name of "sensor_color".
- *
- * There will be some variation in the values measured depending on the specific sensor you are using.
- *
- * You can increase the gain (a multiplier to make the sensor report higher values) by holding down
- * the A button on the gamepad, and decrease the gain by holding down the B button on the gamepad.
- *
- * If the color sensor has a light which is controllable from software, you can use the X button on
- * the gamepad to toggle the light on and off. The REV sensors don't support this, but instead have
- * a physical switch on them to turn the light on and off, beginning with REV Color Sensor V2.
- *
- * If the color sensor also supports short-range distance measurements (usually via an infrared
- * proximity sensor), the reported distance will be written to telemetry. As of September 2020,
- * the only color sensors that support this are the ones from REV Robotics. These infrared proximity
- * sensor measurements are only useful at very small distances, and are sensitive to ambient light
- * and surface reflectivity. You should use a different sensor if you need precise distance measurements.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this Op Mode to the Driver Station OpMode list
- */
 @TeleOp(name = "Sensor: Color", group = "Sensor")
 @Disabled
 public class SensorColor extends LinearOpMode {
 
-  /** The colorSensor field will contain a reference to our color sensor hardware object */
   NormalizedColorSensor colorSensor;
 
-  /** The relativeLayout field is used to aid in providing interesting visual feedback
-   * in this sample application; you probably *don't* need this when you use a color sensor on your
-   * robot. Note that you won't see anything change on the Driver Station, only on the Robot Controller. */
   View relativeLayout;
 
-  /**
-   * The runOpMode() method is the root of this Op Mode, as it is in all LinearOpModes.
-   * Our implementation here, though is a bit unusual: we've decided to put all the actual work
-   * in the runSample() method rather than directly in runOpMode() itself. The reason we do that is
-   * that in this sample we're changing the background color of the robot controller screen as the
-   * Op Mode runs, and we want to be able to *guarantee* that we restore it to something reasonable
-   * and palatable when the Op Mode ends. The simplest way to do that is to use a try...finally
-   * block around the main, core logic, and an easy way to make that all clear was to separate
-   * the former from the latter in separate methods.
-   */
-  @Override public void runOpMode() {
+  @Override public void runOpMode()
+  {
 
-    // Get a reference to the RelativeLayout so we can later change the background
-    // color of the Robot Controller app to match the hue detected by the RGB sensor.
     int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
     relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
-    try {
-      runSample(); // actually execute the sample
-    } finally {
-      // On the way out, *guarantee* that the background is reasonable. It doesn't actually start off
-      // as pure white, but it's too much work to dig out what actually was used, and this is good
-      // enough to at least make the screen reasonable again.
-      // Set the panel back to the default color
-      relativeLayout.post(new Runnable() {
-        public void run() {
+    try
+    {
+      runSample();
+    }
+    finally
+    {
+      relativeLayout.post(new Runnable()
+      {
+        public void run()
+        {
           relativeLayout.setBackgroundColor(Color.WHITE);
         }
       });

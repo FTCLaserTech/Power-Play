@@ -39,7 +39,7 @@ public class BasicTeleOp extends LinearOpMode
         double slope;
         double elevatorEncoderCounts;
 
-        NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
+        //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
@@ -95,7 +95,7 @@ public class BasicTeleOp extends LinearOpMode
                 telemetry.update();
                 drive.IMUInit(hardwareMap);
             }
-
+/*
             if (getRuntime() >= 90 && getRuntime() <= 91)
             {
                 extras.pattern = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
@@ -114,6 +114,8 @@ public class BasicTeleOp extends LinearOpMode
                     extras.displayPattern();
                 }
             }
+
+ */
 
 
             if (gamepad2.a)
@@ -243,20 +245,22 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
-            colors = extras.colorSensor.getNormalizedColors();
+            //colors = extras.colorSensor.getNormalizedColors();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
+            telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
 
             telemetry.addData("Elapsed Time: ", getRuntime());
 
-            telemetry.addLine()
-                    .addData("Red", "%.3f", colors.red)
-                    .addData("Green", "%.3f", colors.green)
-                    .addData("Blue", "%.3f", colors.blue)
-                    .addData("Alpha", "%.3f", colors.alpha);
+            //telemetry.addLine()
+                   // .addData("Red", "%.3f", colors.red)
+                  //  .addData("Green", "%.3f", colors.green)
+                   // .addData("Blue", "%.3f", colors.blue)
+                 //   .addData("Alpha", "%.3f", colors.alpha);
 
             telemetry.update();
         }

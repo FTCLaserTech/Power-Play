@@ -35,7 +35,7 @@ public class ExtraOpModeFunctions
     public int target = 0;
 
     private VuforiaLocalizer vuforia = null;
-    WebcamName webcamName = null;
+    //WebcamName webcamName = null;
 
     public Servo claw;
     public Servo wrist;
@@ -58,7 +58,7 @@ public class ExtraOpModeFunctions
         elevator1 = hardwareMap.get(DcMotor.class, "elevator1");
         elevator2 = hardwareMap.get(DcMotor.class, "elevator2");
 
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        //webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         localLop = lop;
 
         elevator1.setDirection(DcMotor.Direction.FORWARD);
@@ -87,7 +87,7 @@ public class ExtraOpModeFunctions
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
-        parameters.cameraName = webcamName;
+        //parameters.cameraName = webcamName;
         parameters.useExtendedTracking = false;
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -156,6 +156,11 @@ public class ExtraOpModeFunctions
     public void clawClose()
     {
         claw.setPosition(0.62);
+    }
+
+    public void clawMove (int distance)
+    {
+        claw.setPosition(claw.getPosition() + distance);
     }
 
     public void wristLeft()
