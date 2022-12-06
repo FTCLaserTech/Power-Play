@@ -17,6 +17,8 @@ public class BasicTeleOp extends LinearOpMode
     {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
+        TrajectoryBook book = new TrajectoryBook(drive, extras);
+
 
         int IMUReset = 0;
         double stickForward;
@@ -32,6 +34,9 @@ public class BasicTeleOp extends LinearOpMode
         boolean gp2_dpad_down_pressed = false;
         boolean gp2_a_pressed = false;
         boolean gp2_b_pressed = false;
+        boolean gp1_y_pressed = false;
+        boolean gp1_a_pressed = false;
+
 
         double elevMultMin = 0.5;
         double elevMult = 0;
@@ -42,6 +47,7 @@ public class BasicTeleOp extends LinearOpMode
         //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
+
 
         while (!isStopRequested())
         {
@@ -70,6 +76,33 @@ public class BasicTeleOp extends LinearOpMode
             stickForwardRotated = (stickSideways * Math.sin(adjustedAngle)) + (stickForward * Math.cos(adjustedAngle));
             drive.setWeightedDrivePower(new Pose2d(stickForwardRotated, stickSidewaysRotated, -gamepad1.right_stick_x));
             drive.update();
+
+            if (gamepad1.y)
+            {
+                gp1_y_pressed = true;
+            }
+            else if (!gamepad1.y && gp1_y_pressed)
+            {
+                Pose2d startPose = new Pose2d(0, 0, Math.toRadians(180));
+                book.TeleOpPoleLeft(startPose);
+                drive.setPoseEstimate(startPose);
+
+                drive.followTrajectorySequence(book.teleOpPoleLeft);
+            }
+
+            if (gamepad1.a)
+            {
+                gp1_a_pressed = true;
+            }
+            else if (!gamepad1.a && gp1_a_pressed)
+            {
+                Pose2d startPose = drive.getPoseEstimate();
+                book.TeleOpConeLeft(startPose);
+
+                drive.followTrajectorySequence(book.teleOpConeLeft);
+            }
+
+
 
             // MANUAL ELEVATOR CONTROL- gamepad 2
             if(!extras.elevatorLimit.isPressed())
