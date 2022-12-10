@@ -5,6 +5,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -44,7 +45,7 @@ public class BasicTeleOp extends LinearOpMode
 
         double elevMultMin = 0.5;
         double elevMult = 0;
-        double elevHeightMax = -3100;
+        double elevHeightMax = 3100;
         double slope;
         double elevatorEncoderCounts;
 
@@ -84,6 +85,7 @@ public class BasicTeleOp extends LinearOpMode
             drive.setWeightedDrivePower(new Pose2d(stickForwardRotated, stickSidewaysRotated, -gamepad1.right_stick_x));
             drive.update();
 
+            // Trajectory for pole left
             if (gamepad1.y)
             {
                 //gp1_y_pressed = true;
@@ -97,6 +99,7 @@ public class BasicTeleOp extends LinearOpMode
                 drive.followTrajectorySequence(book.teleOpPoleLeft);
             }
 
+            // Trajectory for cone left
             if (gamepad1.a)
             {
                 //gp1_a_pressed = true;
@@ -125,7 +128,7 @@ public class BasicTeleOp extends LinearOpMode
                 elevatorStopped = true;
             }
             // don't go too low if turret is turned
-            else if((extras.elevator1.getCurrentPosition() > -1200) && (gamepad2.left_stick_y > 0) && (extras.wristPosition != ExtraOpModeFunctions.WristPosition.MIDDLE))
+            else if((extras.elevator1.getCurrentPosition() < 1200) && (gamepad2.left_stick_y > 0) && (extras.wristPosition != ExtraOpModeFunctions.WristPosition.MIDDLE))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
@@ -133,14 +136,15 @@ public class BasicTeleOp extends LinearOpMode
             }
             else
             {
+                // If stick is not moved, only set power to 0 once
                 if((gamepad2.left_stick_y == 0) && !elevatorStopped)
                 {
                     extras.elevator1.setPower(0);
                     extras.elevator2.setPower(0);
                     elevatorStopped = true;
 
-                    //extras.elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    //extras.elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //extras.elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                    //extras.elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                     //extras.elevator1.setTargetPosition(extras.elevator1.getCurrentPosition());
                     //extras.elevator2.setTargetPosition(extras.elevator1.getCurrentPosition());
                     //extras.elevator1.setPower(1.0);
@@ -149,10 +153,10 @@ public class BasicTeleOp extends LinearOpMode
                 }
                 else if (gamepad2.left_stick_y != 0)
                 {
-                    //extras.elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                    //extras.elevator2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                    extras.elevator1.setPower(gamepad2.left_stick_y);
-                    extras.elevator2.setPower(gamepad2.left_stick_y);
+                    //extras.elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                    //extras.elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                    extras.elevator1.setPower(-gamepad2.left_stick_y);
+                    extras.elevator2.setPower(-gamepad2.left_stick_y);
                     elevatorStopped = false;
                 }
             }
