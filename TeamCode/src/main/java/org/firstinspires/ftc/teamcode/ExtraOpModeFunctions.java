@@ -66,12 +66,14 @@ public class ExtraOpModeFunctions
         elevator1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevator1.setTargetPosition(0);
         elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         elevator2.setDirection(DcMotor.Direction.REVERSE);
         elevator2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevator2.setTargetPosition(0);
         elevator2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         elevatorLimit = hardwareMap.get(TouchSensor.class, "elevatorLimit");
 
@@ -140,6 +142,12 @@ public class ExtraOpModeFunctions
 
         localLop.telemetry.addLine("Elevator Initialized!");
         localLop.telemetry.update();
+
+        //elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
 
