@@ -102,9 +102,9 @@ public class ExtraOpModeFunctions
         elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        elevator1.setPower(-0.3);
-        elevator2.setPower(-0.3);
-        localLop.sleep(900);
+        elevator1.setPower(-0.2);
+        elevator2.setPower(-0.2);
+        localLop.sleep(600);
         elevator1.setPower(0);
         elevator2.setPower(0);
 
@@ -129,17 +129,14 @@ public class ExtraOpModeFunctions
 
         localLop.sleep(250);
 
-        elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        elevator1.setTargetPosition(20);
-        elevator2.setTargetPosition(20);
+        elevator1.setTargetPosition(-20);
+        elevator2.setTargetPosition(-20);
 
-        elevator1.setPower(-0.2);
-        elevator2.setPower(-0.2);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
 
         localLop.telemetry.addLine("Elevator Initialized!");
         localLop.telemetry.update();
@@ -153,7 +150,7 @@ public class ExtraOpModeFunctions
 
     public void clawClose()
     {
-        claw.setPosition(0.475);
+        claw.setPosition(0.485);
     }
 
     public void clawMove (int distance)
@@ -181,7 +178,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorGround()
     {
-        target = 10;
+        target = -10;
         elevatorPosition = elevatorPosition.COLLECT;
 
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -189,13 +186,13 @@ public class ExtraOpModeFunctions
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorJunction()
     {
-        target = 500;
+        target = -20;
         elevatorPosition = elevatorPosition.GROUND;
 
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -203,13 +200,13 @@ public class ExtraOpModeFunctions
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorLow()
     {
-        target = 1000;
+        target = -1220;
         elevatorPosition = elevatorPosition.LOW;
 
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -217,13 +214,13 @@ public class ExtraOpModeFunctions
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorMiddle()
     {
-        target = 1500;
+        target = -2060;
         elevatorPosition = elevatorPosition.MIDDLE;
 
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -231,13 +228,13 @@ public class ExtraOpModeFunctions
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorHigh()
     {
-        target = 2000;
+        target = -2870;
         elevatorPosition = elevatorPosition.HIGH;
 
         elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -245,8 +242,8 @@ public class ExtraOpModeFunctions
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     protected void displayPattern()

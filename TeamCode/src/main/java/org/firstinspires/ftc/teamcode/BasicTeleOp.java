@@ -32,16 +32,19 @@ public class BasicTeleOp extends LinearOpMode
         boolean gp2_dpad_right_pressed = false;
         boolean gp2_dpad_up_pressed = false;
         boolean gp2_dpad_down_pressed = false;
+        boolean gp2_right_stick_y_neg_pressed = false;
+        boolean gp2_right_stick_y_pos_pressed = false;
         boolean gp2_a_pressed = false;
         boolean gp2_b_pressed = false;
         boolean gp2_y_pressed = false;
         boolean gp1_y_pressed = false;
         boolean gp1_a_pressed = false;
 
+        boolean elevatorStopped = true;
 
         double elevMultMin = 0.5;
         double elevMult = 0;
-        double elevHeightMax = 3275;
+        double elevHeightMax = -3000;
         double slope;
         double elevatorEncoderCounts;
 
@@ -84,7 +87,7 @@ public class BasicTeleOp extends LinearOpMode
 
             if (gamepad1.y)
             {
-                gp1_y_pressed = true;
+                //gp1_y_pressed = true;
             }
             else if (!gamepad1.y && gp1_y_pressed)
             {
@@ -97,7 +100,7 @@ public class BasicTeleOp extends LinearOpMode
 
             if (gamepad1.a)
             {
-                gp1_a_pressed = true;
+                //gp1_a_pressed = true;
             }
             else if (!gamepad1.a && gp1_a_pressed)
             {
@@ -107,23 +110,72 @@ public class BasicTeleOp extends LinearOpMode
                 drive.followTrajectorySequence(book.teleOpConeLeft);
             }
 
-
-
             // MANUAL ELEVATOR CONTROL- gamepad 2
-            if((extras.elevatorLimit.isPressed())&&(gamepad2.left_stick_y < 0))
+            // don't go below the limit switch
+            if((extras.elevatorLimit.isPressed())&&(gamepad2.left_stick_y > 0))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
+                elevatorStopped = true;
             }
-            else if((extras.elevator1.getCurrentPosition() > elevHeightMax) &&(gamepad2.left_stick_y > 0))
+            // don't go above the max height
+            else if((extras.elevator1.getCurrentPosition() < elevHeightMax) &&(gamepad2.left_stick_y < 0))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
+                elevatorStopped = true;
+            }
+            // don't go too low if turret is turned
+            else if((extras.elevator1.getCurrentPosition() > -1150) && (gamepad2.left_stick_y > 0) && (extras.wristPosition != ExtraOpModeFunctions.WristPosition.MIDDLE))
+            {
+                extras.elevator1.setPower(0);
+                extras.elevator2.setPower(0);
+                elevatorStopped = true;
             }
             else
             {
-                extras.elevator1.setPower(elevMult * gamepad2.left_stick_y);
-                extras.elevator2.setPower(elevMult * gamepad2.left_stick_y);
+                if((gamepad2.left_stick_y == 0) && !elevatorStopped)
+                {
+                    extras.elevator1.setPower(0);
+                    extras.elevator2.setPower(0);
+                    elevatorStopped = true;
+
+                    extras.elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    extras.elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    extras.elevator1.setTargetPosition(extras.elevator1.getCurrentPosition());
+                    extras.elevator2.setTargetPosition(extras.elevator1.getCurrentPosition());
+                    extras.elevator1.setPower(1.0);
+                    extras.elevator2.setPower(1.0);
+
+                }
+                else if (gamepad2.left_stick_y != 0)
+                {
+                    extras.elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    extras.elevator2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    extras.elevator1.setPower(elevMult * gamepad2.left_stick_y);
+                    extras.elevator2.setPower(elevMult * gamepad2.left_stick_y);
+                    elevatorStopped = false;
+                }
+            }
+
+            if (gamepad2.right_stick_y < 0)
+            {
+                //gp2_right_stick_y_neg_pressed = true;
+            }
+            else if ((gamepad2.right_stick_y == 0) && (gp2_right_stick_y_neg_pressed))
+            {
+                extras.elevatorHigh();
+                gp2_right_stick_y_neg_pressed = false;
+            }
+
+            if (gamepad2.right_stick_y > 0)
+            {
+                //gp2_right_stick_y_pos_pressed = true;
+            }
+            else if ((gamepad2.right_stick_y == 0) && (gp2_right_stick_y_pos_pressed))
+            {
+                extras.elevatorGround();
+                gp2_right_stick_y_pos_pressed = false;
             }
 
             // RESET IMU
@@ -140,7 +192,7 @@ public class BasicTeleOp extends LinearOpMode
             }
 
             // RESET IMU
-            if ((gamepad1.back) && (gamepad2.y))
+            if ((gamepad2.back) && (gamepad2.y))
             {
                 gp2_y_pressed = true;
             }
@@ -205,14 +257,14 @@ public class BasicTeleOp extends LinearOpMode
                 switch(extras.wristPosition)
                 {
                     case LEFT:
+                        extras.wristMiddle();
                         break;
 
                     case MIDDLE:
-                        extras.wristLeft();
+                        extras.wristRight();
                         break;
 
                     case RIGHT:
-                        extras.wristMiddle();
                         break;
                 }
             }
@@ -228,14 +280,14 @@ public class BasicTeleOp extends LinearOpMode
                 switch(extras.wristPosition)
                 {
                     case LEFT:
-                        extras.wristMiddle();
                         break;
 
                     case MIDDLE:
-                        extras.wristRight();
+                        extras.wristLeft();
                         break;
 
                     case RIGHT:
+                        extras.wristMiddle();
                         break;
                 }
             }
@@ -243,7 +295,7 @@ public class BasicTeleOp extends LinearOpMode
             // elevator up movements
             if(gamepad2.dpad_up)
             {
-                gp2_dpad_up_pressed = true;
+                //gp2_dpad_up_pressed = true;
             }
             else if (!gamepad2.dpad_up && gp2_dpad_up_pressed)
             {
@@ -275,7 +327,7 @@ public class BasicTeleOp extends LinearOpMode
             // elevator down movements
             if(gamepad2.dpad_down)
             {
-                gp2_dpad_down_pressed = true;
+                //gp2_dpad_down_pressed = true;
             }
             else if (!gamepad2.dpad_down && gp2_dpad_down_pressed)
             {
