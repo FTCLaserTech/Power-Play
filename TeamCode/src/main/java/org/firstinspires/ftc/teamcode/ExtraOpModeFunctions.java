@@ -26,10 +26,10 @@ public class ExtraOpModeFunctions
     public enum MarkerPosition {LEFT, MIDDLE, RIGHT}
     public enum FieldSide {RED, BLUE}
 
-    public enum wristPosition {LEFT, MIDDLE, RIGHT}
-    public wristPosition wristPosition;
-    public enum elevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH}
-    public elevatorPosition elevatorPosition;
+    public enum WristPosition {LEFT, MIDDLE, RIGHT}
+    public WristPosition wristPosition = WristPosition.MIDDLE;
+    public enum ElevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH}
+    public ElevatorPosition elevatorPosition = ElevatorPosition.COLLECT;
 
     public static final double PI = 3.14159265;
     public int target = 0;
@@ -73,12 +73,13 @@ public class ExtraOpModeFunctions
         elevator2.setTargetPosition(0);
         elevator2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        elevatorLimit = hardwareMap.get(TouchSensor.class, "armLimit");
+        elevatorLimit = hardwareMap.get(TouchSensor.class, "elevatorLimit");
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.CP1_2_BEATS_PER_MINUTE;
         blinkinLedDriver.setPattern(pattern);
         displayPattern();
+
 
         VuforiaLocalizer.Parameters parameters;
 
@@ -101,8 +102,8 @@ public class ExtraOpModeFunctions
         elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        elevator1.setPower(0.3);
-        elevator2.setPower(0.3);
+        elevator1.setPower(-0.3);
+        elevator2.setPower(-0.3);
         localLop.sleep(900);
         elevator1.setPower(0);
         elevator2.setPower(0);
@@ -112,16 +113,13 @@ public class ExtraOpModeFunctions
 
         localLop.sleep(100);
 
-        elevator1.setPower(-0.1);
-        elevator2.setPower(-0.1);
+        elevator1.setPower(0.1);
+        elevator2.setPower(0.1);
 
-        while(elevatorLimit.getValue() == 0)
+        while(!elevatorLimit.isPressed())
         {
             ;
         }
-
-        elevator1.setPower(0);
-        elevator2.setPower(0);
 
         elevator1.setPower(0);
         elevator2.setPower(0);
@@ -140,8 +138,8 @@ public class ExtraOpModeFunctions
         elevator1.setTargetPosition(20);
         elevator2.setTargetPosition(20);
 
-        elevator1.setPower(0.2);
-        elevator2.setPower(0.2);
+        elevator1.setPower(-0.2);
+        elevator2.setPower(-0.2);
 
         localLop.telemetry.addLine("Elevator Initialized!");
         localLop.telemetry.update();
@@ -150,12 +148,12 @@ public class ExtraOpModeFunctions
 
     public void clawOpen()
     {
-        claw.setPosition(0.52);
+        claw.setPosition(0.42);
     }
 
     public void clawClose()
     {
-        claw.setPosition(0.62);
+        claw.setPosition(0.475);
     }
 
     public void clawMove (int distance)
@@ -165,19 +163,19 @@ public class ExtraOpModeFunctions
 
     public void wristLeft()
     {
-        wrist.setPosition(0.2);
+        wrist.setPosition(1.0);
         wristPosition = wristPosition.LEFT;
     }
 
     public void wristMiddle()
     {
-        wrist.setPosition(0.4);
+        wrist.setPosition(0.5);
         wristPosition = wristPosition.MIDDLE;
     }
 
     public void wristRight()
     {
-        wrist.setPosition(0.6);
+        wrist.setPosition(0.0);
         wristPosition = wristPosition.RIGHT;
     }
 

@@ -34,6 +34,7 @@ public class BasicTeleOp extends LinearOpMode
         boolean gp2_dpad_down_pressed = false;
         boolean gp2_a_pressed = false;
         boolean gp2_b_pressed = false;
+        boolean gp2_y_pressed = false;
         boolean gp1_y_pressed = false;
         boolean gp1_a_pressed = false;
 
@@ -46,6 +47,10 @@ public class BasicTeleOp extends LinearOpMode
 
         //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        extras.wristMiddle();
+        extras.clawClose();
+
         waitForStart();
 
 
@@ -105,15 +110,20 @@ public class BasicTeleOp extends LinearOpMode
 
 
             // MANUAL ELEVATOR CONTROL- gamepad 2
-            if(!extras.elevatorLimit.isPressed())
-            {
-                extras.elevator1.setPower(elevMult * gamepad2.left_stick_y);
-                extras.elevator2.setPower(elevMult * gamepad2.left_stick_y);
-            }
-            else
+            if((extras.elevatorLimit.isPressed())&&(gamepad2.left_stick_y < 0))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
+            }
+            else if((extras.elevator1.getCurrentPosition() > elevHeightMax) &&(gamepad2.left_stick_y > 0))
+            {
+                extras.elevator1.setPower(0);
+                extras.elevator2.setPower(0);
+            }
+            else
+            {
+                extras.elevator1.setPower(elevMult * gamepad2.left_stick_y);
+                extras.elevator2.setPower(elevMult * gamepad2.left_stick_y);
             }
 
             // RESET IMU
@@ -127,6 +137,18 @@ public class BasicTeleOp extends LinearOpMode
                 telemetry.addLine("IMU Resetting...");
                 telemetry.update();
                 drive.IMUInit(hardwareMap);
+            }
+
+            // RESET IMU
+            if ((gamepad1.back) && (gamepad2.y))
+            {
+                gp2_y_pressed = true;
+            }
+            else if (!gamepad2.y && gp2_y_pressed)
+            {
+                extras.initElevator();
+                gp2_y_pressed = false;
+
             }
 /*
             if (getRuntime() >= 90 && getRuntime() <= 91)
@@ -158,6 +180,8 @@ public class BasicTeleOp extends LinearOpMode
             else if (!gamepad2.a && gp2_a_pressed)
             {
                 extras.clawOpen();
+                gp2_a_pressed = false;
+
             }
 
             if (gamepad2.b)
@@ -167,6 +191,7 @@ public class BasicTeleOp extends LinearOpMode
             else if (!gamepad2.b && gp2_b_pressed)
             {
                 extras.clawClose();
+                gp2_b_pressed = false;
             }
 
             // wrist left movements
@@ -286,6 +311,8 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
             telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
+            telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
+
 
             telemetry.addData("Elapsed Time: ", getRuntime());
 
