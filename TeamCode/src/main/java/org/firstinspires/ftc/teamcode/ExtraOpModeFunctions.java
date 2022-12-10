@@ -145,9 +145,9 @@ public class ExtraOpModeFunctions
         localLop.telemetry.update();
 
         //elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         //elevator2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -187,7 +187,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorGround()
     {
-        target = 10;
+        target = 0;
         elevatorPosition = elevatorPosition.COLLECT;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);

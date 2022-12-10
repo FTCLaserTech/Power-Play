@@ -56,7 +56,10 @@ public class DoNothing extends LinearOpMode
 
         waitForStart();
 
+        drive.setWeightedDrivePower(new Pose2d(0.3, 0, 0));
+        sleep(550);
+        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
 
-        sleep(30000);
+        sleep(20000);
     }
 }
