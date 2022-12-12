@@ -64,16 +64,18 @@ public class ExtraOpModeFunctions
 
         elevator1.setDirection(DcMotorEx.Direction.REVERSE);
         elevator1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        elevator1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        //elevator1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         elevator1.setTargetPosition(0);
-        elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         elevator2.setDirection(DcMotorEx.Direction.FORWARD);
         elevator2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        elevator2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        //elevator2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         elevator2.setTargetPosition(0);
-        elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         //elevator2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         elevatorLimit = hardwareMap.get(TouchSensor.class, "elevatorLimit");
@@ -154,7 +156,7 @@ public class ExtraOpModeFunctions
 
     public void clawOpen()
     {
-        claw.setPosition(0.42);
+        claw.setPosition(0.4);
     }
 
     public void clawClose()
@@ -175,7 +177,7 @@ public class ExtraOpModeFunctions
 
     public void wristMiddle()
     {
-        wrist.setPosition(0.5);
+        wrist.setPosition(0.51);
         wristPosition = wristPosition.MIDDLE;
     }
 
