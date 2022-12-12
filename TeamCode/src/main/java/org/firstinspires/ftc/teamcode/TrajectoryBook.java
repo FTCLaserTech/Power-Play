@@ -36,13 +36,11 @@ public class TrajectoryBook
         rightHighJunction = drive.trajectorySequenceBuilder(pose)
                 // Move left
                 .splineToConstantHeading(new Vector2d(5, 19), Math.toRadians(0))
-                //.lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
                 // Move Forward
                 .lineToLinearHeading(new Pose2d(45, 19, Math.toRadians(0)))
-                //.lineToLinearHeading(new Pose2d(52, 19, Math.toRadians(0)))
                 // Move Right and turn
                 .splineTo(new Vector2d(52, 11), Math.toRadians(-87))
-                //.lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .build();
@@ -52,9 +50,12 @@ public class TrajectoryBook
         rHJStacking = drive.trajectorySequenceBuilder(pose)
                 // Move back to stack
                 .lineToLinearHeading(new Pose2d(52, -25, Math.toRadians(-87)))
+                // OWEN - CHANGE ELEVATOR POSITION WITH FUNCTION
+                //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
                 // Move back to the high junction
                 .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.5)
                 .build();
@@ -65,13 +66,11 @@ public class TrajectoryBook
         leftHighJunction = drive.trajectorySequenceBuilder(pose)
                 // Move left
                 .splineToConstantHeading(new Vector2d( 3, -19), Math.toRadians(0))
-                //.lineToLinearHeading(new Pose2d(5, 19, Math.toRadians(0)))
                 // Move Forward
                 .lineToLinearHeading(new Pose2d(45, -19, Math.toRadians(0)))
-                //.lineToLinearHeading(new Pose2d(52, 19, Math.toRadians(0)))
                 // Move Right and turn
                 .splineTo(new Vector2d(52, -11), Math.toRadians(87))
-                //.lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .build();
@@ -81,9 +80,11 @@ public class TrajectoryBook
         lHJStacking = drive.trajectorySequenceBuilder(pose)
                 // Move back to stack
                 .lineToLinearHeading(new Pose2d(52, 25, Math.toRadians(87)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
                 // Move back to the high junction
                 .lineToLinearHeading(new Pose2d(52, -11, Math.toRadians(87)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.5)
                 .build();

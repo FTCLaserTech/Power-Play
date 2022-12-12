@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -26,10 +27,10 @@ public class ExtraOpModeFunctions
     public enum MarkerPosition {LEFT, MIDDLE, RIGHT}
     public enum FieldSide {RED, BLUE}
 
-    public enum wristPosition {LEFT, MIDDLE, RIGHT}
-    public wristPosition wristPosition;
-    public enum elevatorPosition {COLLECT, GROUND, STACK, LOW, MIDDLE, HIGH}
-    public elevatorPosition elevatorPosition;
+    public enum WristPosition {LEFT, MIDDLE, RIGHT}
+    public WristPosition wristPosition = WristPosition.MIDDLE;
+    public enum ElevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH}
+    public ElevatorPosition elevatorPosition = ElevatorPosition.COLLECT;
 
     public static final double PI = 3.14159265;
     public int target = 0;
@@ -41,8 +42,8 @@ public class ExtraOpModeFunctions
     public Servo wrist;
     public LinearOpMode localLop = null;
 
-    public DcMotor elevator1;
-    public DcMotor elevator2;
+    public DcMotorEx elevator1;
+    public DcMotorEx elevator2;
 
     public TouchSensor elevatorLimit;
     public RevColorSensorV3 colorSensor;
@@ -55,30 +56,33 @@ public class ExtraOpModeFunctions
     {
         claw = hardwareMap.get(Servo.class, "claw");
         wrist = hardwareMap.get(Servo.class, "wrist");
-        elevator1 = hardwareMap.get(DcMotor.class, "elevator1");
-        elevator2 = hardwareMap.get(DcMotor.class, "elevator2");
+        elevator1 = hardwareMap.get(DcMotorEx.class, "elevator1");
+        elevator2 = hardwareMap.get(DcMotorEx.class, "elevator2");
 
         //webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         localLop = lop;
 
-        elevator1.setDirection(DcMotor.Direction.FORWARD);
-        elevator1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevator1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator1.setDirection(DcMotorEx.Direction.REVERSE);
+        elevator1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        elevator1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         elevator1.setTargetPosition(0);
         elevator1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        elevator2.setDirection(DcMotor.Direction.REVERSE);
-        elevator2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevator2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator2.setDirection(DcMotorEx.Direction.FORWARD);
+        elevator2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        elevator2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         elevator2.setTargetPosition(0);
-        elevator2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        elevatorLimit = hardwareMap.get(TouchSensor.class, "armLimit");
+        elevatorLimit = hardwareMap.get(TouchSensor.class, "elevatorLimit");
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.CP1_2_BEATS_PER_MINUTE;
         blinkinLedDriver.setPattern(pattern);
         displayPattern();
+
 
         VuforiaLocalizer.Parameters parameters;
 
@@ -98,12 +102,12 @@ public class ExtraOpModeFunctions
 
     public void initElevator()
     {
-        elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        elevator1.setPower(0.3);
-        elevator2.setPower(0.3);
-        localLop.sleep(900);
+        elevator1.setPower(0.2);
+        elevator2.setPower(0.2);
+        localLop.sleep(600);
         elevator1.setPower(0);
         elevator2.setPower(0);
 
@@ -115,7 +119,7 @@ public class ExtraOpModeFunctions
         elevator1.setPower(-0.1);
         elevator2.setPower(-0.1);
 
-        while(elevatorLimit.getValue() == 0)
+        while(!elevatorLimit.isPressed())
         {
             ;
         }
@@ -123,173 +127,132 @@ public class ExtraOpModeFunctions
         elevator1.setPower(0);
         elevator2.setPower(0);
 
-        elevator1.setPower(0);
-        elevator2.setPower(0);
-
-        elevator1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        elevator2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         localLop.sleep(250);
 
-        elevator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
         elevator1.setTargetPosition(20);
         elevator2.setTargetPosition(20);
 
-        elevator1.setPower(0.2);
-        elevator2.setPower(0.2);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
 
         localLop.telemetry.addLine("Elevator Initialized!");
         localLop.telemetry.update();
+
+        //elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        //elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //elevator2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        //elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
 
     public void clawOpen()
     {
-        claw.setPosition(0.52);
+        claw.setPosition(0.42);
     }
 
     public void clawClose()
     {
-        claw.setPosition(0.62);
+        claw.setPosition(0.485);
     }
 
-    public void clawMove (double distance)
+    public void clawMove (int distance)
     {
         claw.setPosition(claw.getPosition() + distance);
     }
 
-    public void wristMove(double distance)
-    {
-        wrist.setPosition(wrist.getPosition() + distance);
-    }
-
     public void wristLeft()
     {
-        wrist.setPosition(0.2);
+        wrist.setPosition(1.0);
         wristPosition = wristPosition.LEFT;
     }
 
     public void wristMiddle()
     {
-        wrist.setPosition(0.4);
+        wrist.setPosition(0.5);
         wristPosition = wristPosition.MIDDLE;
     }
 
     public void wristRight()
     {
-        wrist.setPosition(0.6);
+        wrist.setPosition(0.0);
         wristPosition = wristPosition.RIGHT;
     }
 
     public void elevatorGround()
     {
-        target = 10;
+        target = 0;
         elevatorPosition = elevatorPosition.COLLECT;
 
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorJunction()
     {
-        target = 500;
+        target = 20;
         elevatorPosition = elevatorPosition.GROUND;
 
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorLow()
     {
-        target = 1000;
+        target = 1220;
         elevatorPosition = elevatorPosition.LOW;
 
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorMiddle()
     {
-        target = 1500;
+        target = 2060;
         elevatorPosition = elevatorPosition.MIDDLE;
 
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     public void elevatorHigh()
     {
-        target = 2000;
+        target = 2870;
         elevatorPosition = elevatorPosition.HIGH;
 
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         elevator1.setTargetPosition(target);
         elevator2.setTargetPosition(target);
 
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
-    }
-
-    public void elevatorConeCollect(int coneNumber)
-    {
-        elevatorPosition = elevatorPosition.STACK;
-        switch (coneNumber)
-        {
-            case 1:
-                target = 100;
-                break;
-
-            case 2:
-                target = 200;
-                break;
-
-            case 3:
-                target = 300;
-                break;
-
-            case 4:
-                target = 400;
-                break;
-
-            case 5:
-                target = 500;
-                break;
-        }
-
-        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator1.setTargetPosition(target);
-        elevator2.setTargetPosition(target);
-
-        elevator1.setPower(0.5);
-        elevator2.setPower(0.5);
-
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
     }
 
     protected void displayPattern()
@@ -320,139 +283,5 @@ public class ExtraOpModeFunctions
         }
         return angle;
     }
-
-    /*
-    private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Stone";
-    private static final String LABEL_SECOND_ELEMENT = "Skystone";
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    private static final boolean PHONE_IS_PORTRAIT = false;
-
-    public MarkerPosition grabAndProcessImage(FieldSide fieldSide)
-    {
-        MarkerPosition markerPosition = MarkerPosition.RIGHT;
-        Image imageRGB565 = null;
-
-        int numGreen = 0;
-        int numRed = 0;
-        int numBlue = 0;
-
-        CameraDevice.getInstance().start();
-
-        try
-        {
-            Frame frame = vuforia.getFrameQueue().take();
-
-            for (int i = 0; i < frame.getNumImages(); ++i)
-            {
-                Image image = frame.getImage(i);
-                if (image.getFormat() == PIXEL_FORMAT.RGB565)
-                {
-                    imageRGB565 = image;
-
-                    break;
-                }
-            }
-
-            if (imageRGB565 != null)
-            {
-                // grab the image
-                Bitmap bm = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
-                bm.copyPixelsFromBuffer(imageRGB565.getPixels());
-                if (fieldSide == FieldSide.RED)
-                {
-                    // create some variables to index the pixels
-                    int xMidMin = 0;
-                    int xMidMax = 0;
-                    int yMidMin = 0;
-                    int yMidMax = 0;
-
-                    xMidMin = (int) (((2.85) * 480) / 4);
-                    xMidMax = (int) (((3.4) * 480) / 4);
-                    yMidMin = (int) (((2) * 640) / 5.5);
-                    yMidMax = (int) (((2.7) * 640) / 5.5);
-
-                    int pixel = 0;
-
-                    for (int y = yMidMin; y <= yMidMax; y++)
-                    {
-                        for (int x = xMidMin; x <= xMidMax; x++)
-                        {
-                            // yellow in RGB is 0xFFFF00
-                            pixel = bm.getPixel(y, x);
-
-                            //Green
-                            if ((pixel & 0x000000ff) < 0x00000000)
-                            {
-                                if ((pixel & 0x00ff0000) < 0x00000000)
-                                {
-                                    if ((pixel & 0x0000ff00) > 0x0000ff00)
-                                    {
-                                        numGreen++;
-                                    }
-                                }
-                            }
-                            //RED
-                            if ((pixel & 0x000000ff) > 0x00000000)
-                            {
-                                if ((pixel & 0x00ff0000) > 0x00ff0000)
-                                {
-                                    if ((pixel & 0x0000ff00) > 0x00000000)
-                                    {
-                                        numRed++;
-                                    }
-                                }
-                            }
-                            //BLUE
-                            if ((pixel & 0x000000ff) < 0x000000ff)
-                            {
-                                if ((pixel & 0x00ff0000) < 0x00000000)
-                                {
-                                    if ((pixel & 0x0000ff00) > 0x00000000)
-                                    {
-                                        numBlue++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (numGreen >= 50)
-                    {
-                        localLop.telemetry.addData("Green", numGreen);
-                        markerPosition = MarkerPosition.MIDDLE;
-
-                    if (numRed >= 50)
-                    {
-                        localLop.telemetry.addData("Red", numRed);
-                        markerPosition = MarkerPosition.MIDDLE;
-                    }
-
-                    if (numBlue >= 50)
-                    {
-                        localLop.telemetry.addData("Blue", numBlue);
-                        markerPosition = MarkerPosition.MIDDLE;
-                    }
-
-                    }
-                    localLop.telemetry.update();
-                }
-            }
-
-            localLop.telemetry.addData("Blue_", numBlue);
-            localLop.telemetry.addData("Green_", numGreen);
-            localLop.telemetry.addData("Red_", numRed);
-            localLop.telemetry.update();
-
-
-        }
-        catch(InterruptedException exc)
-        {
-            exc.printStackTrace();
-        }
-
-        return markerPosition;
-    }
-    */
 }
 
