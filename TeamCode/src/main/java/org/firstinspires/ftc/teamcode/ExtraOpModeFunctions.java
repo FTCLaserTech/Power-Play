@@ -28,7 +28,7 @@ public class ExtraOpModeFunctions
 
     public enum wristPosition {LEFT, MIDDLE, RIGHT}
     public wristPosition wristPosition;
-    public enum elevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH}
+    public enum elevatorPosition {COLLECT, GROUND, STACK, LOW, MIDDLE, HIGH}
     public elevatorPosition elevatorPosition;
 
     public static final double PI = 3.14159265;
@@ -158,9 +158,14 @@ public class ExtraOpModeFunctions
         claw.setPosition(0.62);
     }
 
-    public void clawMove (int distance)
+    public void clawMove (double distance)
     {
         claw.setPosition(claw.getPosition() + distance);
+    }
+
+    public void wristMove(double distance)
+    {
+        wrist.setPosition(wrist.getPosition() + distance);
     }
 
     public void wristLeft()
@@ -249,6 +254,42 @@ public class ExtraOpModeFunctions
 
         elevator1.setPower(0.5);
         elevator2.setPower(0.5);
+    }
+
+    public void elevatorConeCollect(int coneNumber)
+    {
+        elevatorPosition = elevatorPosition.STACK;
+        switch (coneNumber)
+        {
+            case 1:
+                target = 100;
+                break;
+
+            case 2:
+                target = 200;
+                break;
+
+            case 3:
+                target = 300;
+                break;
+
+            case 4:
+                target = 400;
+                break;
+
+            case 5:
+                target = 500;
+                break;
+        }
+
+        elevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator1.setTargetPosition(target);
+        elevator2.setTargetPosition(target);
+
+        elevator1.setPower(0.5);
+        elevator2.setPower(0.5);
+
     }
 
     protected void displayPattern()

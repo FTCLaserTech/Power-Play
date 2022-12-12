@@ -19,7 +19,6 @@ public class BasicTeleOp extends LinearOpMode
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
-
         int IMUReset = 0;
         double stickForward;
         double stickSideways;
@@ -46,32 +45,20 @@ public class BasicTeleOp extends LinearOpMode
 
         //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        waitForStart();
+        extras.elevator1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        extras.elevator2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        waitForStart();
 
         while (!isStopRequested())
         {
-
             slope = -elevMultMin / elevHeightMax;
             elevatorEncoderCounts = (extras.elevator1.getCurrentPosition() + extras.elevator2.getCurrentPosition()) / 2;
             elevMult = slope * elevatorEncoderCounts + 1;
 
-            if (gamepad1.right_bumper)
-            {
-                speedMultiplier = 0.6;
-            }
-            else if (gamepad1.left_bumper)
-            {
-                speedMultiplier = 0.4;
-            }
-            else
-            {
-                speedMultiplier = 0.75;
-            }
-
             adjustedAngle = extras.adjustAngleForDriverPosition(drive.getRawExternalHeading(), ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
-            stickForward = -gamepad1.left_stick_y * speedMultiplier;
-            stickSideways = -gamepad1.left_stick_x * speedMultiplier;
+            stickForward = -gamepad1.left_stick_y;
+            stickSideways = -gamepad1.left_stick_x;
             stickSidewaysRotated = (stickSideways * Math.cos(adjustedAngle)) - (stickForward * Math.sin(adjustedAngle));
             stickForwardRotated = (stickSideways * Math.sin(adjustedAngle)) + (stickForward * Math.cos(adjustedAngle));
             drive.setWeightedDrivePower(new Pose2d(stickForwardRotated, stickSidewaysRotated, -gamepad1.right_stick_x));
@@ -149,6 +136,17 @@ public class BasicTeleOp extends LinearOpMode
             }
 
  */
+
+            if (gamepad2.right_bumper)
+            {
+                extras.wristMove(0.01);
+                extras.clawMove(0.01);
+            }
+            else if (gamepad2.left_bumper)
+            {
+                extras.wristMove(0.01);
+                extras.clawMove(0.01);
+            }
 
 
             if (gamepad2.a)
@@ -281,11 +279,15 @@ public class BasicTeleOp extends LinearOpMode
             //colors = extras.colorSensor.getNormalizedColors();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
-            telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
+            telemetry.addData("X Coordinate: ", poseEstimate.getX());
+            telemetry.addData("Y Coordinate", poseEstimate.getY());
+            telemetry.addData("Direction (Degrees): ", (poseEstimate.getHeading() * (180 / extras.PI)));
+            telemetry.addData("Direction (Radians): ", poseEstimate.getHeading());
+            telemetry.addLine();
+            telemetry.addData("elevator1 Encoder Counts: ", extras.elevator1.getCurrentPosition());
+            telemetry.addData("elevator2 Encoder Counts: ", extras.elevator2.getCurrentPosition());
+            telemetry.addData("Claw Position: ", extras.claw.getPosition());
+            telemetry.addData("Wrist Position: ", extras.wrist.getPosition());
 
             telemetry.addData("Elapsed Time: ", getRuntime());
 
