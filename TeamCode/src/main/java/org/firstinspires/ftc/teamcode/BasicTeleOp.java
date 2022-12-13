@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @TeleOp(group = "a")
@@ -19,7 +20,6 @@ public class BasicTeleOp extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
-
 
         int IMUReset = 0;
         double stickForward;
@@ -49,6 +49,11 @@ public class BasicTeleOp extends LinearOpMode
         double slope;
         double elevatorEncoderCounts;
 
+        double currentAmps1;
+        double currentAmps2;
+        double maxAmps = 0;
+        int numDangerAmps = 0;
+
         //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -59,6 +64,30 @@ public class BasicTeleOp extends LinearOpMode
 
         while (!isStopRequested())
         {
+            currentAmps1 = extras.elevator1.getCurrent(CurrentUnit.AMPS);
+            currentAmps2 = extras.elevator2.getCurrent(CurrentUnit.AMPS);
+
+            if (currentAmps1 > maxAmps)
+            {
+                maxAmps = currentAmps1;
+            }
+            else if (currentAmps2 > maxAmps)
+            {
+                maxAmps = currentAmps2;
+            }
+
+            if (currentAmps1 > 7 || currentAmps2 > 7)
+            {
+                numDangerAmps += 1;
+            }
+
+            // KILL CODE
+            if ((currentAmps1 >= 7) || (currentAmps2 >= 7))
+            {
+                stop();
+            }
+
+
 
             slope = -elevMultMin / elevHeightMax;
             elevatorEncoderCounts = (extras.elevator1.getCurrentPosition() + extras.elevator2.getCurrentPosition()) / 2;
@@ -113,8 +142,9 @@ public class BasicTeleOp extends LinearOpMode
             }
 
             // MANUAL ELEVATOR CONTROL- gamepad 2
-            // don't go below the limit switch
-            if((extras.elevatorLimit.isPressed())&&(gamepad2.left_stick_y > 0))
+            // don't go below the limit switch or exceed certain current
+
+            if((extras.elevatorLimit.isPressed()) && (gamepad2.left_stick_y > 0))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
@@ -392,9 +422,15 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
             telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
             telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
+            telemetry.addLine();
 
+            telemetry.addData("Elevator 1 Current Voltage: ", currentAmps1);
+            telemetry.addData("Elevator 2 Current Voltage: ", currentAmps2);
+            telemetry.addData("Max Amps: ", maxAmps);
+            telemetry.addData("Number of times amps was greater than 7: ", numDangerAmps);
 
             telemetry.addData("Elapsed Time: ", getRuntime());
+
 
             //telemetry.addLine()
                    // .addData("Red", "%.3f", colors.red)
