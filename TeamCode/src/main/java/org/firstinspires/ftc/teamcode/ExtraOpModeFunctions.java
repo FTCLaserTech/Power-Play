@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+
+import android.graphics.Bitmap;
+
 import com.acmerobotics.dashboard.config.Config;
 
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -17,6 +21,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+
+import com.vuforia.CameraDevice;
+import com.vuforia.Frame;
+import com.vuforia.Image;
 import com.vuforia.Vuforia;
 import com.vuforia.PIXEL_FORMAT;
 
@@ -24,8 +32,12 @@ import com.vuforia.PIXEL_FORMAT;
 public class ExtraOpModeFunctions
 {
     public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
-    public enum MarkerPosition {LEFT, MIDDLE, RIGHT}
+    public enum ConeColor {GREEN, RED, BLUE}
     public enum FieldSide {RED, BLUE}
+
+    int numRed = 0;
+    int numGreen = 0;
+    int numBlue = 0;
 
     public enum WristPosition {LEFT, MIDDLE, RIGHT}
     public WristPosition wristPosition = WristPosition.MIDDLE;
@@ -36,7 +48,7 @@ public class ExtraOpModeFunctions
     public int target = 0;
 
     private VuforiaLocalizer vuforia = null;
-    //WebcamName webcamName = null;
+    WebcamName webcamName = null;
 
     public Servo claw;
     public Servo wrist;
@@ -52,6 +64,7 @@ public class ExtraOpModeFunctions
     public RevBlinkinLedDriver blinkinLedDriver;
     public RevBlinkinLedDriver.BlinkinPattern pattern;
 
+
     public ExtraOpModeFunctions(HardwareMap hardwareMap, LinearOpMode lop)
     {
         claw = hardwareMap.get(Servo.class, "claw");
@@ -59,7 +72,7 @@ public class ExtraOpModeFunctions
         elevator1 = hardwareMap.get(DcMotorEx.class, "elevator1");
         elevator2 = hardwareMap.get(DcMotorEx.class, "elevator2");
 
-        //webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         localLop = lop;
 
         elevator1.setDirection(DcMotorEx.Direction.REVERSE);
@@ -93,7 +106,7 @@ public class ExtraOpModeFunctions
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
-        //parameters.cameraName = webcamName;
+        parameters.cameraName = webcamName;
         parameters.useExtendedTracking = false;
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -245,7 +258,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorHigh()
     {
-        target = 2870;
+        target = 2890;
         elevatorPosition = elevatorPosition.HIGH;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -261,10 +274,6 @@ public class ExtraOpModeFunctions
     {
         blinkinLedDriver.setPattern(pattern);
     }
-
-    private static final String VUFORIA_KEY =
-            "AYkCgy7/////AAABmcVEWPZVAkr+qqRZ5GKKMtplRC79gsSR0agZEVe/znTU27Ffh0FtXPIGLOSGcu+OdpREriws8ksSpiZCvHpGc8cMP5JhNkjYOk71bfFphPQeGzxAqQr+0w4bsMkf4XHP1cXHVbaVP89ifVwqpnOLSm6Z7poTfguO8PMlHnoJIL6KEdnddmgKmQclRMFlerlVjcT55VFL4YAOetN7tbBZHcC4o/zGFgXdTfQWGNug7wHPvStMAArpFZUbSMEmHMdckbXgCCGCGVZw3qYQV9D3ALkAlwvPGQo+RXckMJ3kgk6trHnzxojWVfxsuflrcyDzorAmx+qn4Ei6R+HqxkrM7mSAgV45vyVlwN5GlyF7yv8g";
-
 
     public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition)
     {
@@ -284,6 +293,149 @@ public class ExtraOpModeFunctions
                 break;
         }
         return angle;
+    }
+
+    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+    private static final boolean PHONE_IS_PORTRAIT = false;
+
+    private static final String VUFORIA_KEY =
+            "AYkCgy7/////AAABmcVEWPZVAkr+qqRZ5GKKMtplRC79gsSR0agZEVe/znTU27Ffh0FtXPIGLOSGcu+OdpREriws8ksSpiZCvHpGc8cMP5JhNkjYOk71bfFphPQeGzxAqQr+0w4bsMkf4XHP1cXHVbaVP89ifVwqpnOLSm6Z7poTfguO8PMlHnoJIL6KEdnddmgKmQclRMFlerlVjcT55VFL4YAOetN7tbBZHcC4o/zGFgXdTfQWGNug7wHPvStMAArpFZUbSMEmHMdckbXgCCGCGVZw3qYQV9D3ALkAlwvPGQo+RXckMJ3kgk6trHnzxojWVfxsuflrcyDzorAmx+qn4Ei6R+HqxkrM7mSAgV45vyVlwN5GlyF7yv8g";
+
+
+
+    public ConeColor grabAndProcessImage(FieldSide fieldSide) {
+        ConeColor coneColor = ConeColor.BLUE;
+        Image imageRGB565 = null;
+
+        numGreen = 0;
+        numRed = 0;
+        numBlue = 0;
+
+        //CameraDevice.getInstance().setFlashTorchMode(true);
+        CameraDevice.getInstance().start();
+
+        try {
+            Frame frame = vuforia.getFrameQueue().take();
+
+            localLop.telemetry.addData("Image found ", frame.getNumImages());
+            //localLop.telemetry.update();
+            //linearOpMode.sleep(2000);
+            for (int i = 0; i < frame.getNumImages(); ++i) {
+                Image image = frame.getImage(i);
+                //localLop.telemetry.addData("Image Num ", frame.getNumImages());
+                //localLop.telemetry.update();
+                //linearOpMode.sleep(2000);
+                if (image.getFormat() == PIXEL_FORMAT.RGB565) {
+                    imageRGB565 = image;
+                    //localLop.telemetry.addData("Image format ", image.getFormat());
+                    //localLop.telemetry.update();
+                    //linearOpMode.sleep(2000);
+
+                    break;
+                }
+            }
+
+            if (imageRGB565 != null) {
+                // grab the image
+                Bitmap bm = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
+                bm.copyPixelsFromBuffer(imageRGB565.getPixels());
+                //if (fieldSide == FieldSide.RED)
+                if (true) {
+
+                    localLop.telemetry.addData("Test", numBlue);
+                    // create some variables to index the pixels
+                    int xMidMin = 0;
+                    int xMidMax = 0;
+                    int yMidMin = 0;
+                    int yMidMax = 0;
+
+
+                    //int xpix = 0;
+                    //int ypix = 0;
+
+                    // Locations of where to look for marker
+
+
+                    xMidMin = (int) (((1.65) * 480) / 4);
+                    xMidMax = (int) (((3.0) * 480) / 4);
+                    yMidMin = (int) (((2.2) * 640) / 5.4);
+                    yMidMax = (int) (((3.0) * 640) / 5.4);
+                    //ypix = ((y1MidMin+y1MidMax)/2);
+                    //xpix = ((xMidMin+xMidMax)/2);
+
+
+                    int pixel = 0;
+
+                    for (int y = yMidMin; y <= yMidMax; y++) {
+                        for (int x = xMidMin; x <= xMidMax; x++) {
+                            // yellow in RGB is 0xFFFF00
+                            pixel = bm.getPixel(y, x);
+                            //localLop.telemetry.addData("Pixel: ", "%8x", pixel);
+                            //localLop.telemetry.update();
+                            //localLop.sleep(500);
+
+                            // Count red pixels
+                            if ((pixel & 0x00ff0000) > 0x00800000)  //red
+                            {
+                                if ((pixel & 0x0000ff00) < 0x00005000)  //green
+                                {
+                                    if ((pixel & 0x000000ff) < 0x0000a50)  //blue
+                                    {
+                                        numRed++;
+                                    }
+                                }
+                            }
+
+                            // Count green pixels
+                            if ((pixel & 0x00ff0000) < 0x00600000)  //red
+                            {
+                                if ((pixel & 0x0000ff00) > 0x00005500)  //green
+                                {
+                                    if ((pixel & 0x000000ff) < 0x0000a60)  //blue
+                                    {
+                                        numGreen++;
+                                    }
+                                }
+                            }
+
+                            // Count blue pixels
+                            if ((pixel & 0x00ff0000) < 0x00400000)  //red
+                            {
+                                if ((pixel & 0x0000ff00) < 0x00006000)  //green
+                                {
+                                    if ((pixel & 0x000000ff) > 0x00000070)  //blue
+                                    {
+                                        numBlue++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (numGreen >= 100) {
+                        localLop.telemetry.addData("Green", numGreen);
+                        coneColor = ConeColor.GREEN;
+                    } else if (numRed >= 100) {
+                        localLop.telemetry.addData("Red", numRed);
+                        coneColor = ConeColor.RED;
+                    } else if (numBlue >= 100) {
+                        localLop.telemetry.addData("Blue", numBlue);
+                        coneColor = ConeColor.BLUE;
+                    }
+
+                }
+            }
+
+            localLop.telemetry.addData("Red_", numRed);
+            localLop.telemetry.addData("Green_", numGreen);
+            localLop.telemetry.addData("Blue_", numBlue);
+            localLop.telemetry.update();
+
+        } catch (InterruptedException exc) {
+            exc.printStackTrace();
+        }
+
+        return coneColor;
     }
 }
 

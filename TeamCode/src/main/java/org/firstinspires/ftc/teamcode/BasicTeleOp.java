@@ -21,6 +21,7 @@ public class BasicTeleOp extends LinearOpMode
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
+
         int IMUReset = 0;
         double stickForward;
         double stickSideways;
@@ -61,6 +62,7 @@ public class BasicTeleOp extends LinearOpMode
         extras.clawClose();
 
         waitForStart();
+
 
         while (!isStopRequested())
         {
@@ -415,6 +417,8 @@ public class BasicTeleOp extends LinearOpMode
 
             //colors = extras.colorSensor.getNormalizedColors();
 
+            extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
@@ -423,6 +427,9 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
             telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
             telemetry.addLine();
+            telemetry.addData("Red_", extras.numRed);
+            telemetry.addData("Green_", extras.numGreen);
+            telemetry.addData("Blue_", extras.numBlue);
 
             telemetry.addData("Elevator 1 Current Voltage: ", currentAmps1);
             telemetry.addData("Elevator 2 Current Voltage: ", currentAmps2);
