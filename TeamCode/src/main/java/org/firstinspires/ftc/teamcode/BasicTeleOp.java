@@ -417,7 +417,7 @@ public class BasicTeleOp extends LinearOpMode
 
             //colors = extras.colorSensor.getNormalizedColors();
 
-            extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+            //extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
@@ -426,7 +426,7 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
             telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
             telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
-            telemetry.addLine();
+            //telemetry.addLine();
             telemetry.addData("Red_", extras.numRed);
             telemetry.addData("Green_", extras.numGreen);
             telemetry.addData("Blue_", extras.numBlue);

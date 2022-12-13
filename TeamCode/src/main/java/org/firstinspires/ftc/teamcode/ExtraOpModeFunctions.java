@@ -317,7 +317,7 @@ public class ExtraOpModeFunctions
         try {
             Frame frame = vuforia.getFrameQueue().take();
 
-            localLop.telemetry.addData("Image found ", frame.getNumImages());
+            //localLop.telemetry.addData("Image found ", frame.getNumImages());
             //localLop.telemetry.update();
             //linearOpMode.sleep(2000);
             for (int i = 0; i < frame.getNumImages(); ++i) {
@@ -356,10 +356,10 @@ public class ExtraOpModeFunctions
                     // Locations of where to look for marker
 
 
-                    xMidMin = (int) (((1.65) * 480) / 4);
+                    xMidMin = (int) (((2.4) * 480) / 4);
                     xMidMax = (int) (((3.0) * 480) / 4);
-                    yMidMin = (int) (((2.2) * 640) / 5.4);
-                    yMidMax = (int) (((3.0) * 640) / 5.4);
+                    yMidMin = (int) (((2.6) * 640) / 5.4);
+                    yMidMax = (int) (((3.6) * 640) / 5.4);
                     //ypix = ((y1MidMin+y1MidMax)/2);
                     //xpix = ((xMidMin+xMidMax)/2);
 
@@ -413,24 +413,27 @@ public class ExtraOpModeFunctions
                     }
 
                     if (numGreen >= 100) {
-                        localLop.telemetry.addData("Green", numGreen);
+                        //localLop.telemetry.addData("Green", numGreen);
                         coneColor = ConeColor.GREEN;
                     } else if (numRed >= 100) {
-                        localLop.telemetry.addData("Red", numRed);
+                        //localLop.telemetry.addData("Red", numRed);
                         coneColor = ConeColor.RED;
                     } else if (numBlue >= 100) {
-                        localLop.telemetry.addData("Blue", numBlue);
+                        //localLop.telemetry.addData("Blue", numBlue);
                         coneColor = ConeColor.BLUE;
                     }
 
                 }
             }
 
+            /*
             localLop.telemetry.addData("Red_", numRed);
             localLop.telemetry.addData("Green_", numGreen);
             localLop.telemetry.addData("Blue_", numBlue);
             localLop.telemetry.update();
 
+
+             */
         } catch (InterruptedException exc) {
             exc.printStackTrace();
         }
