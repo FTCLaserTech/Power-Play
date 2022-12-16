@@ -24,6 +24,11 @@ public class TrajectoryBook
     public TrajectorySequence teleOpPoleRight;
     public TrajectorySequence teleOpConeRight;
 
+    public TrajectorySequence leftParkFromStart;
+    public TrajectorySequence middleParkFromStart;
+    public TrajectorySequence rightParkFromStart;
+
+
 
     public TrajectoryBook (SampleMecanumDrive drivePass, ExtraOpModeFunctions extrasPass)
     {
@@ -134,4 +139,26 @@ public class TrajectoryBook
                 .lineToLinearHeading(new Pose2d(0, 0, Math.toRadians(180)))
                 .build();
     }
+
+    public void LeftParkFromStart (Pose2d pose)
+    {
+        leftParkFromStart = drive.trajectorySequenceBuilder(pose)
+                .lineToLinearHeading(new Pose2d(10, -10, Math.toRadians(0)))
+                .build();
+    }
+
+    public void MiddleParkFromStart (Pose2d pose)
+    {
+        middleParkFromStart = drive.trajectorySequenceBuilder(pose)
+                .lineToLinearHeading(new Pose2d(10, 0, Math.toRadians(0)))
+                .build();
+    }
+
+    public void RightParkFromStart (Pose2d pose)
+    {
+        rightParkFromStart = drive.trajectorySequenceBuilder(pose)
+                .lineToLinearHeading(new Pose2d(10, 10, Math.toRadians(0)))
+                .build();
+    }
+
 }

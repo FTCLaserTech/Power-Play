@@ -114,7 +114,6 @@ public class ExtraOpModeFunctions
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
     }
 
-
     public void initElevator()
     {
         elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -159,13 +158,7 @@ public class ExtraOpModeFunctions
         localLop.telemetry.addLine("Elevator Initialized!");
         localLop.telemetry.update();
 
-        //elevator1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        //elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        //elevator2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        //elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-
     }
-
 
     public void clawOpen()
     {
@@ -303,7 +296,8 @@ public class ExtraOpModeFunctions
 
 
 
-    public ConeColor grabAndProcessImage(FieldSide fieldSide) {
+    public ConeColor grabAndProcessImage(FieldSide fieldSide)
+    {
         ConeColor coneColor = ConeColor.BLUE;
         Image imageRGB565 = null;
 
@@ -314,18 +308,21 @@ public class ExtraOpModeFunctions
         //CameraDevice.getInstance().setFlashTorchMode(true);
         CameraDevice.getInstance().start();
 
-        try {
+        try
+        {
             Frame frame = vuforia.getFrameQueue().take();
 
             //localLop.telemetry.addData("Image found ", frame.getNumImages());
             //localLop.telemetry.update();
             //linearOpMode.sleep(2000);
-            for (int i = 0; i < frame.getNumImages(); ++i) {
+            for (int i = 0; i < frame.getNumImages(); ++i)
+            {
                 Image image = frame.getImage(i);
                 //localLop.telemetry.addData("Image Num ", frame.getNumImages());
                 //localLop.telemetry.update();
                 //linearOpMode.sleep(2000);
-                if (image.getFormat() == PIXEL_FORMAT.RGB565) {
+                if (image.getFormat() == PIXEL_FORMAT.RGB565)
+                {
                     imageRGB565 = image;
                     //localLop.telemetry.addData("Image format ", image.getFormat());
                     //localLop.telemetry.update();
@@ -335,12 +332,14 @@ public class ExtraOpModeFunctions
                 }
             }
 
-            if (imageRGB565 != null) {
+            if (imageRGB565 != null)
+            {
                 // grab the image
                 Bitmap bm = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
                 bm.copyPixelsFromBuffer(imageRGB565.getPixels());
                 //if (fieldSide == FieldSide.RED)
-                if (true) {
+                if (true)
+                {
 
                     localLop.telemetry.addData("Test", numBlue);
                     // create some variables to index the pixels
@@ -366,8 +365,10 @@ public class ExtraOpModeFunctions
 
                     int pixel = 0;
 
-                    for (int y = yMidMin; y <= yMidMax; y++) {
-                        for (int x = xMidMin; x <= xMidMax; x++) {
+                    for (int y = yMidMin; y <= yMidMax; y++)
+                    {
+                        for (int x = xMidMin; x <= xMidMax; x++)
+                        {
                             // yellow in RGB is 0xFFFF00
                             pixel = bm.getPixel(y, x);
                             //localLop.telemetry.addData("Pixel: ", "%8x", pixel);
@@ -412,13 +413,18 @@ public class ExtraOpModeFunctions
                         }
                     }
 
-                    if (numGreen >= 100) {
+                    if (numGreen >= 100)
+                    {
                         //localLop.telemetry.addData("Green", numGreen);
                         coneColor = ConeColor.GREEN;
-                    } else if (numRed >= 100) {
+                    }
+                    else if (numRed >= 100)
+                    {
                         //localLop.telemetry.addData("Red", numRed);
                         coneColor = ConeColor.RED;
-                    } else if (numBlue >= 100) {
+                    }
+                    else if (numBlue >= 100)
+                    {
                         //localLop.telemetry.addData("Blue", numBlue);
                         coneColor = ConeColor.BLUE;
                     }
@@ -434,7 +440,9 @@ public class ExtraOpModeFunctions
 
 
              */
-        } catch (InterruptedException exc) {
+        }
+        catch (InterruptedException exc)
+        {
             exc.printStackTrace();
         }
 
