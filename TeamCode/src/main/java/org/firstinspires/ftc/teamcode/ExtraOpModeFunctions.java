@@ -337,11 +337,14 @@ public class ExtraOpModeFunctions
                 // grab the image
                 Bitmap bm = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
                 bm.copyPixelsFromBuffer(imageRGB565.getPixels());
+
                 //if (fieldSide == FieldSide.RED)
                 if (true)
                 {
 
-                    localLop.telemetry.addData("Test", numBlue);
+                    localLop.telemetry.addData("Width: ", imageRGB565.getWidth());
+                    localLop.telemetry.addData("Height: ", imageRGB565.getHeight());
+
                     // create some variables to index the pixels
                     int xMidMin = 0;
                     int xMidMax = 0;
@@ -355,10 +358,10 @@ public class ExtraOpModeFunctions
                     // Locations of where to look for marker
 
 
-                    xMidMin = (int) (((2.4) * 480) / 4);
-                    xMidMax = (int) (((3.0) * 480) / 4);
-                    yMidMin = (int) (((2.6) * 640) / 5.4);
-                    yMidMax = (int) (((3.6) * 640) / 5.4);
+                    xMidMin = (int) (((2.2) * 480) / 4);
+                    xMidMax = (int) (((3.2) * 480) / 4);
+                    yMidMin = (int) (((1.7) * 640) / 5.4);
+                    yMidMax = (int) (((2.5) * 640) / 5.4);
                     //ypix = ((y1MidMin+y1MidMax)/2);
                     //xpix = ((xMidMin+xMidMax)/2);
 
@@ -413,17 +416,17 @@ public class ExtraOpModeFunctions
                         }
                     }
 
-                    if (numGreen >= 100)
+                    if (numGreen >= 3000)
                     {
                         //localLop.telemetry.addData("Green", numGreen);
                         coneColor = ConeColor.GREEN;
                     }
-                    else if (numRed >= 100)
+                    else if (numRed >= 1000)
                     {
                         //localLop.telemetry.addData("Red", numRed);
                         coneColor = ConeColor.RED;
                     }
-                    else if (numBlue >= 100)
+                    else
                     {
                         //localLop.telemetry.addData("Blue", numBlue);
                         coneColor = ConeColor.BLUE;

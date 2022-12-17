@@ -9,16 +9,19 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-public class BlueParkOnly extends LinearOpMode
+public class ParkOnly extends LinearOpMode
 {
     @Override
     public void runOpMode() throws InterruptedException
     {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive.IMUInit(hardwareMap);
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
         extras.clawClose();
+        extras.wristMiddle();
+        extras.initElevator();
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
@@ -28,25 +31,37 @@ public class BlueParkOnly extends LinearOpMode
         telemetry.addData("heading", poseEstimate.getHeading());
         telemetry.update();
 
+        book.LeftParkFromStart(drive.getPoseEstimate());
+        book.MiddleParkFromStart(drive.getPoseEstimate());
+        book.RightParkFromStart(drive.getPoseEstimate());
+
         waitForStart();
 
-        switch(extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.BLUE))
+        ExtraOpModeFunctions.ConeColor coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        telemetry.addData("Cone Color: ", coneColor);
+        telemetry.update();
+
+        switch(coneColor)
         {
             case RED:
                 // move to LEFT column of parking tiles
                 drive.followTrajectorySequence(book.leftParkFromStart);
                 break;
 
-            case GREEN:
+            case BLUE:
                 // move to MIDDLE column of parking tiles
                 drive.followTrajectorySequence(book.middleParkFromStart);
                 break;
 
-            case BLUE:
+            case GREEN:
                 // move to RIGHT colum of parking tiles
                 drive.followTrajectorySequence(book.rightParkFromStart);
                 break;
+
         }
+
+
+
 
         sleep(20000);
     }

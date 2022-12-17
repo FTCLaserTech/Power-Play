@@ -89,8 +89,6 @@ public class BasicTeleOp extends LinearOpMode
                 stop();
             }
 
-
-
             slope = -elevMultMin / elevHeightMax;
             elevatorEncoderCounts = (extras.elevator1.getCurrentPosition() + extras.elevator2.getCurrentPosition()) / 2;
             elevMult = slope * elevatorEncoderCounts + 1;
@@ -108,7 +106,8 @@ public class BasicTeleOp extends LinearOpMode
                 speedMultiplier = 0.75;
             }
 
-            adjustedAngle = extras.adjustAngleForDriverPosition(drive.getRawExternalHeading(), ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
+            //adjustedAngle = extras.adjustAngleForDriverPosition(drive.getRawExternalHeading(), ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
+            adjustedAngle = extras.adjustAngleForDriverPosition(drive.imu.getAngularOrientation().firstAngle, ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
             stickForward = -gamepad1.left_stick_y * speedMultiplier;
             stickSideways = -gamepad1.left_stick_x * speedMultiplier;
             stickSidewaysRotated = (stickSideways * Math.cos(adjustedAngle)) - (stickForward * Math.sin(adjustedAngle));
@@ -138,7 +137,7 @@ public class BasicTeleOp extends LinearOpMode
             else if (!gamepad1.a && gp1_a_pressed)
             {
                 Pose2d startPose = drive.getPoseEstimate();
-                book.TeleOpConeLeft(startPose);
+                //book.TeleOpConeLeft(startPose);
 
                 drive.followTrajectorySequence(book.teleOpConeLeft);
             }
@@ -419,7 +418,7 @@ public class BasicTeleOp extends LinearOpMode
 
             //colors = extras.colorSensor.getNormalizedColors();
 
-            //extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+            //ExtraOpModeFunctions.ConeColor coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
@@ -429,9 +428,13 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
             telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
             //telemetry.addLine();
+
+            /*
+            telemetry.addData("Cone Color: ", coneColor);
             telemetry.addData("Red_", extras.numRed);
             telemetry.addData("Green_", extras.numGreen);
             telemetry.addData("Blue_", extras.numBlue);
+            */
 
             telemetry.addData("Elevator 1 Current Voltage: ", currentAmps1);
             telemetry.addData("Elevator 2 Current Voltage: ", currentAmps2);

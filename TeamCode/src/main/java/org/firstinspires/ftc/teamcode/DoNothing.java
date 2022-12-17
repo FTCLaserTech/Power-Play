@@ -33,7 +33,7 @@ public class DoNothing extends LinearOpMode
     public void runOpMode() throws InterruptedException
     {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        //drive.IMUInit(hardwareMap);
+        drive.IMUInit(hardwareMap);
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
@@ -56,11 +56,11 @@ public class DoNothing extends LinearOpMode
 
         waitForStart();
 
-        drive.setDrivePower(new Pose2d(0.3, 0, 0));
+        //drive.setDrivePower(new Pose2d(0.3, 0, 0));
         //drive.setWeightedDrivePower(new Pose2d(0.3, 0, 0));
-        sleep(750);
+        //sleep(750);
         //drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-        drive.setDrivePower(new Pose2d(0, 0, 0));
+        //drive.setDrivePower(new Pose2d(0, 0, 0));
         sleep(20000);
     }
 }

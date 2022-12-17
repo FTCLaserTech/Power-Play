@@ -62,7 +62,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8.5, 0, 0);
 
     //public static double LATERAL_MULTIPLIER = 1;
-    public static double LATERAL_MULTIPLIER = 1.185;
+    public static double LATERAL_MULTIPLIER = 1.121;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -78,7 +78,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
 
-    private BNO055IMU imu;
+    public BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
@@ -154,7 +154,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-        //setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
+        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);
