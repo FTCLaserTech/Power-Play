@@ -317,14 +317,15 @@ public class BasicTeleOp extends LinearOpMode
                 switch(extras.wristPosition)
                 {
                     case LEFT:
+                        extras.wristMiddle();
                         break;
 
                     case MIDDLE:
-                        extras.wristLeft();
+                        extras.wristRight();
                         break;
 
                     case RIGHT:
-                        extras.wristMiddle();
+                       // extras.wristMiddle();
                         break;
                 }
             }
@@ -340,14 +341,15 @@ public class BasicTeleOp extends LinearOpMode
                 switch(extras.wristPosition)
                 {
                     case LEFT:
-                        extras.wristMiddle();
+                       // extras.wristMiddle();
                         break;
 
                     case MIDDLE:
-                        extras.wristRight();
+                        extras.wristLeft();
                         break;
 
                     case RIGHT:
+                        extras.wristMiddle();
                         break;
                 }
             }
