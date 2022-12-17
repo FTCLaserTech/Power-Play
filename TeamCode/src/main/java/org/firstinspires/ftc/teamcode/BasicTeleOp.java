@@ -357,7 +357,7 @@ public class BasicTeleOp extends LinearOpMode
             // elevator up movements
             if(gamepad2.dpad_up)
             {
-                //gp2_dpad_up_pressed = true;
+                gp2_dpad_up_pressed = true;
             }
             else if (!gamepad2.dpad_up && gp2_dpad_up_pressed)
             {
@@ -389,7 +389,7 @@ public class BasicTeleOp extends LinearOpMode
             // elevator down movements
             if(gamepad2.dpad_down)
             {
-                //gp2_dpad_down_pressed = true;
+                gp2_dpad_down_pressed = true;
             }
             else if (!gamepad2.dpad_down && gp2_dpad_down_pressed)
             {

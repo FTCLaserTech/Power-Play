@@ -190,7 +190,7 @@ public class ExtraOpModeFunctions
 
     public void wristMiddle()
     {
-        wrist.setPosition(0.51);
+        wrist.setPosition(0.505);
         wristPosition = wristPosition.MIDDLE;
     }
 
