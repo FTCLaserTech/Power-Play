@@ -416,10 +416,10 @@ public class ExtraOpModeFunctions
                         }
                     }
 
-                    if (numGreen >= 3000)
+                    if (numBlue >= 1000)
                     {
                         //localLop.telemetry.addData("Green", numGreen);
-                        coneColor = ConeColor.GREEN;
+                        coneColor = ConeColor.BLUE;
                     }
                     else if (numRed >= 1000)
                     {
@@ -429,7 +429,7 @@ public class ExtraOpModeFunctions
                     else
                     {
                         //localLop.telemetry.addData("Blue", numBlue);
-                        coneColor = ConeColor.BLUE;
+                        coneColor = ConeColor.GREEN;
                     }
 
                 }
