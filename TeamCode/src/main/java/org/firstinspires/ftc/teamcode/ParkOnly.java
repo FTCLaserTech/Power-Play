@@ -37,23 +37,23 @@ public class ParkOnly extends LinearOpMode
 
         waitForStart();
 
-        ExtraOpModeFunctions.ConeColor coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        ExtraOpModeFunctions.Signal coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
         telemetry.addData("Cone Color: ", coneColor);
         telemetry.update();
 
         switch(coneColor)
         {
-            case RED:
+            case ONE:
                 // move to LEFT column of parking tiles
                 drive.followTrajectorySequence(book.leftParkFromStart);
                 break;
 
-            case BLUE:
+            case TWO:
                 // move to MIDDLE column of parking tiles
                 drive.followTrajectorySequence(book.middleParkFromStart);
                 break;
 
-            case GREEN:
+            case THREE:
                 // move to RIGHT colum of parking tiles
                 drive.followTrajectorySequence(book.rightParkFromStart);
                 break;

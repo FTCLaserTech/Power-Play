@@ -35,7 +35,7 @@ public class DriveConstants {
      * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
      * from DriveVelocityPIDTuner.
      */
-    public static final boolean RUN_USING_ENCODER = true;
+    public static final boolean RUN_USING_ENCODER = false;
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(7, 0, 0,
     //        getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
@@ -55,8 +55,12 @@ public class DriveConstants {
     //public static double WHEEL_RADIUS = 1.9685
     //public static double GEAR_RATIO = 0.5
     //public static double TRACK_WIDTH = 16.05;
+    //New Robot: Maybe bad
+    //public static double WHEEL_RADIUS = 1.88976; // in
+    //public static double GEAR_RATIO = 1.02; // output (wheel) speed / input (motor) speed
+    //public static double TRACK_WIDTH = 11; // in
     public static double WHEEL_RADIUS = 1.88976; // in
-    public static double GEAR_RATIO = 1.02; // output (wheel) speed / input (motor) speed
+    public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 11; // in
 
 
@@ -66,11 +70,17 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.02;
-    public static double kA = 0.005;
+
+    public static double kV = 0.0191;;
+    public static double kA = 0.0035;
     public static double kStatic = 0;
 
-    /*
+    // NEW ROBOT: maybe bad
+    //public static double kV = 0.02;
+    //public static double kA = 0.005;
+    //public static double kStatic = 0;
+
+    /* // OLD ROBOT:
     public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
     public static double kA = 0;
     public static double kStatic = 0;
@@ -86,7 +96,7 @@ public class DriveConstants {
 
     public static double MAX_VEL = 48;
     public static double MAX_ACCEL = 48;
-    public static double MAX_ANG_VEL = 4.6;
+    public static double MAX_ANG_VEL = 4.649; // was 4.6
     public static double MAX_ANG_ACCEL = Math.toRadians(180);
 	
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 import android.graphics.Bitmap;
@@ -28,11 +29,20 @@ import com.vuforia.Image;
 import com.vuforia.Vuforia;
 import com.vuforia.PIXEL_FORMAT;
 
+import boofcv.struct.image.GrayU8;
+import boofcv.android.ConvertBitmap;
+import boofcv.abst.fiducial.QrCodeDetector;
+import boofcv.alg.fiducial.qrcode.QrCode;
+import boofcv.factory.fiducial.ConfigQrCode;
+import boofcv.factory.fiducial.FactoryFiducial;
+
+import java.util.List;
+
 @Config
 public class ExtraOpModeFunctions
 {
     public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
-    public enum ConeColor {GREEN, RED, BLUE}
+    public enum Signal {ONE, TWO, THREE}
     public enum FieldSide {RED, BLUE}
 
     int numRed = 0;
@@ -295,10 +305,12 @@ public class ExtraOpModeFunctions
             "AYkCgy7/////AAABmcVEWPZVAkr+qqRZ5GKKMtplRC79gsSR0agZEVe/znTU27Ffh0FtXPIGLOSGcu+OdpREriws8ksSpiZCvHpGc8cMP5JhNkjYOk71bfFphPQeGzxAqQr+0w4bsMkf4XHP1cXHVbaVP89ifVwqpnOLSm6Z7poTfguO8PMlHnoJIL6KEdnddmgKmQclRMFlerlVjcT55VFL4YAOetN7tbBZHcC4o/zGFgXdTfQWGNug7wHPvStMAArpFZUbSMEmHMdckbXgCCGCGVZw3qYQV9D3ALkAlwvPGQo+RXckMJ3kgk6trHnzxojWVfxsuflrcyDzorAmx+qn4Ei6R+HqxkrM7mSAgV45vyVlwN5GlyF7yv8g";
 
 
+    private int signalLocation = 0;
 
-    public ConeColor grabAndProcessImage(FieldSide fieldSide)
+    public Signal grabAndProcessImage(FieldSide fieldSide)
     {
-        ConeColor coneColor = ConeColor.BLUE;
+
+        Signal signal = Signal.ONE;
         Image imageRGB565 = null;
 
         numGreen = 0;
@@ -335,121 +347,54 @@ public class ExtraOpModeFunctions
             if (imageRGB565 != null)
             {
                 // grab the image
-                Bitmap bm = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
-                bm.copyPixelsFromBuffer(imageRGB565.getPixels());
+                Bitmap input = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
+                input.copyPixelsFromBuffer(imageRGB565.getPixels());
 
-                //if (fieldSide == FieldSide.RED)
-                if (true)
-                {
+                GrayU8 gray = ConvertBitmap.bitmapToGray(input, (GrayU8)null, null);
 
-                    localLop.telemetry.addData("Width: ", imageRGB565.getWidth());
-                    localLop.telemetry.addData("Height: ", imageRGB565.getHeight());
+                //var config = new ConfigQrCode();
+                //QrCodeDetector<GrayU8> detector = FactoryFiducial.qrcode(config, GrayU8.class);
+                QrCodeDetector<GrayU8> detector = FactoryFiducial.qrcode(new ConfigQrCode(), GrayU8.class);
 
-                    // create some variables to index the pixels
-                    int xMidMin = 0;
-                    int xMidMax = 0;
-                    int yMidMin = 0;
-                    int yMidMax = 0;
+                detector.process(gray);
 
+                // Gets a list of all the qr codes it could successfully detect and decode
+                List<QrCode> detections = detector.getDetections();
 
-                    //int xpix = 0;
-                    //int ypix = 0;
+                for (QrCode qr : detections) {
+                    // The message encoded in the marker
+                    telemetry.addData("message: ", qr.message);
 
-                    // Locations of where to look for marker
-
-
-                    xMidMin = (int) (((2.2) * 480) / 4);
-                    xMidMax = (int) (((3.2) * 480) / 4);
-                    yMidMin = (int) (((1.7) * 640) / 5.4);
-                    yMidMax = (int) (((2.5) * 640) / 5.4);
-                    //ypix = ((y1MidMin+y1MidMax)/2);
-                    //xpix = ((xMidMin+xMidMax)/2);
-
-
-                    int pixel = 0;
-
-                    for (int y = yMidMin; y <= yMidMax; y++)
+                    if (qr.message.contentEquals("one"))
                     {
-                        for (int x = xMidMin; x <= xMidMax; x++)
-                        {
-                            // yellow in RGB is 0xFFFF00
-                            pixel = bm.getPixel(y, x);
-                            //localLop.telemetry.addData("Pixel: ", "%8x", pixel);
-                            //localLop.telemetry.update();
-                            //localLop.sleep(500);
-
-                            // Count red pixels
-                            if ((pixel & 0x00ff0000) > 0x00800000)  //red
-                            {
-                                if ((pixel & 0x0000ff00) < 0x00005000)  //green
-                                {
-                                    if ((pixel & 0x000000ff) < 0x0000a50)  //blue
-                                    {
-                                        numRed++;
-                                    }
-                                }
-                            }
-
-                            // Count green pixels
-                            if ((pixel & 0x00ff0000) < 0x00600000)  //red
-                            {
-                                if ((pixel & 0x0000ff00) > 0x00005500)  //green
-                                {
-                                    if ((pixel & 0x000000ff) < 0x0000a60)  //blue
-                                    {
-                                        numGreen++;
-                                    }
-                                }
-                            }
-
-                            // Count blue pixels
-                            if ((pixel & 0x00ff0000) < 0x00400000)  //red
-                            {
-                                if ((pixel & 0x0000ff00) < 0x00006000)  //green
-                                {
-                                    if ((pixel & 0x000000ff) > 0x00000070)  //blue
-                                    {
-                                        numBlue++;
-                                    }
-                                }
-                            }
-                        }
+                        signalLocation = 1;
+                        signal = signal.ONE;
                     }
-
-                    if (numBlue >= 1000)
+                    else if (qr.message.contentEquals("two"))
                     {
-                        //localLop.telemetry.addData("Green", numGreen);
-                        coneColor = ConeColor.BLUE;
-                    }
-                    else if (numRed >= 1000)
-                    {
-                        //localLop.telemetry.addData("Red", numRed);
-                        coneColor = ConeColor.RED;
+                        signalLocation = 2;
+                        signal = signal.TWO;
                     }
                     else
                     {
-                        //localLop.telemetry.addData("Blue", numBlue);
-                        coneColor = ConeColor.GREEN;
+                        signalLocation = 3;
+                        signal = signal.THREE;
                     }
 
                 }
+
+
             }
 
-            /*
-            localLop.telemetry.addData("Red_", numRed);
-            localLop.telemetry.addData("Green_", numGreen);
-            localLop.telemetry.addData("Blue_", numBlue);
-            localLop.telemetry.update();
+            telemetry.addData("signalLocation ", signalLocation);
 
-
-             */
         }
         catch (InterruptedException exc)
         {
             exc.printStackTrace();
         }
 
-        return coneColor;
+        return signal;
     }
 }
 
