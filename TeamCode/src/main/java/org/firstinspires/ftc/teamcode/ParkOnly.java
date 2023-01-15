@@ -37,11 +37,11 @@ public class ParkOnly extends LinearOpMode
 
         waitForStart();
 
-        ExtraOpModeFunctions.Signal coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
-        telemetry.addData("Cone Color: ", coneColor);
+        ExtraOpModeFunctions.Signal Signal = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        telemetry.addData("Signal Location: ", Signal);
         telemetry.update();
 
-        switch(coneColor)
+        switch(Signal)
         {
             case ONE:
                 // move to LEFT column of parking tiles

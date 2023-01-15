@@ -110,25 +110,25 @@ public class TrajectoryBook
     public void LeftParkFromStart (Pose2d pose)
     {
         leftParkFromStart = drive.trajectorySequenceBuilder(pose)
-                .lineToLinearHeading(new Pose2d(5, 23, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(30, 23, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(5, 29, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(30, 29, Math.toRadians(0)))
                 .build();
     }
 
     public void MiddleParkFromStart (Pose2d pose)
     {
         middleParkFromStart = drive.trajectorySequenceBuilder(pose)
-                .lineToLinearHeading(new Pose2d(8, -5, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(30, -5, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(8, 5, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(30, 5, Math.toRadians(0)))
                 .build();
     }
 
     public void RightParkFromStart (Pose2d pose)
     {
         rightParkFromStart = drive.trajectorySequenceBuilder(pose)
-                .lineToLinearHeading(new Pose2d(5, -29, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(28, -29, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(30, -29, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(5, -19, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(28, -19, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(30, -19, Math.toRadians(0)))
                 .build();
     }
 

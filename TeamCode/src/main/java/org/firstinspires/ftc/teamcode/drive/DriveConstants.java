@@ -38,10 +38,10 @@ public class DriveConstants {
     public static final boolean RUN_USING_ENCODER = false;
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(7, 0, 0,
     //        getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
-            getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
-    //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(27, 0, 12, 13.11);
+    //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0, 13.16250122);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(27, 0, 12, 13.11);
     //  this is f -       getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)
+    //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(9, 0, 2, 9.5);
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -61,7 +61,7 @@ public class DriveConstants {
     //public static double TRACK_WIDTH = 11; // in
     public static double WHEEL_RADIUS = 1.88976; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 11; // in
+    public static double TRACK_WIDTH = 11.29; // in
 
 
     /*
@@ -71,7 +71,7 @@ public class DriveConstants {
      * empirically tuned.
      */
 
-    public static double kV = 0.0191;;
+    public static double kV = 0.02;;
     public static double kA = 0.0035;
     public static double kStatic = 0;
 
@@ -94,10 +94,10 @@ public class DriveConstants {
      * inches.
      */
 
-    public static double MAX_VEL = 48;
-    public static double MAX_ACCEL = 48;
-    public static double MAX_ANG_VEL = 4.649; // was 4.6
-    public static double MAX_ANG_ACCEL = Math.toRadians(180);
+    public static double MAX_VEL = 45;
+    public static double MAX_ACCEL = 62;
+    public static double MAX_ANG_VEL = 10;
+    public static double MAX_ANG_ACCEL = Math.toRadians(138.199);
 	
 
 

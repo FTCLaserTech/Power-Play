@@ -1,140 +1,125 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
+import android.graphics.Bitmap;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.vuforia.CameraDevice;
+import com.vuforia.Frame;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import boofcv.struct.image.GrayU8;
+import boofcv.android.ConvertBitmap;
+import boofcv.abst.fiducial.QrCodeDetector;
+import boofcv.alg.fiducial.qrcode.QrCode;
+import boofcv.factory.fiducial.ConfigQrCode;
+import boofcv.factory.fiducial.FactoryFiducial;
+
+import boofcv.abst.fiducial.MicroQrCodeDetector;
+import boofcv.alg.fiducial.microqr.MicroQrCode;
+import boofcv.factory.fiducial.ConfigMicroQrCode;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
+import java.util.List;
 
 @TeleOp(group = "a")
 public class CameraTest extends LinearOpMode
 {
+    private VuforiaLocalizer vuforia = null;
+    WebcamName webcamName = null;
+    private static final String VUFORIA_KEY =
+            "AYkCgy7/////AAABmcVEWPZVAkr+qqRZ5GKKMtplRC79gsSR0agZEVe/znTU27Ffh0FtXPIGLOSGcu+OdpREriws8ksSpiZCvHpGc8cMP5JhNkjYOk71bfFphPQeGzxAqQr+0w4bsMkf4XHP1cXHVbaVP89ifVwqpnOLSm6Z7poTfguO8PMlHnoJIL6KEdnddmgKmQclRMFlerlVjcT55VFL4YAOetN7tbBZHcC4o/zGFgXdTfQWGNug7wHPvStMAArpFZUbSMEmHMdckbXgCCGCGVZw3qYQV9D3ALkAlwvPGQo+RXckMJ3kgk6trHnzxojWVfxsuflrcyDzorAmx+qn4Ei6R+HqxkrM7mSAgV45vyVlwN5GlyF7yv8g";
+
+    private int signalLocation = 0;
+
     @Override
     public void runOpMode() throws InterruptedException
     {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
-        TrajectoryBook book = new TrajectoryBook(drive, extras);
 
+        // Open a webcam at a resolution close to 640x480
+        //Webcam webcam = UtilWebcamCapture.openDefault(640,480);
+        Image imageRGB565 = null;
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
-        int IMUReset = 0;
-        double stickForward;
-        double stickSideways;
-        double stickForwardRotated;
-        double stickSidewaysRotated;
-        double adjustedAngle;
-        double speedMultiplier;
+        VuforiaLocalizer.Parameters parameters;
 
-        boolean gp2_dpad_left_pressed = false;
-        boolean gp2_dpad_right_pressed = false;
-        boolean gp2_dpad_up_pressed = false;
-        boolean gp2_dpad_down_pressed = false;
-        boolean gp2_right_stick_y_neg_pressed = false;
-        boolean gp2_right_stick_y_pos_pressed = false;
-        boolean gp2_a_pressed = false;
-        boolean gp2_b_pressed = false;
-        boolean gp2_y_pressed = false;
-        boolean gp1_y_pressed = false;
-        boolean gp1_a_pressed = false;
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",hardwareMap.appContext.getPackageName());
+        parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        boolean elevatorStopped = true;
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
-        double elevMultMin = 0.5;
-        double elevMult = 0;
-        double elevHeightMax = 3100;
-        double slope;
-        double elevatorEncoderCounts;
+        parameters.cameraName = webcamName;
+        parameters.useExtendedTracking = false;
 
-        double currentAmps1;
-        double currentAmps2;
-        double maxAmps = 0;
-        int numDangerAmps = 0;
-
-        //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        extras.wristMiddle();
-        extras.clawClose();
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        vuforia.setFrameQueueCapacity(3);
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
 
         waitForStart();
 
-
         while (!isStopRequested())
         {
-            currentAmps1 = extras.elevator1.getCurrent(CurrentUnit.AMPS);
-            currentAmps2 = extras.elevator2.getCurrent(CurrentUnit.AMPS);
+            CameraDevice.getInstance().start();
+            signalLocation = 0;
 
-            if (currentAmps1 > maxAmps)
+            try
             {
-                maxAmps = currentAmps1;
-            }
-            else if (currentAmps2 > maxAmps)
-            {
-                maxAmps = currentAmps2;
-            }
+                Frame frame = vuforia.getFrameQueue().take();
 
-            if (currentAmps1 > 7 || currentAmps2 > 7)
-            {
-                numDangerAmps += 1;
-            }
-
-/*
-            if (getRuntime() >= 90 && getRuntime() <= 91)
-            {
-                extras.pattern = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
-                extras.displayPattern();
-            }
-            else
-            {
-                if (colors.alpha > 0.35)
+                for (int i = 0; i < frame.getNumImages(); ++i)
                 {
-                    extras.pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
-                    extras.displayPattern();
+                    Image image = frame.getImage(i);
+                    if (image.getFormat() == PIXEL_FORMAT.RGB565)
+                    {
+                        imageRGB565 = image;
+
+                        break;
+                    }
                 }
-                else
+
+                if (imageRGB565 != null)
                 {
-                    extras.pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE;
-                    extras.displayPattern();
+                    // grab the image
+                    Bitmap input = Bitmap.createBitmap(imageRGB565.getWidth(), imageRGB565.getHeight(), Bitmap.Config.RGB_565);
+                    input.copyPixelsFromBuffer(imageRGB565.getPixels());
+
+                    GrayU8 gray = ConvertBitmap.bitmapToGray(input, (GrayU8)null, null);
+                    MicroQrCodeDetector<GrayU8> detector = FactoryFiducial.microqr(new ConfigMicroQrCode(), GrayU8.class);
+                    detector.process(gray);
+
+                    // Gets a list of all the qr codes it could successfully detect and decode
+                    List<MicroQrCode> detections = detector.getDetections();
+
+                    for (MicroQrCode qr : detections) {
+                        // The message encoded in the marker
+                        telemetry.addData("message: ", qr.message);
+
+                        if (qr.message.contentEquals("1"))
+                        {
+                            signalLocation = 1;
+                        }
+                        else if (qr.message.contentEquals("2"))
+                        {
+                            signalLocation = 2;
+                        }
+                        else
+                        {
+                            signalLocation = 3;
+                        }
+                    }
                 }
+                telemetry.addData("signalLocation ", signalLocation);
             }
-
- */
-
-            //colors = extras.colorSensor.getNormalizedColors();
-
-            ExtraOpModeFunctions.Signal coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
-
-            Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
-            telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
-            telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
-            //telemetry.addLine();
-
-
-            telemetry.addData("Cone Color: ", coneColor);
-            telemetry.addData("Red_", extras.numRed);
-            telemetry.addData("Green_", extras.numGreen);
-            telemetry.addData("Blue_", extras.numBlue);
-
-
-            telemetry.addData("Elevator 1 Current Voltage: ", currentAmps1);
-            telemetry.addData("Elevator 2 Current Voltage: ", currentAmps2);
-            telemetry.addData("Max Amps: ", maxAmps);
-            telemetry.addData("Number of times amps was greater than 7: ", numDangerAmps);
-
-            telemetry.addData("Elapsed Time: ", getRuntime());
-
-
-            //telemetry.addLine()
-                   // .addData("Red", "%.3f", colors.red)
-                  //  .addData("Green", "%.3f", colors.green)
-                   // .addData("Blue", "%.3f", colors.blue)
-                 //   .addData("Alpha", "%.3f", colors.alpha);
+            catch (InterruptedException exc)
+            {
+                exc.printStackTrace();
+            }
 
             telemetry.update();
         }

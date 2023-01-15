@@ -35,14 +35,18 @@ import boofcv.abst.fiducial.QrCodeDetector;
 import boofcv.alg.fiducial.qrcode.QrCode;
 import boofcv.factory.fiducial.ConfigQrCode;
 import boofcv.factory.fiducial.FactoryFiducial;
+import boofcv.abst.fiducial.MicroQrCodeDetector;
+import boofcv.alg.fiducial.microqr.MicroQrCode;
+import boofcv.factory.fiducial.ConfigMicroQrCode;
+
 
 import java.util.List;
 
 @Config
 public class ExtraOpModeFunctions
 {
-    public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
     public enum Signal {ONE, TWO, THREE}
+    public enum RobotStartPosition {STRAIGHT, LEFT, RIGHT};
     public enum FieldSide {RED, BLUE}
 
     int numRed = 0;
@@ -273,11 +277,6 @@ public class ExtraOpModeFunctions
         elevator2.setPower(1.0);
     }
 
-    protected void displayPattern()
-    {
-        blinkinLedDriver.setPattern(pattern);
-    }
-
     public double adjustAngleForDriverPosition(double angle, RobotStartPosition robotStartPosition)
     {
         switch (robotStartPosition)
@@ -298,6 +297,14 @@ public class ExtraOpModeFunctions
         return angle;
     }
 
+    protected void displayPattern()
+    {
+        blinkinLedDriver.setPattern(pattern);
+    }
+
+
+    // CAMERA LOGIC
+
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false;
 
@@ -313,32 +320,19 @@ public class ExtraOpModeFunctions
         Signal signal = Signal.ONE;
         Image imageRGB565 = null;
 
-        numGreen = 0;
-        numRed = 0;
-        numBlue = 0;
-
-        //CameraDevice.getInstance().setFlashTorchMode(true);
         CameraDevice.getInstance().start();
 
         try
         {
             Frame frame = vuforia.getFrameQueue().take();
 
-            //localLop.telemetry.addData("Image found ", frame.getNumImages());
-            //localLop.telemetry.update();
-            //linearOpMode.sleep(2000);
             for (int i = 0; i < frame.getNumImages(); ++i)
             {
                 Image image = frame.getImage(i);
-                //localLop.telemetry.addData("Image Num ", frame.getNumImages());
-                //localLop.telemetry.update();
-                //linearOpMode.sleep(2000);
+
                 if (image.getFormat() == PIXEL_FORMAT.RGB565)
                 {
                     imageRGB565 = image;
-                    //localLop.telemetry.addData("Image format ", image.getFormat());
-                    //localLop.telemetry.update();
-                    //linearOpMode.sleep(2000);
 
                     break;
                 }
@@ -351,26 +345,19 @@ public class ExtraOpModeFunctions
                 input.copyPixelsFromBuffer(imageRGB565.getPixels());
 
                 GrayU8 gray = ConvertBitmap.bitmapToGray(input, (GrayU8)null, null);
-
-                //var config = new ConfigQrCode();
-                //QrCodeDetector<GrayU8> detector = FactoryFiducial.qrcode(config, GrayU8.class);
-                QrCodeDetector<GrayU8> detector = FactoryFiducial.qrcode(new ConfigQrCode(), GrayU8.class);
-
+                MicroQrCodeDetector<GrayU8> detector = FactoryFiducial.microqr(new ConfigMicroQrCode(), GrayU8.class);
                 detector.process(gray);
 
                 // Gets a list of all the qr codes it could successfully detect and decode
-                List<QrCode> detections = detector.getDetections();
+                List<MicroQrCode> detections = detector.getDetections();
 
-                for (QrCode qr : detections) {
-                    // The message encoded in the marker
-                    telemetry.addData("message: ", qr.message);
-
-                    if (qr.message.contentEquals("one"))
+                for (MicroQrCode qr : detections) {
+                    if (qr.message.contentEquals("1"))
                     {
                         signalLocation = 1;
                         signal = signal.ONE;
                     }
-                    else if (qr.message.contentEquals("two"))
+                    else if (qr.message.contentEquals("2"))
                     {
                         signalLocation = 2;
                         signal = signal.TWO;
@@ -380,14 +367,8 @@ public class ExtraOpModeFunctions
                         signalLocation = 3;
                         signal = signal.THREE;
                     }
-
                 }
-
-
             }
-
-            telemetry.addData("signalLocation ", signalLocation);
-
         }
         catch (InterruptedException exc)
         {
