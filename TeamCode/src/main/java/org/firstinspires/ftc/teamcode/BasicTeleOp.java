@@ -143,21 +143,22 @@ public class BasicTeleOp extends LinearOpMode
             }
 
             // MANUAL ELEVATOR CONTROL- gamepad 2
-            // don't go below the limit switch or exceed certain current
-
-            if((extras.elevatorLimit.isPressed()) && (gamepad2.left_stick_y > 0))
+            // stop if the limit switch is pressed
+            if(extras.elevatorLimit.isPressed())
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
                 elevatorStopped = true;
 
-                int elevPos1 = extras.elevator1.getCurrentPosition();
-                extras.elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                extras.elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                extras.elevator1.setTargetPosition(elevPos1);
-                extras.elevator2.setTargetPosition(elevPos1);
-                extras.elevator1.setPower(1.0);
-                extras.elevator2.setPower(1.0);
+                // it's OK to move up if the limit switch is pressed
+                if(gamepad2.left_stick_y < 0)
+                {
+                    extras.elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                    extras.elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                    extras.elevator1.setPower(-gamepad2.left_stick_y);
+                    extras.elevator2.setPower(-gamepad2.left_stick_y);
+                    elevatorStopped = false;
+                }
             }
             // don't go above the max height
             else if((extras.elevator1.getCurrentPosition() > elevHeightMax) && (gamepad2.left_stick_y < 0))
@@ -217,6 +218,7 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
+            // Elevator to top with right stick up
             if (gamepad2.right_stick_y < 0)
             {
                 gp2_right_stick_y_neg_pressed = true;
@@ -227,6 +229,7 @@ public class BasicTeleOp extends LinearOpMode
                 gp2_right_stick_y_neg_pressed = false;
             }
 
+            // Elevator to bottom with right sitck down
             if ((gamepad2.right_stick_y > 0)  && (extras.wristPosition == ExtraOpModeFunctions.WristPosition.MIDDLE))
             {
                 gp2_right_stick_y_pos_pressed = true;
@@ -283,7 +286,7 @@ public class BasicTeleOp extends LinearOpMode
 
  */
 
-
+            // Claw Open
             if (gamepad2.a)
             {
                 gp2_a_pressed = true;
@@ -292,9 +295,9 @@ public class BasicTeleOp extends LinearOpMode
             {
                 extras.clawOpen();
                 gp2_a_pressed = false;
-
             }
 
+            // Claw Close
             if (gamepad2.b)
             {
                 gp2_b_pressed = true;
@@ -353,7 +356,7 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
-            // elevator up movements
+            // DPAD elevator up movements
             if(gamepad2.dpad_up)
             {
                 gp2_dpad_up_pressed = true;
@@ -384,8 +387,7 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
-
-            // elevator down movements
+            // DPAD elevator down movements
             if(gamepad2.dpad_down)
             {
                 gp2_dpad_down_pressed = true;
@@ -417,7 +419,6 @@ public class BasicTeleOp extends LinearOpMode
             }
 
             //colors = extras.colorSensor.getNormalizedColors();
-
             //ExtraOpModeFunctions.ConeColor coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
 
             Pose2d poseEstimate = drive.getPoseEstimate();
