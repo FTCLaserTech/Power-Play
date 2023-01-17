@@ -21,6 +21,7 @@ public class ParkOnly extends LinearOpMode
 
         extras.clawClose();
         extras.wristMiddle();
+        sleep(500);
         extras.initElevator();
 
         Pose2d poseEstimate = drive.getPoseEstimate();

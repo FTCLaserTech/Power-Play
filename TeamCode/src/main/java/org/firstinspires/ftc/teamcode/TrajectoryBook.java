@@ -39,13 +39,14 @@ public class TrajectoryBook
     public void RightHighJunction(Pose2d pose)
     {
         rightHighJunction = drive.trajectorySequenceBuilder(pose)
-                // Move left
-                .splineToConstantHeading(new Vector2d(5, 19), Math.toRadians(0))
                 // Move Forward
-                .lineToLinearHeading(new Pose2d(45, 19, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(8, 5, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(52, 5, Math.toRadians(0)))
+                //.splineToConstantHeading(new Vector2d(5, 19), Math.toRadians(0))
                 // Move Right and turn
-                .splineTo(new Vector2d(52, 11), Math.toRadians(-87))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+                .turn(Math.toRadians(-87))
+                //.splineTo(new Vector2d(52, 11), Math.toRadians(-87))
+                //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .build();

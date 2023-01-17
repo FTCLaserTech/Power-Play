@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-@Disabled
+//@Disabled
 public class RightHighJunction extends LinearOpMode
 {
 
@@ -22,6 +22,9 @@ public class RightHighJunction extends LinearOpMode
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
         extras.clawClose();
+        extras.wristMiddle();
+        sleep(500);
+        extras.initElevator();
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
@@ -40,7 +43,7 @@ public class RightHighJunction extends LinearOpMode
 
         for (int i = 1; i < 5; i++)
         {
-            drive.followTrajectorySequence(book.rHJStacking);
+            //drive.followTrajectorySequence(book.rHJStacking);
 
         }
 
