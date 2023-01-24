@@ -40,9 +40,9 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    public static double X_MULTIPLIER = 1.0; // Multiplier in the X direction
+    public static double X_MULTIPLIER = 1.0215; // Multiplier in the X direction
     // was 1.0187
-    public static double Y_MULTIPLIER = 1.0; // Multiplier in the Y direction
+    public static double Y_MULTIPLIER = 1.00657; // Multiplier in the Y direction
     // was 1.011
 
     public StandardTrackingWheelLocalizer(HardwareMap hardwareMap) {

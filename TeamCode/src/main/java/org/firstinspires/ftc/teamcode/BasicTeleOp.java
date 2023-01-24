@@ -160,6 +160,11 @@ public class BasicTeleOp extends LinearOpMode
                     extras.elevator2.setPower(-elevatorStick);
                     elevatorStopped = false;
                 }
+                else if (gamepad2.right_stick_y < 0)
+                {
+                    extras.elevatorHigh();
+                }
+
             }
             // don't go above the max height
             else if((extras.elevator1.getCurrentPosition() > elevHeightMax) && (elevatorStick < 0))
@@ -222,23 +227,13 @@ public class BasicTeleOp extends LinearOpMode
             // Elevator to top with right stick up
             if (gamepad2.right_stick_y < 0)
             {
-                gp2_right_stick_y_neg_pressed = true;
-            }
-            else if ((gamepad2.right_stick_y == 0) && (gp2_right_stick_y_neg_pressed))
-            {
                 extras.elevatorHigh();
-                gp2_right_stick_y_neg_pressed = false;
             }
 
             // Elevator to bottom with right sitck down
             if ((gamepad2.right_stick_y > 0)  && (extras.wristPosition == ExtraOpModeFunctions.WristPosition.MIDDLE))
             {
-                gp2_right_stick_y_pos_pressed = true;
-            }
-            else if ((gamepad2.right_stick_y == 0) && (gp2_right_stick_y_pos_pressed))
-            {
                 extras.elevatorGround();
-                gp2_right_stick_y_pos_pressed = false;
             }
 
             // RESET IMU
