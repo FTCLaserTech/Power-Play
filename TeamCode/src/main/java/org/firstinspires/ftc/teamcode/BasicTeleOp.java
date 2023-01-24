@@ -144,6 +144,7 @@ public class BasicTeleOp extends LinearOpMode
 
             // MANUAL ELEVATOR CONTROL- gamepad 2
             // stop if the limit switch is pressed
+            float elevatorStick = gamepad2.left_stick_y;
             if(extras.elevatorLimit.isPressed())
             {
                 extras.elevator1.setPower(0);
@@ -151,17 +152,17 @@ public class BasicTeleOp extends LinearOpMode
                 elevatorStopped = true;
 
                 // it's OK to move up if the limit switch is pressed
-                if(gamepad2.left_stick_y < 0)
+                if(elevatorStick < 0)
                 {
                     extras.elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
                     extras.elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                    extras.elevator1.setPower(-gamepad2.left_stick_y);
-                    extras.elevator2.setPower(-gamepad2.left_stick_y);
+                    extras.elevator1.setPower(-elevatorStick);
+                    extras.elevator2.setPower(-elevatorStick);
                     elevatorStopped = false;
                 }
             }
             // don't go above the max height
-            else if((extras.elevator1.getCurrentPosition() > elevHeightMax) && (gamepad2.left_stick_y < 0))
+            else if((extras.elevator1.getCurrentPosition() > elevHeightMax) && (elevatorStick < 0))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
@@ -176,7 +177,7 @@ public class BasicTeleOp extends LinearOpMode
                 extras.elevator2.setPower(1.0);
             }
             // don't go too low if turret is turned
-            else if((extras.elevator1.getCurrentPosition() < 1200) && (gamepad2.left_stick_y > 0) && (extras.wristPosition != ExtraOpModeFunctions.WristPosition.MIDDLE))
+            else if((extras.elevator1.getCurrentPosition() < 1200) && (elevatorStick > 0) && (extras.wristPosition != ExtraOpModeFunctions.WristPosition.MIDDLE))
             {
                 extras.elevator1.setPower(0);
                 extras.elevator2.setPower(0);
@@ -193,7 +194,7 @@ public class BasicTeleOp extends LinearOpMode
             else
             {
                 // If stick is not moved, only set power to 0 once
-                if((gamepad2.left_stick_y == 0) && !elevatorStopped)
+                if((elevatorStick == 0) && !elevatorStopped)
                 {
                     extras.elevator1.setPower(0);
                     extras.elevator2.setPower(0);
@@ -208,12 +209,12 @@ public class BasicTeleOp extends LinearOpMode
                     extras.elevator2.setPower(1.0);
 
                 }
-                else if (gamepad2.left_stick_y != 0)
+                else if (elevatorStick != 0)
                 {
                     extras.elevator1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
                     extras.elevator2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                    extras.elevator1.setPower(-gamepad2.left_stick_y);
-                    extras.elevator2.setPower(-gamepad2.left_stick_y);
+                    extras.elevator1.setPower(-elevatorStick);
+                    extras.elevator2.setPower(-elevatorStick);
                     elevatorStopped = false;
                 }
             }
@@ -428,6 +429,7 @@ public class BasicTeleOp extends LinearOpMode
             telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
             telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
             telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
+            telemetry.addData("Elevator Stopped", elevatorStopped);
             //telemetry.addLine();
 
             /*
