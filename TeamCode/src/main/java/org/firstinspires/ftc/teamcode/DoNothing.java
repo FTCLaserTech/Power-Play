@@ -55,7 +55,7 @@ public class DoNothing extends LinearOpMode
         telemetry.update();
 
         book.LeftHighJunction(drive.getPoseEstimate());
-        book.LHJStacking(book.leftHighJunction.end());
+        //book.LHJStacking(book.leftHighJunction.end());
 
         waitForStart();
 

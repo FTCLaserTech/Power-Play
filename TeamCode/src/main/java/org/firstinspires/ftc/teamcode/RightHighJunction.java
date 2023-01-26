@@ -24,7 +24,7 @@ public class RightHighJunction extends LinearOpMode
         extras.clawClose();
         extras.wristMiddle();
         sleep(500);
-        extras.initElevator();
+        //extras.initElevator();
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
@@ -35,17 +35,38 @@ public class RightHighJunction extends LinearOpMode
         telemetry.update();
 
         book.RightHighJunction(drive.getPoseEstimate());
-        book.RHJStacking(book.rightHighJunction.end());
+        book.RHJFirstCone(book.rightHighJunction.end());
+        book.RHJOne(book.rHJFirstCone.end());
+        book.RHJTwo(book.rHJFirstCone.end());
+        book.RHJThree(book.rHJFirstCone.end());
+
 
         waitForStart();
+        ExtraOpModeFunctions.Signal Signal = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        telemetry.addData("Signal Location: ", Signal);
+        telemetry.update();
 
         drive.followTrajectorySequence(book.rightHighJunction);
 
-        for (int i = 1; i < 5; i++)
+        switch(Signal)
         {
-            //drive.followTrajectorySequence(book.rHJStacking);
+            case ONE:
+                // move to LEFT column of parking tiles
+                drive.followTrajectorySequence(book.lHJOne);
+                break;
+
+            case TWO:
+                // move to MIDDLE column of parking tiles
+                drive.followTrajectorySequence(book.lHJTwo);
+                break;
+
+            case THREE:
+                // move to RIGHT colum of parking tiles
+                drive.followTrajectorySequence(book.lHJThree);
+                break;
 
         }
+
 
         sleep(10000);
     }

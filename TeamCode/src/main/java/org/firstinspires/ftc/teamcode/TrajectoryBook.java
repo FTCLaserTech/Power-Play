@@ -14,9 +14,16 @@ public class TrajectoryBook
     ExtraOpModeFunctions extras;
 
     public TrajectorySequence rightHighJunction;
-    public TrajectorySequence rHJStacking;
+    public TrajectorySequence rHJFirstCone;
+    public TrajectorySequence rHJOne;
+    public TrajectorySequence rHJTwo;
+    public TrajectorySequence rHJThree;
+
     public TrajectorySequence leftHighJunction;
-    public TrajectorySequence lHJStacking;
+    public TrajectorySequence lHJFirstCone;
+    public TrajectorySequence lHJOne;
+    public TrajectorySequence lHJTwo;
+    public TrajectorySequence lHJThree;
 
     public TrajectorySequence teleOpPoleLeft;
     public TrajectorySequence teleOpConeLeft;
@@ -39,32 +46,53 @@ public class TrajectoryBook
     public void RightHighJunction(Pose2d pose)
     {
         rightHighJunction = drive.trajectorySequenceBuilder(pose)
-                // Move Forward
-                .lineToLinearHeading(new Pose2d(8, 5, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(52, 5, Math.toRadians(0)))
-                //.splineToConstantHeading(new Vector2d(5, 19), Math.toRadians(0))
-                // Move Right and turn
-                .turn(Math.toRadians(-87))
-                //.splineTo(new Vector2d(52, 11), Math.toRadians(-87))
+                // Move Forward away from the wall
+                .splineToConstantHeading(new Vector2d(8, 5), Math.toRadians(0))
+                // Move towards the pole
+                .splineToConstantHeading(new Vector2d(54, 5), Math.toRadians(0))
+                // Move to the pole while turning
+                .splineToLinearHeading(new Pose2d(57, 17, Math.toRadians(-94)), Math.toRadians(0))
                 //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
-                .waitSeconds(0.2)
+                .waitSeconds(1.0)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+                .waitSeconds(3.0)
+                // Move away from pole
+                .splineToLinearHeading(new Pose2d(53, 17, Math.toRadians(-92)), Math.toRadians(0))
                 .build();
     }
-    public void RHJStacking(Pose2d pose)
+
+    public void RHJFirstCone(Pose2d pose)
     {
-        rHJStacking = drive.trajectorySequenceBuilder(pose)
-                // Move back to stack
-                .lineToLinearHeading(new Pose2d(52, -25, Math.toRadians(-87)))
-                // OWEN - CHANGE ELEVATOR POSITION WITH FUNCTION
-                //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
-                // Move back to the high junction
-                .lineToLinearHeading(new Pose2d(52, 11, Math.toRadians(-87)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-                .waitSeconds(0.5)
-                .build();
+        rHJFirstCone = drive.trajectorySequenceBuilder(pose)
+            // Move close to stack
+            .splineToConstantHeading(new Vector2d(53, -17), Math.toRadians(-92))
+            // Slow move to stack
+            .lineToLinearHeading(new Pose2d(53, -22, Math.toRadians(-92)),
+                    SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+            //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+            .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
+            // Move close to the pole
+            .splineToConstantHeading(new Vector2d(53, -17), Math.toRadians(-92))
+            // Move to pole
+            .splineToLinearHeading(new Pose2d(57, 17, Math.toRadians(-92)), Math.toRadians(0))
+            //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+            //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+            //.waitSeconds(0.5)
+            .build();
+    }
+
+    public void RHJOne(Pose2d pose)
+    {
+
+    }
+    public void RHJTwo(Pose2d pose)
+    {
+
+    }
+    public void RHJThree(Pose2d pose)
+    {
+
     }
 
     public void LeftHighJunction(Pose2d pose)
@@ -73,17 +101,12 @@ public class TrajectoryBook
                 // Move left
                 .splineToConstantHeading(new Vector2d( 3, -19), Math.toRadians(0))
                 // Move Forward
-                .lineToLinearHeading(new Pose2d(45, -19, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(50, -19, Math.toRadians(0)))
                 // Move Right and turn
                 .splineTo(new Vector2d(52, -11), Math.toRadians(87))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-                .build();
-    }
-    public void LHJStacking(Pose2d pose)
-    {
-        lHJStacking = drive.trajectorySequenceBuilder(pose)
                 // Move back to stack
                 .lineToLinearHeading(new Pose2d(52, 25, Math.toRadians(87)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
@@ -94,6 +117,18 @@ public class TrajectoryBook
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.5)
                 .build();
+    }
+    public void LHJOne(Pose2d pose)
+    {
+
+    }
+    public void LHJTwo(Pose2d pose)
+    {
+
+    }
+    public void LHJThree(Pose2d pose)
+    {
+
     }
 
     public void TeleOpPoleLeft (Pose2d pose)
