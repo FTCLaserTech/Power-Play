@@ -134,18 +134,21 @@ public class TrajectoryBook
     {
         rHJParkOne = drive.trajectorySequenceBuilder(pose)
                 .splineToLinearHeading(new Pose2d(53, 30, Math.toRadians(-92)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(52, 31, Math.toRadians(0)))
                 .build();
     }
     public void RHJParkTwo(Pose2d pose)
     {
         rHJParkTwo = drive.trajectorySequenceBuilder(pose)
                 .splineToLinearHeading(new Pose2d(53, 7, Math.toRadians(-92)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(52, 8, Math.toRadians(0)))
                 .build();
     }
     public void RHJParkThree(Pose2d pose)
     {
         rHJParkThree = drive.trajectorySequenceBuilder(pose)
                 .splineToLinearHeading(new Pose2d(53, -16, Math.toRadians(-92)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(52, -15, Math.toRadians(0)))
                 .build();
     }
 
@@ -237,18 +240,21 @@ public class TrajectoryBook
     {
         lHJParkOne = drive.trajectorySequenceBuilder(pose)
                 .splineToLinearHeading(new Pose2d(53, 28, Math.toRadians(92)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(52, 29, Math.toRadians(0)))
                 .build();
     }
     public void LHJParkTwo(Pose2d pose)
     {
         lHJParkTwo = drive.trajectorySequenceBuilder(pose)
                 .splineToLinearHeading(new Pose2d(53, 4, Math.toRadians(92)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(52, 5, Math.toRadians(0)))
                 .build();
     }
     public void LHJParkThree(Pose2d pose)
     {
         lHJParkThree = drive.trajectorySequenceBuilder(pose)
                 .splineToLinearHeading(new Pose2d(53, -18, Math.toRadians(92)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(52, -17, Math.toRadians(0)))
                 .build();
     }
 
