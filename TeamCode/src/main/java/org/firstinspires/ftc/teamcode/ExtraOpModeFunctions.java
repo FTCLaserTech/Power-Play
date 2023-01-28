@@ -55,7 +55,7 @@ public class ExtraOpModeFunctions
 
     public enum WristPosition {LEFT, MIDDLE, RIGHT}
     public WristPosition wristPosition = WristPosition.MIDDLE;
-    public enum ElevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH}
+    public enum ElevatorPosition {COLLECT, GROUND, LOW, MIDDLE, HIGH, TWO, THREE, FOUR, FIVE}
     public ElevatorPosition elevatorPosition = ElevatorPosition.COLLECT;
 
     public static final double PI = 3.14159265;
@@ -265,8 +265,65 @@ public class ExtraOpModeFunctions
 
     public void elevatorHigh()
     {
-        target = 2890;
+        target = 2959;
         elevatorPosition = elevatorPosition.HIGH;
+
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator1.setTargetPosition(target);
+        elevator2.setTargetPosition(target);
+
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
+    }
+
+
+    public void elevatorTwo()
+    {
+        target = 130;
+        elevatorPosition = elevatorPosition.TWO;
+
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator1.setTargetPosition(target);
+        elevator2.setTargetPosition(target);
+
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
+    }
+
+    public void elevatorThree()
+    {
+        target = 247;
+        elevatorPosition = elevatorPosition.THREE;
+
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator1.setTargetPosition(target);
+        elevator2.setTargetPosition(target);
+
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
+    }
+
+    public void elevatorFour()
+    {
+        target = 344;
+        elevatorPosition = elevatorPosition.FOUR;
+
+        elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        elevator1.setTargetPosition(target);
+        elevator2.setTargetPosition(target);
+
+        elevator1.setPower(1.0);
+        elevator2.setPower(1.0);
+    }
+
+    public void elevatorFive()
+    {
+        target = 483;
+        elevatorPosition = elevatorPosition.FIVE;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         elevator2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);

@@ -29,9 +29,10 @@ public class RightHighJunction extends LinearOpMode
 
         book.RightHighJunction(drive.getPoseEstimate());
         book.RHJFirstCone(book.rightHighJunction.end());
-        book.RHJParkOne(book.rHJFirstCone.end());
-        book.RHJParkTwo(book.rHJFirstCone.end());
-        book.RHJParkThree(book.rHJFirstCone.end());
+        book.RHJSecondCone(book.rHJFirstCone.end());
+        book.RHJParkOne(book.rHJSecondCone.end());
+        book.RHJParkTwo(book.rHJSecondCone.end());
+        book.RHJParkThree(book.rHJSecondCone.end());
 
         telemetry.addLine("Initialized");
         telemetry.addData("x", poseEstimate.getX());
@@ -46,6 +47,7 @@ public class RightHighJunction extends LinearOpMode
 
         drive.followTrajectorySequence(book.rightHighJunction);
         drive.followTrajectorySequence(book.rHJFirstCone);
+        drive.followTrajectorySequence(book.rHJSecondCone);
 
         switch(Signal)
         {

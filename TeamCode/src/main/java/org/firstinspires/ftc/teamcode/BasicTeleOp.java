@@ -34,6 +34,8 @@ public class BasicTeleOp extends LinearOpMode
         boolean gp2_dpad_right_pressed = false;
         boolean gp2_dpad_up_pressed = false;
         boolean gp2_dpad_down_pressed = false;
+        boolean gp2_right_bumper_pressed = false;
+        boolean gp2_right_trigger_pressed = false;
         boolean gp2_right_stick_y_neg_pressed = false;
         boolean gp2_right_stick_y_pos_pressed = false;
         boolean gp2_a_pressed = false;
@@ -352,6 +354,43 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
+            if (gamepad2.right_bumper)
+            {
+                gp2_right_bumper_pressed = true;
+            }
+            else if (!gamepad2.right_bumper && gp2_right_bumper_pressed)
+            {
+                gp2_right_bumper_pressed = false;
+                extras.elevatorFive();
+            }
+
+            if(gamepad2.right_trigger > 0)
+            {
+                gp2_right_trigger_pressed = true;
+            }
+            else if ((gamepad2.right_trigger == 0) && gp2_right_trigger_pressed)
+            {
+                gp2_right_trigger_pressed = false;
+                switch(extras.elevatorPosition)
+                {
+                    case FOUR:
+                        extras.elevatorThree();
+                        break;
+
+                    case THREE:
+                        extras.elevatorTwo();
+                        break;
+
+                    case TWO:
+                        extras.elevatorGround();
+                        break;
+
+                    default:
+                        extras.elevatorFour();
+                        break;
+                }
+            }
+
             // DPAD elevator up movements
             if(gamepad2.dpad_up)
             {
@@ -382,6 +421,7 @@ public class BasicTeleOp extends LinearOpMode
                         break;
                 }
             }
+
 
             // DPAD elevator down movements
             if(gamepad2.dpad_down)

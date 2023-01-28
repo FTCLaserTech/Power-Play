@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -14,6 +15,7 @@ public class TrajectoryBook
 
     public TrajectorySequence rightHighJunction;
     public TrajectorySequence rHJFirstCone;
+    public TrajectorySequence rHJSecondCone;
     public TrajectorySequence rHJParkOne;
     public TrajectorySequence rHJParkTwo;
     public TrajectorySequence rHJParkThree;
@@ -50,11 +52,16 @@ public class TrajectoryBook
                 // Move towards the pole
                 .splineToConstantHeading(new Vector2d(54, 5), Math.toRadians(0))
                 // Move to the pole while turning
-                .splineToLinearHeading(new Pose2d(57, 17, Math.toRadians(-94)), Math.toRadians(0))
-                //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+                .splineToLinearHeading(new Pose2d(58, 15.5, Math.toRadians(-94)), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+                .waitSeconds(1.0)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristLeft())
                 .waitSeconds(1.0)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-                .waitSeconds(3.0)
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFive())
                 // Move away from pole
                 .splineToLinearHeading(new Pose2d(53, 17, Math.toRadians(-92)), Math.toRadians(0))
                 .build();
@@ -63,24 +70,63 @@ public class TrajectoryBook
     public void RHJFirstCone(Pose2d pose)
     {
         rHJFirstCone = drive.trajectorySequenceBuilder(pose)
-            // Move close to stack
-            .splineToConstantHeading(new Vector2d(53, -17), Math.toRadians(-92))
-            // Slow move to stack
-            .lineToLinearHeading(new Pose2d(53, -22, Math.toRadians(-92)),
-                    SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-            //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
-            .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
-            // Move backward to the pole
-            .lineToConstantHeading(new Vector2d(53, 17))
-            // Move left to pole
-            .lineToConstantHeading(new Vector2d(57, 17))
-            //.UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
-            .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-            .waitSeconds(0.5)
-            // Move away from pole
-            .splineToLinearHeading(new Pose2d(53, 17, Math.toRadians(-92)), Math.toRadians(0))
-            .build();
+                // Move close to stack
+                .splineToConstantHeading(new Vector2d(52, -17), Math.toRadians(-92))
+                // Slow move to stack
+                .lineToLinearHeading(new Pose2d(52, -22, Math.toRadians(-92)),
+                        SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
+                .waitSeconds(0.2)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorLow())
+                .waitSeconds(0.3)
+                // Move backward to the pole
+                .lineToConstantHeading(new Vector2d(53, 15.4))
+                // Move left to pole
+                .lineToConstantHeading(new Vector2d(57, 15.4))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+                .waitSeconds(0.8)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristLeft())
+                .waitSeconds(0.6)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFour())
+                // Move away from pole
+                .splineToLinearHeading(new Pose2d(53, 17, Math.toRadians(-92)), Math.toRadians(0))
+                .build();
+    }
+    public void RHJSecondCone(Pose2d pose)
+    {
+        rHJSecondCone = drive.trajectorySequenceBuilder(pose)
+                // Move close to stack
+                .splineToConstantHeading(new Vector2d(52, -17), Math.toRadians(-92))
+                // Slow move to stack
+                .lineToLinearHeading(new Pose2d(52, -22, Math.toRadians(-92)),
+                        SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorLow())
+                .waitSeconds(0.4)
+                // Move backward to the pole
+                .lineToConstantHeading(new Vector2d(53, 15.4))
+                // Move left to pole
+                .lineToConstantHeading(new Vector2d(57, 15.4))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
+                .waitSeconds(0.8)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristLeft())
+                .waitSeconds(0.6)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
+                .waitSeconds(0.4)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
+                .waitSeconds(1.0)
+                // Move away from pole
+                .splineToLinearHeading(new Pose2d(53, 17, Math.toRadians(-92)), Math.toRadians(0))
+                .build();
     }
 
     public void RHJParkOne(Pose2d pose)
