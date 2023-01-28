@@ -23,7 +23,7 @@ public class RightHighJunction extends LinearOpMode
         extras.clawClose();
         extras.wristMiddle();
         sleep(500);
-        //extras.initElevator();
+        extras.initElevator();
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 

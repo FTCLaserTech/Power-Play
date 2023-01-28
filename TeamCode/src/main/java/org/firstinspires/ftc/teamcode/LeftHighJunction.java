@@ -23,6 +23,9 @@ public class LeftHighJunction extends LinearOpMode
         TrajectoryBook book = new TrajectoryBook(drive, extras);
 
         extras.clawClose();
+        extras.wristMiddle();
+        sleep(500);
+        extras.initElevator();
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
@@ -34,9 +37,10 @@ public class LeftHighJunction extends LinearOpMode
 
         book.LeftHighJunction(drive.getPoseEstimate());
         book.LHJFirstCone(book.leftHighJunction.end());
-        book.LHJParkOne(book.lHJFirstCone.end());
-        book.LHJParkTwo(book.lHJFirstCone.end());
-        book.LHJParkThree(book.lHJFirstCone.end());
+        book.LHJSecondCone(book.lHJFirstCone.end());
+        book.LHJParkOne(book.lHJSecondCone.end());
+        book.LHJParkTwo(book.lHJSecondCone.end());
+        book.LHJParkThree(book.lHJSecondCone.end());
 
         waitForStart();
         ExtraOpModeFunctions.Signal Signal = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
@@ -45,6 +49,7 @@ public class LeftHighJunction extends LinearOpMode
 
         drive.followTrajectorySequence(book.leftHighJunction);
         drive.followTrajectorySequence(book.lHJFirstCone);
+        drive.followTrajectorySequence(book.lHJSecondCone);
 
         switch(Signal)
         {
