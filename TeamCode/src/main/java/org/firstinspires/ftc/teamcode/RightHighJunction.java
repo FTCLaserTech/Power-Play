@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -28,18 +27,17 @@ public class RightHighJunction extends LinearOpMode
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
+        book.RightHighJunction(drive.getPoseEstimate());
+        book.RHJFirstCone(book.rightHighJunction.end());
+        book.RHJParkOne(book.rHJFirstCone.end());
+        book.RHJParkTwo(book.rHJFirstCone.end());
+        book.RHJParkThree(book.rHJFirstCone.end());
+
         telemetry.addLine("Initialized");
         telemetry.addData("x", poseEstimate.getX());
         telemetry.addData("y", poseEstimate.getY());
         telemetry.addData("heading", poseEstimate.getHeading());
         telemetry.update();
-
-        book.RightHighJunction(drive.getPoseEstimate());
-        book.RHJFirstCone(book.rightHighJunction.end());
-        book.RHJOne(book.rHJFirstCone.end());
-        book.RHJTwo(book.rHJFirstCone.end());
-        book.RHJThree(book.rHJFirstCone.end());
-
 
         waitForStart();
         ExtraOpModeFunctions.Signal Signal = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
@@ -47,22 +45,23 @@ public class RightHighJunction extends LinearOpMode
         telemetry.update();
 
         drive.followTrajectorySequence(book.rightHighJunction);
+        drive.followTrajectorySequence(book.rHJFirstCone);
 
         switch(Signal)
         {
             case ONE:
                 // move to LEFT column of parking tiles
-                drive.followTrajectorySequence(book.lHJOne);
+                drive.followTrajectorySequence(book.rHJParkOne);
                 break;
 
             case TWO:
                 // move to MIDDLE column of parking tiles
-                drive.followTrajectorySequence(book.lHJTwo);
+                drive.followTrajectorySequence(book.rHJParkTwo);
                 break;
 
             case THREE:
                 // move to RIGHT colum of parking tiles
-                drive.followTrajectorySequence(book.lHJThree);
+                drive.followTrajectorySequence(book.rHJParkThree);
                 break;
 
         }

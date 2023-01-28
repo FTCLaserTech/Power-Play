@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-@Disabled
+//@Disabled
 
 public class LeftHighJunction extends LinearOpMode
 {
@@ -32,13 +32,37 @@ public class LeftHighJunction extends LinearOpMode
         telemetry.addData("heading", poseEstimate.getHeading());
         telemetry.update();
 
-        book.RightHighJunction(drive.getPoseEstimate());
-        //book.RHJStacking(book.rightHighJunction.end());
+        book.LeftHighJunction(drive.getPoseEstimate());
+        book.LHJFirstCone(book.leftHighJunction.end());
+        book.LHJParkOne(book.lHJFirstCone.end());
+        book.LHJParkTwo(book.lHJFirstCone.end());
+        book.LHJParkThree(book.lHJFirstCone.end());
 
         waitForStart();
+        ExtraOpModeFunctions.Signal Signal = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+        telemetry.addData("Signal Location: ", Signal);
+        telemetry.update();
 
         drive.followTrajectorySequence(book.leftHighJunction);
+        drive.followTrajectorySequence(book.lHJFirstCone);
 
-        sleep(10000);
+        switch(Signal)
+        {
+            case ONE:
+                // move to LEFT column of parking tiles
+                drive.followTrajectorySequence(book.lHJParkOne);
+                break;
+
+            case TWO:
+                // move to MIDDLE column of parking tiles
+                drive.followTrajectorySequence(book.lHJParkTwo);
+                break;
+
+            case THREE:
+                // move to RIGHT colum of parking tiles
+                drive.followTrajectorySequence(book.lHJParkThree);
+                break;
+
+        }
     }
 }
