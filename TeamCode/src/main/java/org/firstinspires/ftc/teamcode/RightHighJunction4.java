@@ -3,14 +3,15 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-//@Disabled
-public class RightHighJunction extends LinearOpMode
+@Disabled
+public class RightHighJunction4 extends LinearOpMode
 {
 
     @Override
@@ -28,12 +29,12 @@ public class RightHighJunction extends LinearOpMode
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
-        book.RightHighJunction(drive.getPoseEstimate());
-        book.RHJFirstCone(book.rightHighJunction.end());
-        book.RHJSecondCone(book.rHJFirstCone.end());
-        book.RHJParkOne(book.rHJSecondCone.end());
-        book.RHJParkTwo(book.rHJSecondCone.end());
-        book.RHJParkThree(book.rHJSecondCone.end());
+        book.RightHighJunctionFast(drive.getPoseEstimate());
+        book.RHJFirstConeFast(book.rightHighJunctionFast.end());
+        book.RHJSecondCone(book.rHJFirstConeFast.end());
+        //book.RHJParkOne(book.rHJSecondCone.end());
+        //book.RHJParkTwo(book.rHJSecondCone.end());
+        //book.RHJParkThree(book.rHJSecondCone.end());
 
         telemetry.addLine("Initialized");
         telemetry.addData("x", poseEstimate.getX());
@@ -46,25 +47,25 @@ public class RightHighJunction extends LinearOpMode
         telemetry.addData("Signal Location: ", Signal);
         telemetry.update();
 
-        drive.followTrajectorySequence(book.rightHighJunction);
-        drive.followTrajectorySequence(book.rHJFirstCone);
-        drive.followTrajectorySequence(book.rHJSecondCone);
+        drive.followTrajectorySequence(book.rightHighJunctionFast);
+        drive.followTrajectorySequence(book.rHJFirstConeFast);
+        //drive.followTrajectorySequence(book.rHJSecondCone);
 
         switch(Signal)
         {
             case ONE:
                 // move to LEFT column of parking tiles
-                drive.followTrajectorySequence(book.rHJParkOne);
+                //drive.followTrajectorySequence(book.rHJParkOne);
                 break;
 
             case TWO:
                 // move to MIDDLE column of parking tiles
-                drive.followTrajectorySequence(book.rHJParkTwo);
+                //drive.followTrajectorySequence(book.rHJParkTwo);
                 break;
 
             case THREE:
                 // move to RIGHT colum of parking tiles
-                drive.followTrajectorySequence(book.rHJParkThree);
+                //drive.followTrajectorySequence(book.rHJParkThree);
                 break;
 
         }
