@@ -237,7 +237,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorLow()
     {
-        target = 1220;
+        target = 1210;
         elevatorPosition = elevatorPosition.LOW;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -251,7 +251,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorMiddle()
     {
-        target = 2060;
+        target = 2020;
         elevatorPosition = elevatorPosition.MIDDLE;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -265,7 +265,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorHigh()
     {
-        target = 2959;
+        target = 2820;
         elevatorPosition = elevatorPosition.HIGH;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -322,7 +322,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorFive()
     {
-        target = 483;
+        target = 473;
         elevatorPosition = elevatorPosition.FIVE;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
