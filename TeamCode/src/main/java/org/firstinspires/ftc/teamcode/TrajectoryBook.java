@@ -121,7 +121,6 @@ public class TrajectoryBook
                 .splineToLinearHeading(new Pose2d(52.5, 17, Math.toRadians(-92)), Math.toRadians(0))
                 .build();
     }
-
     public void RHJFirstCone(Pose2d pose)
     {
         rHJFirstCone = drive.trajectorySequenceBuilder(pose)
