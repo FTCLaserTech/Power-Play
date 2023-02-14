@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-@Disabled
+//@Disabled
 
 public class LeftHighJunction4 extends LinearOpMode
 {
