@@ -42,7 +42,6 @@ public class TrajectoryBook
     public TrajectorySequence rightParkFromStart;
 
 
-
     public TrajectoryBook (SampleMecanumDrive drivePass, ExtraOpModeFunctions extrasPass)
     {
         drive = drivePass;
