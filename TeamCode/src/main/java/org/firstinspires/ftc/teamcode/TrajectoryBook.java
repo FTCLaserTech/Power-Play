@@ -13,9 +13,6 @@ public class TrajectoryBook
     SampleMecanumDrive drive;
     ExtraOpModeFunctions extras;
 
-    private double xConeStackRight = 52;
-    private double xHighPoleRight = 57.5;
-
     public TrajectorySequence rightHighJunctionFast;
     public TrajectorySequence rHJFirstConeFast;
 
@@ -44,6 +41,9 @@ public class TrajectoryBook
     public TrajectorySequence middleParkFromStart;
     public TrajectorySequence rightParkFromStart;
 
+
+    private double xConeStackRight = 52;
+    private double xHighPoleRight = 55.5;
 
 
     public TrajectoryBook (SampleMecanumDrive drivePass, ExtraOpModeFunctions extrasPass)
@@ -100,15 +100,13 @@ public class TrajectoryBook
 
 
 
-
-
     public void RightHighJunction(Pose2d pose)
     {
         rightHighJunction = drive.trajectorySequenceBuilder(pose)
                 // Move Forward away from the wall
                 .splineToConstantHeading(new Vector2d(8, 5), Math.toRadians(0))
                 // Move towards the pole
-                .splineToConstantHeading(new Vector2d(54, 5), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(52, 5), Math.toRadians(0))
                 // Move to the pole while turning
                 .splineToLinearHeading(new Pose2d(xHighPoleRight, 16, Math.toRadians(-94)), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
