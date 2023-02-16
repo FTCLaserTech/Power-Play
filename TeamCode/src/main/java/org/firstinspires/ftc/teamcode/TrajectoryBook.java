@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 
 public class TrajectoryBook
 {
@@ -30,6 +30,8 @@ public class TrajectoryBook
     public TrajectorySequence lHJParkOne;
     public TrajectorySequence lHJParkTwo;
     public TrajectorySequence lHJParkThree;
+
+    public TrajectorySequence rightMediumJunction;
 
     public TrajectorySequence teleOpPoleLeft;
     public TrajectorySequence teleOpConeLeft;
@@ -349,4 +351,14 @@ public class TrajectoryBook
                 .build();
     }
 
+    public void RightMediumJunction(Pose2d pose) {
+        rightMediumJunction = drive.trajectorySequenceBuilder(pose)
+                //.splineTo(new Vector2d(3,3), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(3, 3, Math.toRadians(-10)))
+                //.back()
+                //.UNSTABLE_addTemporalMarkerOffset(0.5, () -> extras.elevatorMiddle())
+                //.linetoLinearHeading(new Pose2d(x,y), Math.toRadians(
+
+                .build();
+    }
 }

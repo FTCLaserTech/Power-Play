@@ -54,7 +54,7 @@ public class BasicTeleOp extends LinearOpMode
 
         double currentAmps1;
         double currentAmps2;
-        double maxAmps = 0;
+        double maxAmps = 0;     
         int numDangerAmps = 0;
 
         //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
@@ -97,15 +97,15 @@ public class BasicTeleOp extends LinearOpMode
 
             if (gamepad1.right_bumper)
             {
-                speedMultiplier = 0.6;
+                speedMultiplier = 0.6 * elevMult;
             }
             else if (gamepad1.left_bumper)
             {
-                speedMultiplier = 0.4;
+                speedMultiplier = 0.4 * elevMult;
             }
             else
             {
-                speedMultiplier = 0.75;
+                speedMultiplier = 0.75 * elevMult;
             }
 
             //adjustedAngle = extras.adjustAngleForDriverPosition(drive.getRawExternalHeading(), ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
