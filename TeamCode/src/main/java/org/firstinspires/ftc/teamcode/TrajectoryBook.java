@@ -354,7 +354,7 @@ public class TrajectoryBook
     public void RightMediumJunction(Pose2d pose) {
         rightMediumJunction = drive.trajectorySequenceBuilder(pose)
                 //.splineTo(new Vector2d(3,3), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(3, 3, Math.toRadians(-10)))
+                .lineToLinearHeading(new Pose2d(16, 13, Math.toRadians(22)))
                 //.back()
                 //.UNSTABLE_addTemporalMarkerOffset(0.5, () -> extras.elevatorMiddle())
                 //.linetoLinearHeading(new Pose2d(x,y), Math.toRadians(
