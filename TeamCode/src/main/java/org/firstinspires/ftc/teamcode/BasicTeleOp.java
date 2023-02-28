@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -61,7 +60,6 @@ public class BasicTeleOp extends LinearOpMode
 
         //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        ElapsedTime time = new ElapsedTime();
 
         extras.wristMiddle();
         extras.clawClose();
@@ -71,7 +69,8 @@ public class BasicTeleOp extends LinearOpMode
         while (!isStopRequested())
         {
 
-            /*
+            currentAmps1 = extras.elevator1.getCurrent(CurrentUnit.AMPS);
+            currentAmps2 = extras.elevator2.getCurrent(CurrentUnit.AMPS);
 
             if (currentAmps1 > maxAmps)
             {
@@ -82,53 +81,22 @@ public class BasicTeleOp extends LinearOpMode
                 maxAmps = currentAmps2;
             }
 
-            if (currentAmps1 > 7 || currentAmps2 > 7)
+            if (currentAmps1 >= 7 || currentAmps2 >= 7)
             {
                 numDangerAmps += 1;
-            }
 
-            // KILL CODE
-            if ((currentAmps1 >= 7) || (currentAmps2 >= 7))
-            {
                 telemetry.addLine("WARNING: HIGH AMPS");
-                telemetry.update();
 
-                time.reset();
-                while (time.milliseconds() < 2000)
+                if(numDangerAmps >= 10)
                 {
-                    if(currentAmps1 <= 5 && currentAmps2 <= 5)
-                    {
-                        break;
-                    }
-                }
-                stop();
-            }
-
-             */
-
-            time.reset();
-
-            currentAmps1 = extras.elevator1.getCurrent(CurrentUnit.AMPS);
-            currentAmps2 = extras.elevator2.getCurrent(CurrentUnit.AMPS);
-
-            /*
-            if((currentAmps1 >= 7) || (currentAmps2 >= 7))
-            {
-                time.reset();
-                telemetry.addLine("WARNING: HIGH AMPS");
-                telemetry.addData("ROBOT WILL SHUT DOWN IN ", ((3000-time.milliseconds())/1000));
-                if ((time.milliseconds()) >= 3000)
-                {
+                    // in future, ONLY stop arm motion
                     stop();
                 }
             }
             else
             {
-                ;
+                numDangerAmps = 0;
             }
-
-             */
-
 
             slope = -elevMultMin / elevHeightMax;
             elevatorEncoderCounts = (extras.elevator1.getCurrentPosition() + extras.elevator2.getCurrentPosition()) / 2;
@@ -425,7 +393,7 @@ public class BasicTeleOp extends LinearOpMode
                         break;
 
                     default:
-                        extras.elevatorFour();
+                        extras.elevatorThree();
                         break;
                 }
             }
