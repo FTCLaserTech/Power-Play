@@ -355,12 +355,22 @@ public class TrajectoryBook
         rightMediumJunction = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorLow())
                 //.lineTo(new Vector2d(17,9))
-                .splineToLinearHeading(new Pose2d(15,11,Math.toRadians(0)),Math.toRadians(0))
+                //.splineToLinearHeading(new Pose2d(15,11,Math.toRadians(0)),Math.toRadians(0))
                 //.splineToLinearHeading(new Pose2d(26,13,Math.toRadians(45)),Math.toRadians(90))
-                .splineTo(new Vector2d(23, 13),Math.toRadians(35))
-                .splineTo(new Vector2d(28, 13),Math.toRadians(35))
-                .splineTo(new Vector2d(33, 11),Math.toRadians(0))
-                //.back()
+
+                //.splineTo(new Vector2d(23, 13),Math.toRadians(35))
+                //.splineTo(new Vector2d(28, 13),Math.toRadians(35))
+                //.splineTo(new Vector2d(33, 11),Math.toRadians(0))
+
+                .splineToLinearHeading(new Pose2d(10, 28,0),Math.toRadians(0))
+                //.splineTo(new Vector2d(10, 28),Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
+                .splineTo(new Vector2d(43, 23),Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
+                .waitSeconds(2)
                 //.UNSTABLE_addTemporalMarkerOffset(0.5, () -> extras.elevatorMiddle())
                 //.linetoLinearHeading(new Pose2d(x,y), Math.toRadians(
 
