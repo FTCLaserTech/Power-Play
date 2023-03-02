@@ -62,7 +62,7 @@ public class BasicTeleOp extends LinearOpMode
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         extras.wristMiddle();
-        extras.clawClose();
+        extras.clawOpen();
 
         waitForStart();
 
