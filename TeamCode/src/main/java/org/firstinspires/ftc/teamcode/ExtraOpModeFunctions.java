@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import  static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 import android.graphics.Bitmap;
@@ -31,9 +30,6 @@ import com.vuforia.PIXEL_FORMAT;
 
 import boofcv.struct.image.GrayU8;
 import boofcv.android.ConvertBitmap;
-import boofcv.abst.fiducial.QrCodeDetector;
-import boofcv.alg.fiducial.qrcode.QrCode;
-import boofcv.factory.fiducial.ConfigQrCode;
 import boofcv.factory.fiducial.FactoryFiducial;
 import boofcv.abst.fiducial.MicroQrCodeDetector;
 import boofcv.alg.fiducial.microqr.MicroQrCode;
@@ -359,6 +355,25 @@ public class ExtraOpModeFunctions
         blinkinLedDriver.setPattern(pattern);
     }
 
+    public void setLeds(double time)
+    {
+        if (time < 30)
+        {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.CP1_2_BEATS_PER_MINUTE;
+        }
+        else if (time >= 30 && time <= 32)
+        {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
+        }
+        else
+        {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.CP1_2_COLOR_WAVES;
+        }
+
+        displayPattern();
+    }
+
+
 
     // CAMERA LOGIC
 
@@ -408,7 +423,8 @@ public class ExtraOpModeFunctions
                 // Gets a list of all the qr codes it could successfully detect and decode
                 List<MicroQrCode> detections = detector.getDetections();
 
-                for (MicroQrCode qr : detections) {
+                for (MicroQrCode qr : detections)
+                {
                     if (qr.message.contentEquals("1"))
                     {
                         signalLocation = 1;

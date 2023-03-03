@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -20,7 +18,6 @@ public class BasicTeleOp extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         ExtraOpModeFunctions extras = new ExtraOpModeFunctions(hardwareMap, this);
         TrajectoryBook book = new TrajectoryBook(drive, extras);
-
 
         int IMUReset = 0;
         double stickForward;
@@ -57,8 +54,6 @@ public class BasicTeleOp extends LinearOpMode
         double maxAmps = 0;     
         int numDangerAmps = 0;
 
-
-        //NormalizedRGBA colors = extras.colorSensor.getNormalizedColors();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         extras.wristMiddle();
@@ -68,7 +63,6 @@ public class BasicTeleOp extends LinearOpMode
 
         while (!isStopRequested())
         {
-
             currentAmps1 = extras.elevator1.getCurrent(CurrentUnit.AMPS);
             currentAmps2 = extras.elevator2.getCurrent(CurrentUnit.AMPS);
 
@@ -115,7 +109,6 @@ public class BasicTeleOp extends LinearOpMode
                 speedMultiplier = 0.75 * elevMult;
             }
 
-            //adjustedAngle = extras.adjustAngleForDriverPosition(drive.getRawExternalHeading(), ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
             adjustedAngle = extras.adjustAngleForDriverPosition(drive.imu.getAngularOrientation().firstAngle, ExtraOpModeFunctions.RobotStartPosition.STRAIGHT);
             stickForward = -gamepad1.left_stick_y * speedMultiplier;
             stickSideways = -gamepad1.left_stick_x * speedMultiplier;
@@ -190,6 +183,7 @@ public class BasicTeleOp extends LinearOpMode
                 extras.elevator1.setPower(1.0);
                 extras.elevator2.setPower(1.0);
             }
+
             // don't go too low if turret is turned
             else if((extras.elevator1.getCurrentPosition() < 1200) && (elevatorStick > 0) && (extras.wristPosition != ExtraOpModeFunctions.WristPosition.MIDDLE))
             {
@@ -269,27 +263,6 @@ public class BasicTeleOp extends LinearOpMode
                 gp2_y_pressed = false;
 
             }
-/*
-            if (getRuntime() >= 90 && getRuntime() <= 91)
-            {
-                extras.pattern = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
-                extras.displayPattern();
-            }
-            else
-            {
-                if (colors.alpha > 0.35)
-                {
-                    extras.pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
-                    extras.displayPattern();
-                }
-                else
-                {
-                    extras.pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE;
-                    extras.displayPattern();
-                }
-            }
-
- */
 
             // Claw Open
             if (gamepad2.a)
@@ -429,7 +402,6 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
-
             // DPAD elevator down movements
             if(gamepad2.dpad_down)
             {
@@ -461,41 +433,24 @@ public class BasicTeleOp extends LinearOpMode
                 }
             }
 
-            //colors = extras.colorSensor.getNormalizedColors();
-            //ExtraOpModeFunctions.ConeColor coneColor = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
+            extras.setLeds(getRuntime());
 
             Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
-            telemetry.addData("elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
-            telemetry.addData("elevator limit: ", extras.elevatorLimit.isPressed());
-            telemetry.addData("Elevator Stopped", elevatorStopped);
-            //telemetry.addLine();
+            telemetry.addData("Robot x coordinate: ", poseEstimate.getX());
+            telemetry.addData("Robot y coordinate: ", poseEstimate.getY());
+            telemetry.addData("Robot heading: ", poseEstimate.getHeading());
+            telemetry.addData("Elevator1 encoder counts: ", extras.elevator1.getCurrentPosition());
+            telemetry.addData("Elevator2 encoder counts: ", extras.elevator2.getCurrentPosition());
+            telemetry.addData("Elevator limit: ", extras.elevatorLimit.isPressed());
+            telemetry.addData("Elevator stopped? ", elevatorStopped);
+            telemetry.addLine();
 
-            /*
-            telemetry.addData("Cone Color: ", coneColor);
-            telemetry.addData("Red_", extras.numRed);
-            telemetry.addData("Green_", extras.numGreen);
-            telemetry.addData("Blue_", extras.numBlue);
-            */
+            telemetry.addData("Elevator1 current voltage: ", currentAmps1);
+            telemetry.addData("Elevator2 current voltage: ", currentAmps2);
+            telemetry.addData("Max amps: ", maxAmps);
 
-            telemetry.addData("Elevator 1 Current Voltage: ", currentAmps1);
-            telemetry.addData("Elevator 2 Current Voltage: ", currentAmps2);
-            telemetry.addData("Max Amps: ", maxAmps);
-            telemetry.addData("Number of times amps was greater than 7: ", numDangerAmps);
+            telemetry.addData("Elapsed time: ", getRuntime());
 
-            telemetry.addData("Elapsed Time: ", getRuntime());
-
-
-            //telemetry.addLine()
-                   // .addData("Red", "%.3f", colors.red)
-                  //  .addData("Green", "%.3f", colors.green)
-                   // .addData("Blue", "%.3f", colors.blue)
-                 //   .addData("Alpha", "%.3f", colors.alpha);
-
-            //telemetry.addData("Heading: ", drive.getPoseEstimate().getHeading());
             telemetry.update();
         }
     }
