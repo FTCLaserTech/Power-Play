@@ -6,9 +6,6 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
-
-import java.util.Vector;
 
 public class TrajectoryBook
 {
@@ -360,6 +357,11 @@ public class TrajectoryBook
                 .build();
     }
 
+    double rightStackX = 50;
+    double rightStackY = -26;
+    double rightMidDropX = 45;
+    double rightMidDropY = 13;
+
     public void RightMediumJunction(Pose2d pose) {
         rightMediumJunction = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorLow())
@@ -377,28 +379,28 @@ public class TrajectoryBook
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
                 .splineToConstantHeading(new Vector2d(35, 29),Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(40, 21.5),Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(40, 20),Math.toRadians(0)) // y was 21.5
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
                 // Turn to face stack
-                .splineTo(new Vector2d(51,17),Math.toRadians(-92))
+                .splineTo(new Vector2d(rightStackX,17),Math.toRadians(-92))
 
                 // First cone
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFive())
-                .lineTo(new Vector2d(51, -20))
+                .lineTo(new Vector2d(rightStackX, rightStackY + 4))
                 // Slow move to stack
-                .lineTo(new Vector2d(51, -24),
+                .lineTo(new Vector2d(rightStackX, rightStackY),
                         SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
+                .UNSTABLE_addTemporalMarkerOffset(1, () -> extras.wristRight())
                 // Move backward to the pole
                 // Should this be a straight lineTo to get near the pole and then a splineToConstantHeading to curve into the pole?
-                .lineTo(new Vector2d(49, 14.5))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
-                .waitSeconds(0.3)
+                .lineTo(new Vector2d(rightMidDropX, rightMidDropY))
+                //.waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
@@ -407,60 +409,60 @@ public class TrajectoryBook
 
                 //2nd cone
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFour())
-                .lineTo(new Vector2d(51, -20))
+                .lineTo(new Vector2d(rightStackX - 0.5, rightStackY + 4))
                 // Slow move to stack
-                .lineTo(new Vector2d(51, -24),
+                .lineTo(new Vector2d(rightStackX - 0.5, rightStackY),
                         SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
                 // Move backward to the pole
-                .lineToConstantHeading(new Vector2d(47, 13))
+                .lineToConstantHeading(new Vector2d(rightMidDropX, rightMidDropY - 0.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-                .lineToConstantHeading(new Vector2d(52, 13))
+                //.lineToConstantHeading(new Vector2d(52, 13))
 
                 //Third cone
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorThree())
-                .lineTo(new Vector2d(51, -20))
+                .lineTo(new Vector2d(rightStackX - 1, rightStackY + 4))
                 // Slow move to stack
-                .lineTo(new Vector2d(51, -24),
+                .lineTo(new Vector2d(rightStackX - 1, rightStackY),
                         SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
                 // Move backward to the pole
-                .lineToConstantHeading(new Vector2d(47, 13))
+                .lineToConstantHeading(new Vector2d(rightMidDropX, rightMidDropY - 1.0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-                .lineToConstantHeading(new Vector2d(52, 13))
+                //.lineToConstantHeading(new Vector2d(52, 13))
 
                 //4th cone
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorTwo())
-                .lineTo(new Vector2d(51, -20))
+                .lineTo(new Vector2d(rightStackX - 1.5, rightStackY + 4))
                 // Slow move to stack
-                .lineTo(new Vector2d(51, -24),
+                .lineTo(new Vector2d(rightStackX - 1.5, rightStackY),
                         SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
                 // Move backward to the pole
-                .lineToConstantHeading(new Vector2d(47, 13))
+                .lineToConstantHeading(new Vector2d(rightMidDropX, rightMidDropY - 1.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-                .lineToConstantHeading(new Vector2d(52, 13))
+                //.lineToConstantHeading(new Vector2d(52, 13))
 
                 /*
                 //Last cone
