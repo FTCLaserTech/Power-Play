@@ -28,7 +28,8 @@ public class RightMiddleJunctionTest extends LinearOpMode
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
-        book.RightMediumJunction(drive.getPoseEstimate());
+        book.RightMedJuncInitial(drive.getPoseEstimate());
+        book.RMJStackCone1(new Pose2d(0,0,0));
         //book.RHJParkOne(book.rHJSecondCone.end());
         //book.RHJParkTwo(book.rHJSecondCone.end());
         //book.RHJParkThree(book.rHJSecondCone.end());
