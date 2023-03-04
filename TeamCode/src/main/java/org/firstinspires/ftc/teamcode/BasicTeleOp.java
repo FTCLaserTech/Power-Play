@@ -117,33 +117,6 @@ public class BasicTeleOp extends LinearOpMode
             drive.setWeightedDrivePower(new Pose2d(stickForwardRotated, stickSidewaysRotated, -gamepad1.right_stick_x));
             drive.update();
 
-            // Trajectory for pole left
-            if (gamepad1.y)
-            {
-                //gp1_y_pressed = true;
-            }
-            else if (!gamepad1.y && gp1_y_pressed)
-            {
-                Pose2d startPose = new Pose2d(0, 0, Math.toRadians(180));
-                book.TeleOpPoleLeft(startPose);
-                drive.setPoseEstimate(startPose);
-
-                drive.followTrajectorySequence(book.teleOpPoleLeft);
-            }
-
-            // Trajectory for cone left
-            if (gamepad1.a)
-            {
-                //gp1_a_pressed = true;
-            }
-            else if (!gamepad1.a && gp1_a_pressed)
-            {
-                Pose2d startPose = drive.getPoseEstimate();
-                //book.TeleOpConeLeft(startPose);
-
-                drive.followTrajectorySequence(book.teleOpConeLeft);
-            }
-
             // MANUAL ELEVATOR CONTROL- gamepad 2
             // stop if the limit switch is pressed
             float elevatorStick = gamepad2.left_stick_y;

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
 @Autonomous(group = "a")
 //@Disabled
-public class RightMiddleJunctionTest extends LinearOpMode
+public class LeftMiddleJunction extends LinearOpMode
 {
 
     @Override
@@ -28,15 +28,15 @@ public class RightMiddleJunctionTest extends LinearOpMode
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
-        book.RightMedJuncInitial(drive.getPoseEstimate());
-        book.RMJStackToJunction(new Pose2d(0,0,Math.toRadians(-90)));
-        book.RMJJunctionToStack4(book.rMJStackToJunction.end());
-        book.RMJJunctionToStack3(book.rMJStackToJunction.end());
-        book.RMJJunctionToStack2(book.rMJStackToJunction.end());
-        book.RMJJunctionToStack1(book.rMJStackToJunction.end());
-        book.RMJLeftPark(book.rMJStackToJunction.end());
-        book.RMJMiddlePark(book.rMJStackToJunction.end());
-        book.RMJRightPark(book.rMJStackToJunction.end());
+        book.LeftMedJuncInitial(drive.getPoseEstimate());
+        book.LMJStackToJunction(new Pose2d(0,0,Math.toRadians(90)));
+        book.LMJJunctionToStack4(book.lMJStackToJunction.end());
+        book.LMJJunctionToStack3(book.lMJStackToJunction.end());
+        book.LMJJunctionToStack2(book.lMJStackToJunction.end());
+        book.LMJJunctionToStack1(book.lMJStackToJunction.end());
+        book.LMJLeftPark(book.lMJStackToJunction.end());
+        book.LMJMiddlePark(book.lMJStackToJunction.end());
+        book.LMJRightPark(book.lMJStackToJunction.end());
 
         telemetry.addLine("Initialized");
         telemetry.addData("x", poseEstimate.getX());
@@ -49,47 +49,45 @@ public class RightMiddleJunctionTest extends LinearOpMode
         telemetry.addData("Signal Location: ", Signal);
         telemetry.update();
 
-        drive.followTrajectorySequence(book.rightMediumJunction);
+        drive.followTrajectorySequence(book.leftMediumJunction);
         //At the wall for cone 5
-        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(-90)));
-        drive.followTrajectorySequence(book.rMJStackToJunction);
-        drive.followTrajectorySequence(book.rMJJunctionToStack4);
+        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(90)));
+        drive.followTrajectorySequence(book.lMJStackToJunction);
+        drive.followTrajectorySequence(book.lMJJunctionToStack4);
         //At the wall for cone 4
-        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(-90)));
-        drive.followTrajectorySequence(book.rMJStackToJunction);
-        drive.followTrajectorySequence(book.rMJJunctionToStack3);
+        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(90)));
+        drive.followTrajectorySequence(book.lMJStackToJunction);
+        drive.followTrajectorySequence(book.lMJJunctionToStack3);
         //At the wall for cone 3
-        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(-90)));
-        drive.followTrajectorySequence(book.rMJStackToJunction);
-        drive.followTrajectorySequence(book.rMJJunctionToStack2);
+        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(90)));
+        drive.followTrajectorySequence(book.lMJStackToJunction);
+        drive.followTrajectorySequence(book.lMJJunctionToStack2);
         //At the wall for cone 2
-        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(-90)));
-        drive.followTrajectorySequence(book.rMJStackToJunction);
-        drive.followTrajectorySequence(book.rMJJunctionToStack1);
+        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(90)));
+        drive.followTrajectorySequence(book.lMJStackToJunction);
+        drive.followTrajectorySequence(book.lMJJunctionToStack1);
         //At the wall for cone 1
-        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(-90)));
-        drive.followTrajectorySequence(book.rMJStackToJunction);
+        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(90)));
+        drive.followTrajectorySequence(book.lMJStackToJunction);
         //End of stacking 1+5
-
         switch(Signal)
         {
             case ONE:
                 // move to LEFT column of parking tiles
-                drive.followTrajectorySequence(book.rMJLeftPark);
+                drive.followTrajectorySequence(book.lMJLeftPark);
                 break;
 
             case TWO:
                 // move to MIDDLE column of parking tiles
-                drive.followTrajectorySequence(book.rMJMiddlePark);
+                drive.followTrajectorySequence(book.lMJMiddlePark);
                 break;
 
             case THREE:
                 // move to RIGHT colum of parking tiles
-                drive.followTrajectorySequence(book.rMJRightPark);
+                drive.followTrajectorySequence(book.lMJRightPark);
                 break;
 
         }
-
 
         sleep(10000);
     }
