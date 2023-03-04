@@ -31,10 +31,11 @@ public class TrajectoryBook
     public TrajectorySequence lHJParkThree;
 
     public TrajectorySequence rightMediumJunction;
-    public TrajectorySequence rightMedJuncStack1;
-    public TrajectorySequence rightMedJuncStack2;
-    public TrajectorySequence rightMedJuncStack3;
-    public TrajectorySequence rightMedJuncStack4;
+    public TrajectorySequence rMJStackToJunction;
+    public TrajectorySequence rMJJunctionToStack4;
+    public TrajectorySequence rMJJunctionToStack3;
+    public TrajectorySequence rMJJunctionToStack2;
+    public TrajectorySequence rMJJunctionToStack1;
 
 
     public TrajectorySequence teleOpPoleLeft;
@@ -118,16 +119,16 @@ public class TrajectoryBook
                 .splineToConstantHeading(new Vector2d(8, 5), Math.toRadians(0))
                 // Move towards the pole
                 .splineToConstantHeading(new Vector2d(54, 5), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
                 // Move to the pole while turning
                 .splineToLinearHeading(new Pose2d(58, 16, Math.toRadians(-94)), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorHigh())
-                .waitSeconds(1.2)
+                .waitSeconds(1.0)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristLeft())
                 .waitSeconds(1.0)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-                .waitSeconds(0.5)
+                .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-                .waitSeconds(0.4)
+                .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFive())
                 // Move away from pole
                 .splineToLinearHeading(new Pose2d(52.5, 17, Math.toRadians(-92)), Math.toRadians(0))
@@ -365,7 +366,7 @@ public class TrajectoryBook
     double rightStackX = 0;
     double rightStackY = 0;
     double rightMidDropX = -5;
-    double rightMidDropY = 39;
+
 
     public void RightMedJuncInitial(Pose2d pose) {
         rightMediumJunction = drive.trajectorySequenceBuilder(pose)
@@ -399,9 +400,9 @@ public class TrajectoryBook
                 .build();
     }
 
-    public void RMJStackCone1(Pose2d pose)
+    public void RMJStackToJunction(Pose2d pose)
     {
-            rightMedJuncStack1 = drive.trajectorySequenceBuilder(pose)
+            rMJStackToJunction = drive.trajectorySequenceBuilder(pose)
 
             .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
             .waitSeconds(0.2)
@@ -409,7 +410,7 @@ public class TrajectoryBook
             .UNSTABLE_addTemporalMarkerOffset(1, () -> extras.wristRight())
             // Move backward to the pole
             // Should this be a straight line to get near the pole and then a splineToConstantHeading to curve into the pole?
-            .lineTo(new Vector2d(0, rightMidDropY))
+            .lineTo(new Vector2d(-5, 38))
             //.waitSeconds(0.3)
             .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
             .waitSeconds(0.3)
@@ -419,99 +420,61 @@ public class TrajectoryBook
             .build();
     }
 
-    public void RMJStackCone2(Pose2d pose)
+    public void RMJJunctionToStack4(Pose2d pose)
     {
-        rightMedJuncStack2 = drive.trajectorySequenceBuilder(pose)
+        rMJJunctionToStack4 = drive.trajectorySequenceBuilder(pose)
 
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFour())
-        .lineTo(new Vector2d(rightStackX, rightStackY))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> drive.setPoseEstimate(new Pose2d(0,0,Math.toRadians(-92))))
-        // Slow move to stack
-        //.lineTo(new Vector2d(rightStackX, rightStackY),
-        //SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-        //SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
-        .waitSeconds(0.2)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
-        // Move backward to the pole
-        .lineToConstantHeading(new Vector2d(rightMidDropX, rightMidDropY))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
-        .waitSeconds(0.3)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-        .waitSeconds(0.3)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-        //.lineToConstantHeading(new Vector2d(52, 13))
-        .build();
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFour())
+                .lineTo(new Vector2d(0.5, -3))
+                .build();
     }
 
-    public void RMJStackCone3(Pose2d pose)
+    public void RMJJunctionToStack3(Pose2d pose)
     {
-        rightMedJuncStack3 = drive.trajectorySequenceBuilder(pose)
+        rMJJunctionToStack3 = drive.trajectorySequenceBuilder(pose)
 
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorThree())
-        .lineTo(new Vector2d(rightStackX - 1, rightStackY + 4))
-        // Slow move to stack
-        .lineTo(new Vector2d(rightStackX - 1, rightStackY),
-                SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
-        .waitSeconds(0.2)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
-        // Move backward to the pole
-        .lineToConstantHeading(new Vector2d(rightMidDropX, rightMidDropY - 1.0))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
-        .waitSeconds(0.3)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-        .waitSeconds(0.3)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-        //.lineToConstantHeading(new Vector2d(52, 13))
-        .build();
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorThree())
+                .lineTo(new Vector2d(0.5, -3))
+                .build();
     }
 
-    public void RMJStackCone4(Pose2d pose)
+    public void RMJJunctionToStack2(Pose2d pose)
     {
-        rightMedJuncStack4 = drive.trajectorySequenceBuilder(pose)
-        //4th cone
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorTwo())
-        .lineTo(new Vector2d(rightStackX - 1.5, rightStackY + 4))
-        // Slow move to stack
-        .lineTo(new Vector2d(rightStackX - 1.5, rightStackY),
-                SampleMecanumDrive.getVelocityConstraint(8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawClose())
-        .waitSeconds(0.2)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
-        // Move backward to the pole
-        .lineToConstantHeading(new Vector2d(rightMidDropX, rightMidDropY - 1.5))
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
-        .waitSeconds(0.3)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
-        .waitSeconds(0.3)
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
-        .build();
-        //.lineToConstantHeading(new Vector2d(52, 13))
+        rMJJunctionToStack2 = drive.trajectorySequenceBuilder(pose)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorTwo())
+                .lineTo(new Vector2d(0.5, -3))
+                .build();
+    }
+
+    public void RMJJunctionToStack1(Pose2d pose)
+    {
+        rMJJunctionToStack1 = drive.trajectorySequenceBuilder(pose)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
+                .lineTo(new Vector2d(0.5, -3))
+                .build();
     }
 
     public void RMJLeftPark(Pose2d pose)
     {
-        lHJParkOne = drive.trajectorySequenceBuilder(pose)
-                .splineToLinearHeading(new Pose2d(53, 25, Math.toRadians(92)), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(52, 27, Math.toRadians(0)))
-                //.lineToLinearHeading(new Pose2d(52, 29, Math.toRadians(0)))
+        rMJLeftPark = drive.trajectorySequenceBuilder(pose)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
+                .lineToLinearHeading(new Pose2d(-5, 47, Math.toRadians(0)))
                 .build();
     }
     public void RMJMiddlePark(Pose2d pose)
     {
-        lHJParkTwo = drive.trajectorySequenceBuilder(pose)
-                .splineToLinearHeading(new Pose2d(51, 7, Math.toRadians(0)), Math.toRadians(0))
-                //.lineToLinearHeading(new Pose2d(52, 5, Math.toRadians(0)))
+        rMJMiddlePark = drive.trajectorySequenceBuilder(pose)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
+                .lineTo(new Vector2d(-5, 22))
+                .lineToLinearHeading(new Pose2d(-5.5, 22, Math.toRadians(0)))
                 .build();
     }
     public void RMJRightPark(Pose2d pose)
     {
-        lHJParkThree = drive.trajectorySequenceBuilder(pose)
-                .splineToLinearHeading(new Pose2d(51, -18, Math.toRadians(0)), Math.toRadians(0))
-                //.lineToLinearHeading(new Pose2d(52, -17, Math.toRadians(0)))
+        rMJRightPark = drive.trajectorySequenceBuilder(pose)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
+                .lineTo(new Vector2d(-5, 6))
+                .lineToLinearHeading(new Pose2d(-5.5, 6, Math.toRadians(0)))
                 .build();
     }
 
