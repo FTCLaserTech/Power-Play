@@ -29,7 +29,7 @@ public class RightMiddleJunctionTest extends LinearOpMode
         Pose2d poseEstimate = drive.getPoseEstimate();
 
         book.RightMedJuncInitial(drive.getPoseEstimate());
-        book.RMJStackCone1(new Pose2d(0,0,0));
+        book.RMJStackCone1(new Pose2d(0,0,Math.toRadians(-90)));
         //book.RHJParkOne(book.rHJSecondCone.end());
         //book.RHJParkTwo(book.rHJSecondCone.end());
         //book.RHJParkThree(book.rHJSecondCone.end());
@@ -46,7 +46,8 @@ public class RightMiddleJunctionTest extends LinearOpMode
         telemetry.update();
 
         drive.followTrajectorySequence(book.rightMediumJunction);
-
+        drive.setPoseEstimate(new Pose2d(0,0, Math.toRadians(-90)));
+        drive.followTrajectorySequence(book.rightMedJuncStack1);
         //drive.followTrajectorySequence(book.rHJSecondCone);
 
         switch(Signal)
