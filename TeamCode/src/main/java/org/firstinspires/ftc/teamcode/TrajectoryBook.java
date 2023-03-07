@@ -379,7 +379,7 @@ public class TrajectoryBook
     {
         rMJLeftPark = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
-                .lineToLinearHeading(new Pose2d(-5, 47, Math.toRadians(-2)))
+                .lineToLinearHeading(new Pose2d(-5, 47, Math.toRadians(2)))
                 .build();
     }
     public void RMJMiddlePark(Pose2d pose)
@@ -387,7 +387,7 @@ public class TrajectoryBook
         rMJMiddlePark = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
                 .lineTo(new Vector2d(0, 22))
-                .lineToLinearHeading(new Pose2d(-5, 22, Math.toRadians(-2)))
+                .lineToLinearHeading(new Pose2d(-5, 22, Math.toRadians(2)))
                 .build();
     }
     public void RMJRightPark(Pose2d pose)
@@ -395,7 +395,7 @@ public class TrajectoryBook
         rMJRightPark = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
                 .lineTo(new Vector2d(0, 2))
-                .lineToLinearHeading(new Pose2d(-5, 2, Math.toRadians(-2)))
+                .lineToLinearHeading(new Pose2d(-5, 2, Math.toRadians(2)))
                 .build();
     }
 
