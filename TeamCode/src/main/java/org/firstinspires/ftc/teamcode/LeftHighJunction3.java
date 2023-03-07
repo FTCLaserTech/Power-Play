@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-//@Disabled
+@Disabled
 
 public class LeftHighJunction3 extends LinearOpMode
 {
@@ -35,7 +36,7 @@ public class LeftHighJunction3 extends LinearOpMode
         telemetry.addData("heading", poseEstimate.getHeading());
         telemetry.update();
 
-        book.LeftHighJunction(drive.getPoseEstimate());
+        book.LeftHighJunctionOne(drive.getPoseEstimate());
         book.LHJFirstCone(book.leftHighJunction.end());
         book.LHJSecondCone(book.lHJFirstCone.end());
         book.LHJParkOne(book.lHJSecondCone.end());

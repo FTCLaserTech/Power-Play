@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-//@Disabled
+@Disabled
 public class RightHighJunction3 extends LinearOpMode
 {
 
@@ -28,7 +29,7 @@ public class RightHighJunction3 extends LinearOpMode
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
-        book.RightHighJunction(drive.getPoseEstimate());
+        book.RightHighJunctionOne(drive.getPoseEstimate());
         book.RHJFirstCone(book.rightHighJunction.end());
         book.RHJSecondCone(book.rHJFirstCone.end());
         book.RHJParkOne(book.rHJSecondCone.end());
