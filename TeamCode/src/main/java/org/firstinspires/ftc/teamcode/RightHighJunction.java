@@ -72,7 +72,6 @@ public class RightHighJunction extends LinearOpMode
         drive.followTrajectorySequence(book.rHJStackToJunction);
         //End of stacking 1+5
 
-        /*
         switch(Signal)
         {
             case ONE:
@@ -91,8 +90,6 @@ public class RightHighJunction extends LinearOpMode
                 break;
 
         }
-
-         */
 
 
         sleep(10000);
