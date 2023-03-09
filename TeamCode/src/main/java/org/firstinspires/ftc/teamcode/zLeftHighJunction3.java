@@ -11,7 +11,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
 @Autonomous(group = "a")
 @Disabled
-public class RightHighJunction3 extends LinearOpMode
+
+public class zLeftHighJunction3 extends LinearOpMode
 {
 
     @Override
@@ -29,48 +30,45 @@ public class RightHighJunction3 extends LinearOpMode
 
         Pose2d poseEstimate = drive.getPoseEstimate();
 
-        book.RightHighJunctionOne(drive.getPoseEstimate());
-        book.RHJFirstCone(book.rightHighJunction.end());
-        book.RHJSecondCone(book.rHJFirstCone.end());
-        book.RHJParkOne(book.rHJSecondCone.end());
-        book.RHJParkTwo(book.rHJSecondCone.end());
-        book.RHJParkThree(book.rHJSecondCone.end());
-
         telemetry.addLine("Initialized");
         telemetry.addData("x", poseEstimate.getX());
         telemetry.addData("y", poseEstimate.getY());
         telemetry.addData("heading", poseEstimate.getHeading());
         telemetry.update();
 
+        book.LeftHighJunctionOne(drive.getPoseEstimate());
+        book.LHJFirstCone(book.leftHighJunction.end());
+        book.LHJSecondCone(book.lHJFirstCone.end());
+        book.LHJParkOne(book.lHJSecondCone.end());
+        book.LHJParkTwo(book.lHJSecondCone.end());
+        book.LHJParkThree(book.lHJSecondCone.end());
+
         waitForStart();
         ExtraOpModeFunctions.Signal Signal = extras.grabAndProcessImage(ExtraOpModeFunctions.FieldSide.RED);
         telemetry.addData("Signal Location: ", Signal);
         telemetry.update();
 
-        drive.followTrajectorySequence(book.rightHighJunction);
-        drive.followTrajectorySequence(book.rHJFirstCone);
-        drive.followTrajectorySequence(book.rHJSecondCone);
+        drive.followTrajectorySequence(book.leftHighJunction);
+        drive.followTrajectorySequence(book.lHJFirstCone);
+        drive.followTrajectorySequence(book.lHJSecondCone);
 
         switch(Signal)
         {
             case ONE:
                 // move to LEFT column of parking tiles
-                drive.followTrajectorySequence(book.rHJParkOne);
+                drive.followTrajectorySequence(book.lHJParkOne);
                 break;
 
             case TWO:
                 // move to MIDDLE column of parking tiles
-                drive.followTrajectorySequence(book.rHJParkTwo);
+                drive.followTrajectorySequence(book.lHJParkTwo);
                 break;
 
             case THREE:
                 // move to RIGHT colum of parking tiles
-                drive.followTrajectorySequence(book.rHJParkThree);
+                drive.followTrajectorySequence(book.lHJParkThree);
                 break;
 
         }
-
-
-        sleep(10000);
     }
 }

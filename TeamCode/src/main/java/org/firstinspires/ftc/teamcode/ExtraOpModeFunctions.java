@@ -172,7 +172,7 @@ public class ExtraOpModeFunctions
 
     public void clawOpen()
     {
-        claw.setPosition(0.4);
+        claw.setPosition(0.395);
     }
 
     public void clawClose()
@@ -193,7 +193,7 @@ public class ExtraOpModeFunctions
 
     public void wristMiddle()
     {
-        wrist.setPosition(0.505);
+        wrist.setPosition(0.515);
         wristPosition = wristPosition.MIDDLE;
     }
 
