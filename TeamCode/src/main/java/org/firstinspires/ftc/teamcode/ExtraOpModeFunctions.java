@@ -172,13 +172,15 @@ public class ExtraOpModeFunctions
 
     public void clawOpen()
     {
-        claw.setPosition(0.395);
-    }
+        claw.setPosition(0.540);
+    }  //CLAW GREEN
+    //public void clawOpen() {claw.setPosition(0.395);}  CLAW YELLOW
 
     public void clawClose()
     {
-        claw.setPosition(0.485);
-    }
+        claw.setPosition(0.465);
+    }  //CLAW GREEN
+    //public void clawClose() {claw.setPosition(0.485);}  CLAW YELLOW
 
     public void clawMove (int distance)
     {
@@ -193,7 +195,8 @@ public class ExtraOpModeFunctions
 
     public void wristMiddle()
     {
-        wrist.setPosition(0.515);
+        wrist.setPosition(0.5125); // Green Claw
+        //wrist.setPosition(0.515); //Yellow Claw
         wristPosition = wristPosition.MIDDLE;
     }
 
