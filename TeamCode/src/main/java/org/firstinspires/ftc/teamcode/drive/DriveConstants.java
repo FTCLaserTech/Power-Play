@@ -39,7 +39,7 @@ public class DriveConstants {
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(7, 0, 0,
     //        getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0, 13.16250122);
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(5.5, 0, 2, 10);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(4, 0, 2, 8);
     //  this is f -       getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(9, 0, 2, 9.5);
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(9.4, 0, 4, 12.8);

@@ -321,7 +321,7 @@ public class ExtraOpModeFunctions
 
     public void elevatorFive()
     {
-        target = 456;
+        target = 443;
         elevatorPosition = elevatorPosition.FIVE;
 
         elevator1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-public class ParkOnly extends LinearOpMode
+public class zParkOnly extends LinearOpMode
 {
     @Override
     public void runOpMode() throws InterruptedException

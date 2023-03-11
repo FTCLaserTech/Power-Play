@@ -331,18 +331,18 @@ public class TrajectoryBook
         rightMediumJunction = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorLow())
                 //Initial Cone
-                .splineToConstantHeading(new Vector2d(4, 30),Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(4, 27),Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristRight())
-                .splineToConstantHeading(new Vector2d(33, 29),Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(36, 20),Math.toRadians(0)) // y was 21.5
+                .splineToConstantHeading(new Vector2d(31, 26),Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(37, 16),Math.toRadians(0)) // y was 21.5
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
                 // Turn to face stack
-                .splineTo(new Vector2d(50,17),Math.toRadians(-92))
+                .splineTo(new Vector2d(50,14),Math.toRadians(-92))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFive())
-                .lineTo(new Vector2d(50, -26))
+                .lineTo(new Vector2d(52.5, -32.5))
                 .build();
     }
 
@@ -355,7 +355,7 @@ public class TrajectoryBook
             .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorMiddle())
             .UNSTABLE_addTemporalMarkerOffset(1, () -> extras.wristRight())
             // Move backward to the pole
-            .lineTo(new Vector2d(-6, 38))
+            .lineTo(new Vector2d(-7.5, 37.5))
             .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.clawOpen())
             .waitSeconds(0.3)
             .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.wristMiddle())
@@ -367,7 +367,7 @@ public class TrajectoryBook
         rMJJunctionToStack4 = drive.trajectorySequenceBuilder(pose)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorFour())
-                .lineTo(new Vector2d(1, -3))
+                .lineTo(new Vector2d(0.5, -3))
                 .build();
     }
 
@@ -376,7 +376,7 @@ public class TrajectoryBook
         rMJJunctionToStack3 = drive.trajectorySequenceBuilder(pose)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorThree())
-                .lineTo(new Vector2d(1, -3))
+                .lineTo(new Vector2d(0.5, -3))
                 .build();
     }
 
@@ -384,7 +384,7 @@ public class TrajectoryBook
     {
         rMJJunctionToStack2 = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorTwo())
-                .lineTo(new Vector2d(1, -3))
+                .lineTo(new Vector2d(0.5, -3))
                 .build();
     }
 
@@ -392,7 +392,7 @@ public class TrajectoryBook
     {
         rMJJunctionToStack1 = drive.trajectorySequenceBuilder(pose)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> extras.elevatorGround())
-                .lineTo(new Vector2d(1, -3))
+                .lineTo(new Vector2d(0.5, -3))
                 .build();
     }
 

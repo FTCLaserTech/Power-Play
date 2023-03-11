@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //@Disabled
 @Config
 @Autonomous(group = "a")
-public class DoNothing extends LinearOpMode
+public class zDoNothing extends LinearOpMode
 {
 
     @Override
